@@ -28,4 +28,24 @@ func (store *dbStore) GetUsers() ([]*User, error) {
 	}
 	defer rows.Close()
 	
+	users := []*User{}
+	
+	for row.Next() {
+		user := &User{}
+		
+		if err := rows.Scan(&user.username, &user.gender, &user.age, &user.password, &user.email); err != nil {
+			return nil, err
+		}
+		
+		users = append(users, user)
+	}
+	
+	return users, nil
+}
+
+
+var store Store
+
+func InitStore(s Store) {
+	store = s
 }

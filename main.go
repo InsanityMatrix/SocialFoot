@@ -1,8 +1,10 @@
-﻿//Using https://www.sohamkamani.com/blog/2017/09/13/how-to-build-a-web-application-in-golang/
+﻿//Deploy App: https://devcenter.heroku.com/articles/getting-started-with-go#deploy-the-app
+//Using https://www.sohamkamani.com/blog/2017/09/13/how-to-build-a-web-application-in-golang/
 //main.go
 package main
 
 import (
+	"encoding/json"
     "fmt"
     "net/http"
     "github.com/gorilla/mux"
@@ -19,7 +21,6 @@ type User struct {
 
 
 //Global variables
-var users []User
 func newRouter() *mux.Router {
     r := mux.NewRouter()
     r.HandleFunc("/user", getUserHandler).Methods("GET")
@@ -45,12 +46,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUserHandler(w http.ResponseWriter, r *http.Request) {
-    userListBytes, err := json.Marshal(users)
-    if err != nil {
-        fmt.Println(fmt.Errorf("Error: %v", err))
-        w.WriteHeader(http.StatusInternalServerError)
-        return
-    }
+    users, err := store.GetUsers()
+	
+	userListBytes, err := json.Marshal(users)
+	
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error: %v", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
     //Write the json list of users to response
     w.Write(userListBytes)
 }
@@ -74,7 +78,10 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
     user.email = r.Form.Get("email")
 
     //Append existing list of users with a new entry
-    users = append(users, user)
+    err = store.CreateUser(&user)
+	if err != nil {
+		fmt.Println(err)
+	}
     //TODO: Create a save to a database json file somewhere
 
     http.Redirect(w, r, "/assets/", http.StatusFound)    
