@@ -4,11 +4,13 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
     "fmt"
     "net/http"
     "github.com/gorilla/mux"
 	"time"
+	_ "github.com/lib/pq"
 )
 
 type User struct {
@@ -26,6 +28,7 @@ func newRouter() *mux.Router {
     r := mux.NewRouter()
     r.HandleFunc("/user", getUserHandler).Methods("GET")
     r.HandleFunc("/user", createUserHandler).Methods("POST")
+	r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler).Methods("GET")
 
@@ -40,6 +43,20 @@ func newRouter() *mux.Router {
 func main() {
     router := newRouter
     http.ListenAndServe(":8080", router)
+	
+	connString := "dbname=postgresql-amorphous-36239 sslmode=disable"
+	db, err := sql.Open("postgres", connString)
+	
+	if err != nil {
+		panic(err)
+	}
+	err = db.Ping()
+	
+	if err != nil {
+		panic(err)
+	}
+	
+	InitStore(&dbStore{db: db})
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -87,7 +104,23 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 
     http.Redirect(w, r, "/assets/", http.StatusFound)    
 }
-
+func loginUserHandler(w http.ResponseWriter, r *http.Request) {
+	user := User{}
+	
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error: %v", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	
+	user.username = r.Form.Get("username")
+	user.password = r.Form.Get("password")
+	bytePass := []byte(user.password)
+	newPass := hashAndSalt(bytePass)
+	
+	
+}
 func addCookie(w http.ResponseWriter, name string, value string) {
     expire := time.Now().AddDate(0, 0, 1)
     cookie := http.Cookie{
