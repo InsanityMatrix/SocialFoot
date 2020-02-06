@@ -8,6 +8,7 @@ import (
     "fmt"
     "net/http"
     "github.com/gorilla/mux"
+	"time"
 )
 
 type User struct {
@@ -85,4 +86,14 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
     //TODO: Create a save to a database json file somewhere
 
     http.Redirect(w, r, "/assets/", http.StatusFound)    
+}
+
+func addCookie(w http.ResponseWriter, name string, value string) {
+    expire := time.Now().AddDate(0, 0, 1)
+    cookie := http.Cookie{
+        Name:    name,
+        Value:   value,
+        Expires: expire,
+    }
+    http.SetCookie(w, &cookie)
 }
