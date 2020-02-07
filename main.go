@@ -13,7 +13,7 @@ import (
     "net/http"
     "github.com/gorilla/mux"
 	"time"
-	 "github.com/lib/pq"
+	 _ "github.com/lib/pq"
 )
 
 type User struct {
@@ -51,14 +51,14 @@ func main() {
     http.ListenAndServe(port, router)
 
 		url := os.Getenv("DATABASE_URL")
-		connection, _ := pq.ParseURL(url)
-		connection += " sslmode=require"
-		db, err := sql.Open("postgres", connection)
+		db, err := sql.Open("postgres", url)
 
 		if err != nil {
 			log.Println("Error opening connection")
 			panic(err)
 		}
+		defer db.Close()
+
 		err = db.Ping()
 
 		if err != nil {
@@ -110,7 +110,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/assets/signup.html", http.StatusSeeOther)
 			return
 		}
-		user.password = hashAndSalt(&[]byte(user.password))
+		user.password = hashAndSalt([]byte(user.password))
     //Append existing list of users with a new entry
     err = store.CreateUser(&user)
 	if err != nil {
