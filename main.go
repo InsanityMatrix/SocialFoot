@@ -64,7 +64,7 @@ func main() {
 			log.Fatalf("Ping error: %s", err.Error())
 			panic(err)
 		}
-
+	//Set Connection Limit: https://www.alexedwards.net/blog/configuring-sqldb
 		InitStore(dbStore{db: db})
 
 		http.ListenAndServe(port, router)
