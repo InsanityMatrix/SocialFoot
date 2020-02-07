@@ -1,3 +1,4 @@
+/* Color Scheme: Gray - #657A73 | Green - #31572c secondary - #2e522a*/
 .net {
   display: block;
   width: 90%;
@@ -20,4 +21,13 @@ body {
   .paper {
     width: 80%;
   }
+}
+
+.btn-primary {
+  background-color: #31572c;
+  border-color: #407039;
+}
+.btn-primary:focus, .btn-primary:hover {
+  background-color: #2e522a;
+  border-color: #355e30;
 }

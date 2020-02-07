@@ -30,7 +30,8 @@ func newRouter() *mux.Router {
     r := mux.NewRouter()
     r.HandleFunc("/user", getUserHandler).Methods("GET")
     r.HandleFunc("/user", createUserHandler).Methods("POST")
-	r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
+		r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
+		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler).Methods("GET")
 
@@ -97,14 +98,21 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
     user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
     user.age, _ = strconv.Atoi(r.Form.Get("age"))
     user.password = r.Form.Get("password")
+		cpassword := r.Form.Get("cpassword")
     user.email = r.Form.Get("email")
 
+		if(user.password != cpassword) {
+			http.Redirect(w, r, "/assets/signup.html", http.StatusSeeOther)
+			return
+		}
+		user.password = hashAndSalt([]byte(user.password))
     //Append existing list of users with a new entry
     err = store.CreateUser(&user)
 	if err != nil {
 		fmt.Println(err)
 	}
-    //TODO: Create a save to a database json file somewhere
+  //Set Cookie with username
+		addCookie(w, "username", user.username)
 
     http.Redirect(w, r, "/assets/", http.StatusFound)
 }
