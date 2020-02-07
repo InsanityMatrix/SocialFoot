@@ -36,15 +36,32 @@ body {
 }
 .navbar-inverse .navbar-nav>.active>a,
 .bg-primary, li.active {
-  border-color: #407039;
-  background-color: #31572c !important;
+	background-clip: content-box;
+	border-color: #407039;
+	background-color: #31572c !important;
 }
 .bg-secondary {
-  border-color: #355e30;
-  background-color: #2e522a !important;
+	background-clip: content-box;
+	border-color: #355e30;
+	background-color: #2e522a !important;
 }
 .navbar {
   -moz-border-radius: 0px !important;
   -webkit-border-radius: 0px !important;
   border-radius: 0px !important;
+}
+
+h2 {
+	background-clip: content-box;
+}
+
+.feed {
+	-moz-border-radius: 10px 10px 0 0 !important;
+    -webkit-border-radius: 10px 10px 0 0 !important;
+    border-radius: 10px 10px 0 0 !important;
+	background-color: white;
+	box-shadow: 5px 5px 5px black;
+	-webkit-box-shadow: 5px 5px 5px black;
+	-moz-box-shadow: 5px 5px 5px black;
+	padding-bottom: 50px;
 }
