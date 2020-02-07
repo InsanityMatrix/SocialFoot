@@ -99,12 +99,12 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
     }
 
     //Get the information about the user from user info
-    user.username = r.Form["username"]
-    user.gender, _ = strconv.ParseBool(r.Form["gender"])
-    user.age, _ = strconv.Atoi(r.Form["age"])
-    user.password = r.Form["password"]
-		cpassword := r.Form["cpassword"]
-    user.email = r.Form.Get["email"]
+    user.username = r.Form.Get("username")
+    user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
+    user.age, _ = strconv.Atoi(r.Form.Get("age"))
+    user.password = r.Form.Get("password")
+		cpassword := r.Form.Get("cpassword")
+    user.email = r.Form.Get("email")
 
 		if(user.password != cpassword) {
 			http.Redirect(w, r, "/assets/signup.html", http.StatusSeeOther)
