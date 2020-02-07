@@ -15,7 +15,7 @@ import (
 
 type User struct {
     username string `json:"username"`
-    gender boolean `json:"gender"`
+    gender bool `json:"gender"`
     age int `json:"age"`
     password string `json:"password"`
     email string `json:"email"`

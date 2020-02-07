@@ -3,7 +3,7 @@
 import (
     "database/sql"
 )
-//Users DB : username (string), gender (boolean), age (int), password (string), email (string)
+//Users DB : username (string), gender (bool), age (int), password (string), email (string)
 
 type Store interface {
     CreateUser(user *User) error
