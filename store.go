@@ -19,7 +19,19 @@ func (store *dbStore) CreateUser(user *User) error {
 	_, err := store.db.Query("INSERT INTO users(username,age,password,email) VALUES ($1,$2,$3,$4);",user.username,user.age,user.password,user.email)
 	return err
 }
-
+func (store *dbStore) LoginUser(user *User) (*User, error) {
+  row := store.db.QueryRow("SELECT username,gender,age,password,email from users where username=$1", user.username)
+  account := &User{}
+  switch err := row.Scan(&account.username, &account.gender, &account.age, &account.password, &account.email); err {
+  case sql.ErrNoRows:
+    return nil, err
+  case nil:
+    return account, nil
+  default:
+    panic(err)
+    return nil, err
+  }
+}
 func (store *dbStore) GetUsers() ([]*User, error) {
 	rows, err := store.db.Query("SELECT username,gender,age,password,email from users")
 

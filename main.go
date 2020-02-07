@@ -11,7 +11,6 @@ import (
 		"log"
     "net/http"
     "github.com/gorilla/mux"
-	"time"
 	 _ "github.com/lib/pq"
 )
 
@@ -138,13 +137,25 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	bytePass := []byte(user.password)
 	newPass := hashAndSalt(bytePass)
 	user.password = newPass
+	account, err := store.LoginUser(&user)
+	if err != nil {
+		//Username may not have been right
+		http.Redirect(w,r,"assets/login.html", http.StatusSeeOther)
+	}
+	if user.password == account.password {
+		//Logged In
+		addCookie(w,"username",account.username)
+
+		http.Redirect(w, r, "/assets/", http.StatusFound)
+	} else {
+		http.Redirect(w,r,"assets/login.html", http.StatusSeeOther)
+	}
+
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
-    expire := time.Now().AddDate(0, 0, 1)
     cookie := http.Cookie{
         Name:    name,
         Value:   value,
-        Expires: expire,
     }
     http.SetCookie(w, &cookie)
 }
