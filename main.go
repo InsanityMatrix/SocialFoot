@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"os"
+	"strconv"
 	"html/template"
     "fmt"
 		"log"
@@ -105,8 +106,8 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 
     //Get the information about the user from user info
     user.username = r.Form.Get("username")
-  //  user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
-    user.age = 16
+    user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
+    user.age = strconv.Atoi(r.Form.Get("age"))
     user.password = r.Form.Get("password")
 		cpassword := r.Form.Get("cpassword")
     user.email = r.Form.Get("email")

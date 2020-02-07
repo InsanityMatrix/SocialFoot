@@ -8,6 +8,7 @@ import (
 type Store interface {
     CreateUser(user *User) error
     GetUsers()([]*User, error)
+    LoginUser(user *User) (*User, error)
 }
 
 
@@ -16,7 +17,7 @@ type dbStore struct {
 }
 
 func (store *dbStore) CreateUser(user *User) error {
-	_, err := store.db.Query("INSERT INTO users(username,age,password,email) VALUES ($1,$2,$3,$4);",user.username,user.age,user.password,user.email)
+	_, err := store.db.Query("INSERT INTO users(username,gender,age,password,email) VALUES ($1,$2,$3,$4,$5);",user.username,user.gender,user.age,user.password,user.email)
 	return err
 }
 func (store *dbStore) LoginUser(user *User) (*User, error) {
