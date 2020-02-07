@@ -69,7 +69,7 @@ func main() {
 		}
 	//Set Connection Limit: https://www.alexedwards.net/blog/configuring-sqldb
 		InitStore(dbStore{db: db})
-		initIndexHTML()
+		IndexHTML = initIndexHTML()
 		http.ListenAndServe(port, router)
 }
 
