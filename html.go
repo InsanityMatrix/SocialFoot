@@ -1,16 +1,8 @@
 package main
 
-import (
-	"html/template"
-)
-type Html interface {
-	initHTML()
-}
-var IndexHTML string
 
-func initHTML() {
-	//Make IndexHTML
-	IndexHTML := initIndexHTML()
+type Html interface {
+	initIndexHTML() string
 }
 
 func initIndexHTML() string {

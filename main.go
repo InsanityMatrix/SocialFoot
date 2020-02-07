@@ -25,7 +25,7 @@ type User struct {
     email string `json:"email"`
 }
 
-
+var IndexHTML string
 
 //Global variables
 func newRouter() *mux.Router {
@@ -69,7 +69,7 @@ func main() {
 		}
 	//Set Connection Limit: https://www.alexedwards.net/blog/configuring-sqldb
 		InitStore(dbStore{db: db})
-		InitHTML()
+		initIndexHTML()
 		http.ListenAndServe(port, router)
 }
 
