@@ -165,7 +165,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
 	fp := path.Join("templates","index.html")
-	tmpl, err := template.ParseFile(fp)
+	tmpl, err := template.ParseFiles(fp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
