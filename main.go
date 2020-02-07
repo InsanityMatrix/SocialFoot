@@ -33,11 +33,11 @@ func newRouter() *mux.Router {
     r := mux.NewRouter()
     r.HandleFunc("/user", getUserHandler).Methods("GET")
     r.HandleFunc("/user", createUserHandler).Methods("POST")
-		r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
-		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
-		r.HandleFunc("/live", liveIndexHandler)
+	r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
+	r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
+	r.HandleFunc("/live", liveIndexHandler)
     //ALL PAGE FUNCTIONS HERE
-    r.HandleFunc("/", handler).Methods("GET")
+    r.HandleFunc("/", handler)
 
     //Declare static file directory
     staticFileDirectory := http.Dir("./assets/")
@@ -45,9 +45,6 @@ func newRouter() *mux.Router {
     staticFileHandler := http.StripPrefix("/assets/", http.FileServer(staticFileDirectory))
 
     r.PathPrefix("/assets/").Handler(staticFileHandler).Methods("GET")
-    //staticFileDirectory = http.Dir("./templates/")
-    //staticFileHandler = http.StripPrefix("/templates/",http.FileServer(staticFileDirectory))
-    //r.PathPrefix("/templates/").Handler(staticFileHandler).Methods("GET")
     return r
 }
 func main() {
