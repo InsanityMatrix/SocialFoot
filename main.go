@@ -65,7 +65,7 @@ func main() {
 			panic(err)
 		}
 
-		InitStore(&dbStore{db: db})
+		InitStore(dbStore{db: db})
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
