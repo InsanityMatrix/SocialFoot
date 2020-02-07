@@ -159,6 +159,7 @@ func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
         Name:    name,
         Value:   value,
+	Path: "/",
     }
     http.SetCookie(w, &cookie)
 }
