@@ -153,7 +153,12 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live page with html templates
-	fmt.Fprintf(w, "SocialFoot is under construction")
+	msg, err := r.Cookie("username")
+	if err != nil {
+		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
+	}
+	tmpl, _ := template.ParseFiles("templates/index.html")
+	tmpl.Execute(w, map[string]string{"username":msg.String()})
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
