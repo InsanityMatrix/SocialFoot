@@ -31,6 +31,7 @@ func newRouter() *mux.Router {
     r.HandleFunc("/user", createUserHandler).Methods("POST")
 		r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
 		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
+		r.HandleFunc("/live", liveIndexHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler).Methods("GET")
 
@@ -140,7 +141,7 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	account, err := store.LoginUser(&user)
 	if err != nil {
 		//Username may not have been right
-		http.Redirect(w,r,"assets/login.html", http.StatusSeeOther)
+		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
 	}
 	if user.password == account.password {
 		//Logged In
@@ -148,9 +149,12 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 
 		http.Redirect(w, r, "/assets/", http.StatusFound)
 	} else {
-		http.Redirect(w,r,"assets/login.html", http.StatusSeeOther)
+		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
 	}
 
+}
+func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
+	//Handle Live page with html templates
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
