@@ -30,7 +30,7 @@ func (store *dbStore) GetUsers() ([]*User, error) {
 	
 	users := []*User{}
 	
-	for row.Next() {
+	for rows.Next() {
 		user := &User{}
 		
 		if err := rows.Scan(&user.username, &user.gender, &user.age, &user.password, &user.email); err != nil {

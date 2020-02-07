@@ -6,6 +6,7 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"strconv"
     "fmt"
     "net/http"
     "github.com/gorilla/mux"
@@ -41,7 +42,7 @@ func newRouter() *mux.Router {
     return r
 }
 func main() {
-    router := newRouter
+    router := newRouter()
     http.ListenAndServe(":8080", router)
 	
 	connString := "dbname=postgresql-amorphous-36239 sslmode=disable"
@@ -90,9 +91,9 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 
     //Get the information about the user from user info
     user.username = r.Form.Get("username")
-    user.gender = r.Form.Get("gender")
-    user.age = r.Form.Get("age")
-    user.password = r.Form.Get("age")
+    user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
+    user.age, _ = strconv.Atoi(r.Form.Get("age"))
+    user.password = r.Form.Get("password")
     user.email = r.Form.Get("email")
 
     //Append existing list of users with a new entry
@@ -118,8 +119,7 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	user.password = r.Form.Get("password")
 	bytePass := []byte(user.password)
 	newPass := hashAndSalt(bytePass)
-	
-	
+	user.password = newPass
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     expire := time.Now().AddDate(0, 0, 1)
