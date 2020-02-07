@@ -38,7 +38,7 @@ func newRouter() *mux.Router {
     staticFileDirectory := http.Dir("./assets/")
 
     staticFileHandler := http.StripPrefix("/assets/", http.FileServer(staticFileDirectory))
-    
+
     r.PathPrefix("/assets/").Handler(staticFileHandler).Methods("GET")
     return r
 }
@@ -47,19 +47,19 @@ func main() {
     portEnv := os.Getenv("PORT")
     port := ":" + portEnv
     http.ListenAndServe(port, router)
-	
+
 	connString := "dbname=postgresql-amorphous-36239 sslmode=disable"
 	db, err := sql.Open("postgres", connString)
-	
+
 	if err != nil {
 		panic(err)
 	}
 	err = db.Ping()
-	
+
 	if err != nil {
 		panic(err)
 	}
-	
+
 	InitStore(&dbStore{db: db})
 }
 
@@ -69,9 +69,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func getUserHandler(w http.ResponseWriter, r *http.Request) {
     users, err := store.GetUsers()
-	
+
 	userListBytes, err := json.Marshal(users)
-	
+
 	if err != nil {
 		fmt.Println(fmt.Errorf("Error: %v", err))
 		w.WriteHeader(http.StatusInternalServerError)
@@ -106,18 +106,18 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
     //TODO: Create a save to a database json file somewhere
 
-    http.Redirect(w, r, "/assets/", http.StatusFound)    
+    http.Redirect(w, r, "/assets/", http.StatusFound)
 }
 func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	user := User{}
-	
+
 	err := r.ParseForm()
 	if err != nil {
 		fmt.Println(fmt.Errorf("Error: %v", err))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	
+
 	user.username = r.Form.Get("username")
 	user.password = r.Form.Get("password")
 	bytePass := []byte(user.password)

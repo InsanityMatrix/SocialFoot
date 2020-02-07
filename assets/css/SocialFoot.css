@@ -1,0 +1,17 @@
+.net {
+  display: block;
+  width: 90%;
+  margin: 20px auto;
+}
+.paper {
+  background-color: white;
+  display: block;
+  width: 50%;
+  margin: 0 auto;
+  color: black;
+  padding: 20px;
+  border-radius: 10px;
+}
+body {
+  background-color: #f1f1f1;
+}
