@@ -165,7 +165,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
 	fp := path.Join("templates","index.html")
-	tmpl, err := template.ParseFiles(fp)
+	tmpl, err := template.New("index").ParseFiles(fp, nil)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -174,6 +174,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err := tmpl.Execute(w, map[string]string{"username":msg.Value}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
