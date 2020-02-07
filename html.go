@@ -4,7 +4,7 @@ import (
 	"html/template"
 )
 type Html interface {
-	func initHTML()
+	initHTML()
 }
 var IndexHTML string
 
