@@ -136,18 +136,16 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	user.username = r.Form.Get("username")
 	user.password = r.Form.Get("password")
 	bytePass := []byte(user.password)
-	newPass := hashAndSalt(bytePass)
-	user.password = newPass
 	account, err := store.LoginUser(&user)
 	if err != nil {
 		//Username may not have been right
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
 	}
-	if user.password == account.password {
+	if comparePasswords(account.password, bytePass) {
 		//Logged In
 		addCookie(w,"username",account.username)
 
-		http.Redirect(w, r, "/assets/", http.StatusFound)
+		http.Redirect(w, r, "/live", http.StatusFound)
 	} else {
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
 	}
@@ -155,6 +153,7 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live page with html templates
+	fmt.Fprintf(w, "SocialFoot is under construction")
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
