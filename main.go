@@ -163,7 +163,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
-	tmpl:= template.Must(template.ParseFiles("./templates/index.html"))
+	tmpl:= template.Must(template.ParseFiles("/templates/index.html"))
 	tmpl.Execute(w, map[string]string{"username":msg.Value})
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
