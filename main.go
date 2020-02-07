@@ -110,7 +110,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/assets/signup.html", http.StatusSeeOther)
 			return
 		}
-		user.password = hashAndSalt([]byte(user.password))
+		user.password = hashAndSalt(&[]byte(user.password))
     //Append existing list of users with a new entry
     err = store.CreateUser(&user)
 	if err != nil {
