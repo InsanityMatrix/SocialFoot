@@ -53,7 +53,7 @@ func main() {
 		db, err := sql.Open("postgres", url)
 
 		if err != nil {
-			log.Println("Error opening connection")
+			log.Fatalf("Connection error: %s", err.Error())
 			panic(err)
 		}
 		defer db.Close()
@@ -61,7 +61,7 @@ func main() {
 		err = db.Ping()
 
 		if err != nil {
-			log.Println("Error pinging db")
+			log.Fatalf("Ping error: %s", err.Error())
 			panic(err)
 		}
 
