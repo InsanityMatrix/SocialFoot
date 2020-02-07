@@ -47,7 +47,7 @@ func main() {
     router := newRouter()
     portEnv := os.Getenv("PORT")
     port := ":" + portEnv
-    http.ListenAndServe(port, router)
+
 
 		url := os.Getenv("DATABASE_URL")
 		db, err := sql.Open("postgres", url)
@@ -66,6 +66,8 @@ func main() {
 		}
 
 		InitStore(dbStore{db: db})
+
+		http.ListenAndServe(port, router)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
