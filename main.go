@@ -45,9 +45,9 @@ func newRouter() *mux.Router {
     staticFileHandler := http.StripPrefix("/assets/", http.FileServer(staticFileDirectory))
 
     r.PathPrefix("/assets/").Handler(staticFileHandler).Methods("GET")
-    staticFileDirectory = http.Dir("./templates/")
-    staticFileHandler = http.StripPrefix("/templates/",http.FileServer(staticFileDirectory))
-    r.PathPrefix("/templates/").Handler(staticFileHandler).Methods("GET")
+    //staticFileDirectory = http.Dir("./templates/")
+    //staticFileHandler = http.StripPrefix("/templates/",http.FileServer(staticFileDirectory))
+    //r.PathPrefix("/templates/").Handler(staticFileHandler).Methods("GET")
     return r
 }
 func main() {
