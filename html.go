@@ -10,7 +10,7 @@ var IndexHTML string
 
 func initHTML() {
 	//Make IndexHTML
-	IndexHTML = initIndexHTML()
+	IndexHTML := initIndexHTML()
 }
 
 func initIndexHTML() string {
