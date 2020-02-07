@@ -3,7 +3,9 @@ package main
 import (
 	"html/template"
 )
-
+type Html interface {
+	func initHTML()
+}
 var IndexHTML string
 
 func initHTML() {

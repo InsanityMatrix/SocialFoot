@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"html/template"
 	"fmt"
-	"path"
 		"log"
     "net/http"
     "github.com/gorilla/mux"
