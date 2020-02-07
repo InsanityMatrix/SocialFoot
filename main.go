@@ -42,6 +42,9 @@ func newRouter() *mux.Router {
     staticFileHandler := http.StripPrefix("/assets/", http.FileServer(staticFileDirectory))
 
     r.PathPrefix("/assets/").Handler(staticFileHandler).Methods("GET")
+    staticFileDirectory = http.Dir("./templates/")
+    staticFileHandler = http.StripPrefix("/templates/",http.FileServer(staticFileDirectory))
+    r.PathPrefix("/templates/").Handler(staticFileHandler).Methods("GET")
     return r
 }
 func main() {
@@ -158,8 +161,8 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
-	tmpl, _ := template.ParseFiles("/assets/templates/index.html")
-	tmpl.Execute(w, map[string]string{"username":msg.String()})
+	tmpl, _ := template.ParseFiles("/templates/index.html")
+	tmpl.Execute(w, map[string]string{"username":msg.Value})
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
