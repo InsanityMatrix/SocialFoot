@@ -70,7 +70,7 @@ func main() {
 		}
 	//Set Connection Limit: https://www.alexedwards.net/blog/configuring-sqldb
 		InitStore(dbStore{db: db})
-
+		InitHTML()
 		http.ListenAndServe(port, router)
 }
 
@@ -161,8 +161,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
-	fp := path.Join("templates","index.html")
-	tmpl, err := template.ParseFiles(fp)
+	tmpl, err := template.New("Index").Parse(IndexHTML)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
