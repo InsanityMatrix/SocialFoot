@@ -46,6 +46,6 @@ func (store *dbStore) GetUsers() ([]*User, error) {
 
 var store Store
 
-func InitStore(s Store) {
+func InitStore(s *Store) {
 	store = s
 }
