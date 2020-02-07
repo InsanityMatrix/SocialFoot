@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"strconv"
+	"os"
     "fmt"
     "net/http"
     "github.com/gorilla/mux"
@@ -43,7 +44,9 @@ func newRouter() *mux.Router {
 }
 func main() {
     router := newRouter()
-    http.ListenAndServe(":8080", router)
+    portEnv := os.Getenv("PORT")
+    port := ":" + portEnv
+    http.ListenAndServe(port, router)
 	
 	connString := "dbname=postgresql-amorphous-36239 sslmode=disable"
 	db, err := sql.Open("postgres", connString)
