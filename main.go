@@ -1,5 +1,6 @@
 ﻿//Deploy App: https://devcenter.heroku.com/articles/getting-started-with-go#deploy-the-app
 //Using https://www.sohamkamani.com/blog/2017/09/13/how-to-build-a-web-application-in-golang/
+//https://developers.google.com/web/fundamentals/native-hardware/fullscreen <- make web app
 //main.go
 package main
 
