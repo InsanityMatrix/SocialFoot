@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"os"
     "fmt"
+		"log"
     "net/http"
     "github.com/gorilla/mux"
 	"time"
@@ -55,11 +56,13 @@ func main() {
 		db, err := sql.Open("postgres", connection)
 
 		if err != nil {
+			log.Println("Error opening connection")
 			panic(err)
 		}
 		err = db.Ping()
 
 		if err != nil {
+			log.Println("Error pinging db")
 			panic(err)
 		}
 
@@ -96,12 +99,12 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
     }
 
     //Get the information about the user from user info
-    user.username = r.Form.Get("username")
-    user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
-    user.age, _ = strconv.Atoi(r.Form.Get("age"))
-    user.password = r.Form.Get("password")
-		cpassword := r.Form.Get("cpassword")
-    user.email = r.Form.Get("email")
+    user.username = r.Form["username"]
+    user.gender, _ = strconv.ParseBool(r.Form["gender"])
+    user.age, _ = strconv.Atoi(r.Form["age"])
+    user.password = r.Form["password"]
+		cpassword := r.Form["cpassword"]
+    user.email = r.Form.Get["email"]
 
 		if(user.password != cpassword) {
 			http.Redirect(w, r, "/assets/signup.html", http.StatusSeeOther)
@@ -111,6 +114,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
     //Append existing list of users with a new entry
     err = store.CreateUser(&user)
 	if err != nil {
+		log.Println(err)
 		fmt.Println(err)
 	}
   //Set Cookie with username
