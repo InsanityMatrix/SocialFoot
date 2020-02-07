@@ -12,7 +12,7 @@ import (
     "net/http"
     "github.com/gorilla/mux"
 	"time"
-	_ "github.com/lib/pq"
+	 "github.com/lib/pq"
 )
 
 type User struct {
@@ -49,19 +49,21 @@ func main() {
     port := ":" + portEnv
     http.ListenAndServe(port, router)
 
-	connString := "dbname=postgresql-amorphous-36239 sslmode=disable"
-	db, err := sql.Open("postgres", connString)
+		url := os.Getenv("DATABASE_URL")
+		connection, _ := pq.ParseURL(url)
+		connection += " sslmode=require"
+		db, err := sql.Open("postgres", connection)
 
-	if err != nil {
-		panic(err)
-	}
-	err = db.Ping()
+		if err != nil {
+			panic(err)
+		}
+		err = db.Ping()
 
-	if err != nil {
-		panic(err)
-	}
+		if err != nil {
+			panic(err)
+		}
 
-	InitStore(&dbStore{db: db})
+		InitStore(&dbStore{db: db})
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
