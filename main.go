@@ -10,7 +10,8 @@ import (
 	"os"
 	"strconv"
 	"html/template"
-    "fmt"
+	"fmt"
+	"path"
 		"log"
     "net/http"
     "github.com/gorilla/mux"
@@ -163,8 +164,16 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
-	tmpl:= template.Must(template.ParseFiles("/templates/index.html"))
-	tmpl.Execute(w, map[string]string{"username":msg.Value})
+	fp := path.Join("templates","index.html")
+	tmpl, err := template.ParseFiles(fp)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err := tmpl.Execute(w, map[string]string{"username":msg.Value}); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
