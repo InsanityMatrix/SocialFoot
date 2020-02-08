@@ -25,7 +25,7 @@ func (store *dbStore) CreateUser(user *User) error {
   if err != nil {
     return err
   }
-  row := store.db.QueryRow("SELECT id FROM users WHERE username=",user.username)
+  row := store.db.QueryRow("SELECT id FROM users WHERE username=$1",user.username)
   err = row.Scan(user.id)
   if err != nil {
     return err
@@ -60,8 +60,8 @@ func (store *dbStore) UpdateSetting(user *User,setting string, value string) boo
 }
 func (store *dbStore) CheckUserCredentials(user *User) bool {
   row := store.db.QueryRow("SELECT username,gender,age,password,email FROM users WHERE username=$1",user.username)
-  account := &User{}
-  err := row.Scan(&account.username, &account.gender, &account.age, &account.password, &account.email)
+  account := User{}
+  err := row.Scan(account.username, account.gender, account.age, account.password, account.email)
   if err != nil {
     return false
   }
@@ -82,6 +82,7 @@ func (store *dbStore) GetUserSettings(user *User) *UserSettings {
   row := store.db.QueryRow("SELECT userid, bio, website, location, publicity FROM user_settings WHERE userid=$1",user.id)
   settings := &UserSettings{}
   err := row.Scan(&settings.id,&settings.bio,&settings.website,&settings.location,&settings.publicity)
+
   if err != nil {
     return nil
   }
