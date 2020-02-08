@@ -2,13 +2,16 @@
 //Help from https://www.sohamkamani.com/blog/2017/10/18/golang-adding-database-to-web-application/
 import (
     "database/sql"
+    "strconv"
 )
 //Users DB : username (string), gender (bool), age (int), password (string), email (string)
 
 type Store interface {
     CreateUser(user *User) error
-    GetUsers()([]*User, error)
+    GetUserInfo(user *User) *User
+    CheckUserCredentials(user *User) bool
     LoginUser(user *User) (*User, error)
+    UpdateSetting(user *User,setting string, value string) bool
 }
 
 
@@ -32,6 +35,32 @@ func (store *dbStore) LoginUser(user *User) (*User, error) {
     panic(err)
     return nil, err
   }
+}
+func (store *dbStore) UpdateSetting(user *User,setting string, value string) bool {
+  if(setting == "publicity") {
+    val := strconv.ParseBool("value")
+    _ err := store.db.Query("UPDATE TABLE user_settings")
+  }
+}
+func (store *dbStore) CheckUserCredentials(user *User) bool {
+  row := store.db.QueryRow("SELECT username,gender,age,password,email FROM users WHERE username=$1",user.username)
+  account := &User{}
+  err := row.Scan(&account.username, &account.gender, &account.age, &account.password, &account.email)
+  if err != nil {
+    return false
+  }
+  ps := []byte(user.password)
+  return comparePasswords(account.password, ps)
+}
+//ONLY EVER USE ONCE YOU HAVE VALIDATED THEIR INFO FIRST
+func (store *dbStore) GetUserInfo(user *User) *User {
+  row := store.db.QueryRow("SELECT id,username,gender,age,password,email FROM users WHERE username=$1",user.username)
+  account := &User{}
+  err := row.Scan(&account.id,&account.username,&account.gender,&account.age,&account.password,&account.email)
+  if err != nil {
+    return false
+  }
+  return &account
 }
 func (store *dbStore) GetUsers() ([]*User, error) {
 	rows, err := store.db.Query("SELECT username,gender,age,password,email from users")

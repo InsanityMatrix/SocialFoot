@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"html/template"
 	"fmt"
+	"time"
 		"log"
     "net/http"
     "github.com/gorilla/mux"
@@ -18,6 +19,7 @@ import (
 )
 
 type User struct {
+		id int `json:"id"`
     username string `json:"username"`
     gender bool `json:"gender"`
     age int `json:"age"`
@@ -26,15 +28,17 @@ type User struct {
 }
 
 var IndexHTML string
-
+var ProfileHTML string
+var ProfileSettingsHTML string
 //Global variables
 func newRouter() *mux.Router {
     r := mux.NewRouter()
-    r.HandleFunc("/user", getUserHandler).Methods("GET")
     r.HandleFunc("/user", createUserHandler).Methods("POST")
-	r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
-	r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
-	r.HandleFunc("/live", liveIndexHandler)
+		r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
+		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
+		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
+		r.HandleFunc("/live/profile", profileHandler)
+		r.HandleFunc("/live", liveIndexHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler)
 
@@ -68,28 +72,24 @@ func main() {
 			panic(err)
 		}
 	//Set Connection Limit: https://www.alexedwards.net/blog/configuring-sqldb
+		db.SetMaxOpenConns(15)
+		db.SetMaxIdleConns(4)
+		db.SetConnMaxLifetime(time.Hour)
 		InitStore(dbStore{db: db})
 		IndexHTML = initIndexHTML()
+		ProfileHTML = initProfileHTML()
+		ProfileSettingsHTML = initProfileSettingsHTML()
 		http.ListenAndServe(port, router)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-    http.Redirect(w, r, "/assets/", http.StatusSeeOther)
-}
-
-func getUserHandler(w http.ResponseWriter, r *http.Request) {
-    users, err := store.GetUsers()
-
-	userListBytes, err := json.Marshal(users)
-
+	msg, err := r.Cookie("username")
 	if err != nil {
-		fmt.Println(fmt.Errorf("Error: %v", err))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
-    //Write the json list of users to response
-    w.Write(userListBytes)
+	http.Redirect(w,r,"/live",http.StatusSeeOther)
 }
+
 
 func createUserHandler(w http.ResponseWriter, r *http.Request) {
     user := User{}
@@ -169,11 +169,25 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, map[string]string{"username":msg.Value})
 
 }
+func profileHandler(w http.ResponseWriter, r *http.Request) {
+	//Handle Live Profile settings
+	msg, err := r.Cookie("username")
+	if err != nil {
+		http.Redirect(w,r,"/assets/", http.StatusSeeOther)
+	}
+	tmpl, err := template.New("ProfileSettings").Parse(ProfileHTML)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	tmpl.Execute(w, map[string]string{"username":msg.Value})
+}
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
         Name:    name,
         Value:   value,
-	Path: "/",
+				Path: "/",
     }
     http.SetCookie(w, &cookie)
 }

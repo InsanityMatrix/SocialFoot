@@ -35,7 +35,7 @@ body {
   border-color: #355e30;
 }
 .navbar-inverse .navbar-nav>.active>a,
-.bg-primary, li.active {
+.bg-primary,ul li.active {
 	background-clip: content-box;
 	border-color: #407039;
 	background-color: #31572c !important;
