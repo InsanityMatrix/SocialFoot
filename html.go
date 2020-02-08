@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"path"
+	"strings"
 )
 
 type Html interface {
@@ -41,5 +42,7 @@ func initProfileSettingsHTML() string {
 		return ""
 	}
 	text := string(content)
+	text = strings.ReplaceAll(text, "&gt;", ">")
+	text = strings.ReplaceAll(text, "&lt;","<")
 	return text
 }
