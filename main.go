@@ -82,7 +82,7 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	msg, err := r.Cookie("username")
+	_, err := r.Cookie("username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}

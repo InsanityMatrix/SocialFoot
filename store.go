@@ -40,6 +40,9 @@ func (store *dbStore) UpdateSetting(user *User,setting string, value string) boo
   if(setting == "publicity") {
     val, _ := strconv.ParseBool("value")
     _, err := store.db.Query("UPDATE TABLE user_settings SET publicity=$1 WHERE userID=$2",val,user.id)
+    if err != nil {
+      return false
+    }
     return true
   }
 
