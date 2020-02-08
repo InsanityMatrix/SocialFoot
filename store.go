@@ -9,6 +9,7 @@ import (
 type Store interface {
     CreateUser(user *User) error
     GetUserInfo(user *User) *User
+    GetUserSettings(user *User) *UserSettings
     CheckUserCredentials(user *User) bool
     LoginUser(user *User) (*User, error)
     UpdateSetting(user *User,setting string, value string) bool
@@ -21,6 +22,15 @@ type dbStore struct {
 
 func (store *dbStore) CreateUser(user *User) error {
 	_, err := store.db.Query("INSERT INTO users(username,gender,age,password,email) VALUES ($1,$2,$3,$4,$5);",user.username,user.gender,user.age,user.password,user.email)
+  if err != nil {
+    return err
+  }
+  row := store.db.QueryRow("SELECT id FROM users WHERE username=",user.username)
+  err := row.Scan(user.id)
+  if err != nil {
+    return err
+  }
+  _, err := store.db.Query("INSERT INTO user_settings(userid) VALUES ($1)",user.id)
 	return err
 }
 func (store *dbStore) LoginUser(user *User) (*User, error) {
@@ -39,7 +49,7 @@ func (store *dbStore) LoginUser(user *User) (*User, error) {
 func (store *dbStore) UpdateSetting(user *User,setting string, value string) bool {
   if(setting == "publicity") {
     val, _ := strconv.ParseBool("value")
-    _, err := store.db.Query("UPDATE TABLE user_settings SET publicity=$1 WHERE userID=$2",val,user.id)
+    _, err := store.db.Query("UPDATE TABLE user_settings SET publicity=$1 WHERE userid=$2",val,user.id)
     if err != nil {
       return false
     }
@@ -67,6 +77,9 @@ func (store *dbStore) GetUserInfo(user *User) *User {
     return nil
   }
   return account
+}
+func (store *dbStore) GetUserSettings(user *User) *UserSettings {
+  row := store.db.QueryRow("SELECT userid, bio, website, location, publicity FROM user_settings WHERE userid")
 }
 func (store *dbStore) GetUsers() ([]*User, error) {
 	rows, err := store.db.Query("SELECT username,gender,age,password,email from users")

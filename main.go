@@ -26,6 +26,26 @@ type User struct {
     email string `json:"email"`
 }
 
+type UserSettings struct {
+	id int
+	bio string
+	website string
+	location string
+	publicity bool
+}
+
+type UserInfo struct {
+	 id int
+	 username string
+	 gender bool
+	 age int
+	 email string
+	 bio string
+	 website string
+	 location string
+	 publicity bool
+}
+
 var IndexHTML string
 var ProfileHTML string
 var ProfileSettingsHTML string
@@ -35,7 +55,7 @@ func newRouter() *mux.Router {
     r.HandleFunc("/user", createUserHandler).Methods("POST")
 		r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
 		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
-		//r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
+		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
 		r.HandleFunc("/live/profile", profileHandler)
 		r.HandleFunc("/live", liveIndexHandler)
     //ALL PAGE FUNCTIONS HERE
@@ -174,13 +194,38 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/", http.StatusSeeOther)
 	}
-	tmpl, err := template.New("ProfileSettings").Parse(ProfileHTML)
+	tmpl, err := template.New("Profile").Parse(ProfileHTML)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	tmpl.Execute(w, map[string]string{"username":msg.Value})
+}
+func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
+	msg, err := r.Cookie("username")
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error: %v", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	user.username = msg.Value
+	user.password = r.Form.Get("password")
+	verified := store.CheckUserCredentials(&user)
+	if !verified {
+		http.Redirect(w, r, "/live/profile", http.StatusSeeOther)
+	}
+	//User is Verified
+	account := store.GetUserInfo(&user)
+	settings := store.GetUserSettings(&user)
+	info := UserInfo{account.id, account.username, account.gender, account.age, account.email, settings.bio,settings.website, settings.location, settings.publicity}
+	tmpl, err := template.New("ProfileSettings").Parse(ProfileSettingsHTML)
+	if err != nil {
+		http.Redirect(w, r, "/live", http.StatusInternalServerError)
+	}
+	tmpl.Execute(w, info)
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
