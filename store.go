@@ -79,7 +79,7 @@ func (store *dbStore) GetUserInfo(user *User) *User {
   return account
 }
 func (store *dbStore) GetUserSettings(user *User) *UserSettings {
-  row := store.db.QueryRow("SELECT userid, bio, website, location, publicity FROM user_settings WHERE userid")
+  row := store.db.QueryRow("SELECT userid, bio, website, location, publicity FROM user_settings WHERE userid=$1",user.id)
   settings := &UserSettings{}
   err := row.Scan(&settings.id,&settings.bio,&settings.website,&settings.location,&settings.publicity)
   if err != nil {
