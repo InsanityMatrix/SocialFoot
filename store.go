@@ -26,11 +26,11 @@ func (store *dbStore) CreateUser(user *User) error {
     return err
   }
   row := store.db.QueryRow("SELECT id FROM users WHERE username=",user.username)
-  err := row.Scan(user.id)
+  err = row.Scan(user.id)
   if err != nil {
     return err
   }
-  _, err := store.db.Query("INSERT INTO user_settings(userid) VALUES ($1)",user.id)
+  _, err = store.db.Query("INSERT INTO user_settings(userid) VALUES ($1)",user.id)
 	return err
 }
 func (store *dbStore) LoginUser(user *User) (*User, error) {
@@ -80,6 +80,12 @@ func (store *dbStore) GetUserInfo(user *User) *User {
 }
 func (store *dbStore) GetUserSettings(user *User) *UserSettings {
   row := store.db.QueryRow("SELECT userid, bio, website, location, publicity FROM user_settings WHERE userid")
+  settings := &UserSettings{}
+  err := row.Scan(&settings.id,&settings.bio,&settings.website,&settings.location,&settings.publicity)
+  if err != nil {
+    return nil
+  }
+  return settings
 }
 func (store *dbStore) GetUsers() ([]*User, error) {
 	rows, err := store.db.Query("SELECT username,gender,age,password,email from users")

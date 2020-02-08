@@ -204,13 +204,16 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 }
 func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
-	err := r.ParseForm()
+	if err != nil {
+	 	http.Redirect(w,r,"/assets/", http.StatusSeeOther)
+	}
+	err = r.ParseForm()
 	if err != nil {
 		fmt.Println(fmt.Errorf("Error: %v", err))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
+	user := User{}
 	user.username = msg.Value
 	user.password = r.Form.Get("password")
 	verified := store.CheckUserCredentials(&user)
