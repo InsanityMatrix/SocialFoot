@@ -23,7 +23,9 @@ func initIndexHTML() string {
 		return ""
 	}
 	ht := string(content)
-	return ht
+	text := strings.ReplaceAll(ht, "&gt;", ">")
+	text = strings.ReplaceAll(text, "&lt;","<")
+	return text
 }
 
 func initProfileHTML() string {
