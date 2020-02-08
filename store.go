@@ -39,8 +39,11 @@ func (store *dbStore) LoginUser(user *User) (*User, error) {
 func (store *dbStore) UpdateSetting(user *User,setting string, value string) bool {
   if(setting == "publicity") {
     val := strconv.ParseBool("value")
-    _ err := store.db.Query("UPDATE TABLE user_settings")
+    _, err := store.db.Query("UPDATE TABLE user_settings SET publicity=$1 WHERE userID=$2",val,user.id)
+    return true
   }
+
+  return false
 }
 func (store *dbStore) CheckUserCredentials(user *User) bool {
   row := store.db.QueryRow("SELECT username,gender,age,password,email FROM users WHERE username=$1",user.username)

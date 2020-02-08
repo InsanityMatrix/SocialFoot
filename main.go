@@ -6,7 +6,6 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"os"
 	"strconv"
 	"html/template"
