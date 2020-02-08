@@ -222,9 +222,9 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	//User is Verified
 	account := store.GetUserInfo(&user)
-	settings := store.GetUserSettings(&user)
+	settings := store.GetUserSettings(account)
 	info := UserInfo{account.id, account.username, account.gender, account.age, account.email, settings.bio,settings.website, settings.location, settings.publicity}
-	tmpl, err := template.New("ProfileSettings").Parse(ProfileHTML)
+	tmpl, err := template.New("ProfileSettings").Parse(ProfileSettingsHTML)
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
