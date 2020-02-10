@@ -54,6 +54,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
 		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
 		r.HandleFunc("/live/profile", profileHandler)
+		r.HandleFunc("/live/post", postHandler)
 		r.HandleFunc("/live", liveIndexHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler)
@@ -196,6 +197,19 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	tmpl.Execute(w, map[string]string{"username":msg.Value})
+}
+func postHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type","text/html")
+	msg, err := r.Cookie("username")
+	if err != nil {
+		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
+	}
+	tmpl, err := template.ParseFiles("templates/post.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	tmpl.Execute(w, map[string]string{"username":msg.Value})
 }
 func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
