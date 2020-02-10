@@ -52,7 +52,7 @@ func newRouter() *mux.Router {
     r.HandleFunc("/user", createUserHandler).Methods("POST")
 		r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
 		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
-		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
+		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("GET")
 		r.HandleFunc("/live/profile", profileHandler)
 		r.HandleFunc("/live/post", postHandler)
 		r.HandleFunc("/live", liveIndexHandler)
