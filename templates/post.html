@@ -43,6 +43,30 @@ html,body {
 					<label class="custom-file-label" for="inputGroupFile01">Choose File</label>
 				</div>
 			</div>
+			<div class="row justify-content-md-center">
+				<div class="col-md-6">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="TagsAddon">Tags:</span>
+					</div>
+					<input type="text" class="form-control" name="tags" id="tags" placeholder="Tags..." aria-label="Tags..." aria-describedby="TagsAddon">
+				</div>
+				<div class="col-md-6">
+					<div class="input-group-prepend">
+						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#">Delete In:</a>
+							<a class="dropdown-item" href="#">Public:</a>
+						</div>
+					</div>
+					<input type="text" class="form-control" aria-label="Actions">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Caption</span>
+					</div>
+					<textarea class="form-control" aria-label="Caption"></textarea>
+				</div>
+			</div>
 		</form>
 	</div>
 	
