@@ -46,9 +46,6 @@ type UserInfo struct {
 	 publicity bool
 }
 
-//var IndexHTML string
-var ProfileHTML string
-var ProfileSettingsHTML string
 //Global variables
 func newRouter() *mux.Router {
     r := mux.NewRouter()
@@ -95,9 +92,6 @@ func main() {
 		db.SetMaxIdleConns(4)
 		db.SetConnMaxLifetime(time.Hour)
 		InitStore(dbStore{db: db})
-		//IndexHTML = initIndexHTML()
-		ProfileHTML = initProfileHTML()
-		ProfileSettingsHTML = initProfileSettingsHTML()
 		http.ListenAndServe(port, router)
 }
 
@@ -191,11 +185,12 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 func profileHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live Profile settings
+	w.Header().Set("Content-Type", "text/html")
 	msg, err := r.Cookie("username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/", http.StatusSeeOther)
 	}
-	tmpl, err := template.New("Profile").Parse(ProfileHTML)
+	tmpl, err := template.ParseFiles("templates/ProfileSettings.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -204,6 +199,7 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, map[string]string{"username":msg.Value})
 }
 func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
 	msg, err := r.Cookie("username")
 	if err != nil {
 	 	http.Redirect(w,r,"/assets/", http.StatusSeeOther)
@@ -225,7 +221,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	account := store.GetUserInfo(&user)
 	settings := store.GetUserSettings(account)
 	info := UserInfo{account.id, account.username, account.gender, account.age, account.email, settings.bio,settings.website, settings.location, settings.publicity}
-	tmpl, err := template.New("ProfileSettings").Parse(ProfileSettingsHTML)
+	tmpl, err := template.ParseFiles("templates/profile.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
