@@ -46,7 +46,7 @@ type UserInfo struct {
 	 publicity bool
 }
 
-var IndexHTML string
+//var IndexHTML string
 var ProfileHTML string
 var ProfileSettingsHTML string
 //Global variables
@@ -95,7 +95,7 @@ func main() {
 		db.SetMaxIdleConns(4)
 		db.SetConnMaxLifetime(time.Hour)
 		InitStore(dbStore{db: db})
-		IndexHTML = initIndexHTML()
+		//IndexHTML = initIndexHTML()
 		ProfileHTML = initProfileHTML()
 		ProfileSettingsHTML = initProfileSettingsHTML()
 		http.ListenAndServe(port, router)
@@ -175,11 +175,12 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live page with html templates
+	w.Header().Set("Content-Type", "text/html")
 	msg, err := r.Cookie("username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
-	tmpl, err := template.New("Index").Parse(IndexHTML)
+	tmpl, err := template.ParseFiles("templates/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
