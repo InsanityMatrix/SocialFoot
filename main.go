@@ -234,7 +234,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	//User is Verified
 	account := store.GetUserInfo(&user)
 	settings := store.GetUserSettings(account)
-	info := UserInfo{account.id, account.username, account.gender, account.age, account.email, settings.bio,settings.website, settings.location, settings.publicity}
+	info := UserInfo{id: account.id, username: account.username, gender: account.gender, age: account.age, email: account.email,publicity: settings.publicity}
 	tmpl, err := template.ParseFiles("templates/profile.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
