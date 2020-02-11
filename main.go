@@ -229,6 +229,10 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	user.password = r.Form.Get("password")
 	//User is Verified
 	account := store.GetUserInfo(&user)
+	if account == nil {
+		http.Redirect(w,r,"/live/profile", http.StatusSeeOther)
+		return
+	}
 	info := UserInfo{id: account.id, username: account.username, gender: account.gender, age: account.age, email: account.email}
 	tmpl, err := template.ParseFiles("templates/profile.html")
 	if err != nil {
