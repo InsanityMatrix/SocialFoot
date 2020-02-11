@@ -229,11 +229,16 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	user.password = r.Form.Get("password")
 	//User is Verified
 	account := store.GetUserInfo(&user)
-	settings := store.GetUserSettings(account)
 	if account == nil {
 		http.Redirect(w,r,"/live/profile", http.StatusSeeOther)
 		return
 	}
+	verified := comparePasswords(account.password, []byte(user.password))
+	if !verified {
+		http.Redirect(w,r,"/live/profile", http.StatusSeeOther)
+		return
+	}
+	settings := store.GetUserSettings(account)
 	publicity := "Private"
 	if settings.publicity {
 		publicity = "Public"
