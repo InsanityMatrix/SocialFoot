@@ -247,7 +247,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
-	tmpl.Execute(w, map[string]string{"id":account.id, "username":account.username, "publicity":publicity})
+	tmpl.Execute(w, map[string]string{"id":string(account.id), "username":account.username, "publicity":publicity})
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
