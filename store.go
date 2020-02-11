@@ -70,7 +70,7 @@ func (store *dbStore) CheckUserCredentials(user *User) bool {
 }
 //ONLY EVER USE ONCE YOU HAVE VALIDATED THEIR INFO FIRST
 func (store *dbStore) GetUserInfo(user *User) *User {
-  row := store.db.QueryRow("SELECT id,username,gender,age,password,email FROM users WHERE username=$1",user.username)
+  row := store.db.QueryRow("SELECT * FROM users WHERE username=$1",user.username)
   account := &User{}
   err := row.Scan(&account.id,&account.username,&account.gender,&account.age,&account.password,&account.email)
   if err != nil {
@@ -79,9 +79,9 @@ func (store *dbStore) GetUserInfo(user *User) *User {
   return account
 }
 func (store *dbStore) GetUserSettings(user *User) *UserSettings {
-  row := store.db.QueryRow("SELECT userid, bio, website, location, publicity FROM user_settings WHERE userid=$1",user.id)
+  row := store.db.QueryRow("SELECT publicity FROM user_settings WHERE userid=$1",user.id)
   settings := &UserSettings{}
-  err := row.Scan(&settings.id,&settings.bio,&settings.website,&settings.location,&settings.publicity)
+  err := row.Scan(&settings.publicity)
 
   if err != nil {
     return nil
