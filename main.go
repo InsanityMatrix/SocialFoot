@@ -233,7 +233,6 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w,r,"/live/profile", http.StatusSeeOther)
 		return
 	}
-	info := UserInfo{id: account.id, username: msg.Value, gender: account.gender, age: account.age, email: account.email}
 	tmpl, err := template.ParseFiles("templates/profile.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
