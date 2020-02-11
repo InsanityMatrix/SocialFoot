@@ -25,7 +25,16 @@ body {
     text-align: center;
   }
 }
-
+.navbar-inverse .navbar-brand {
+  color: #9d9d9d;
+}
+.navbar-brand {
+  float: left;
+  height: 50px;
+  padding: 15px 15px;
+  font-size: 18px;
+  line-height: 20px;
+}
 .btn-primary {
   background-color: #31572c;
   border-color: #407039;
@@ -41,7 +50,7 @@ body {
 	background-color: #31572c !important;
 }
 .bg-secondary {
-	background-clip: content-box;
+	background-clip: border-box;
 	border-color: #355e30;
 	background-color: #2e522a !important;
 }
