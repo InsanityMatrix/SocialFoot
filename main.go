@@ -229,15 +229,20 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	user.password = r.Form.Get("password")
 	//User is Verified
 	account := store.GetUserInfo(&user)
+	settings := store.GetUserSettings(account)
 	if account == nil {
 		http.Redirect(w,r,"/live/profile", http.StatusSeeOther)
 		return
+	}
+	publicity := "Private"
+	if settings.publicity {
+		publicity = "Public"
 	}
 	tmpl, err := template.ParseFiles("templates/profile.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
-	tmpl.Execute(w, map[string]string{"username":account.username})
+	tmpl.Execute(w, map[string]string{"username":account.username, "publicity":publicity})
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
