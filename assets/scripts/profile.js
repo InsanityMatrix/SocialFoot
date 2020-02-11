@@ -1,21 +1,30 @@
 function changePublicity() {
-	var username = document.getElementById("dataUsername").innerHTML;
+	var userID = document.getElementById("dataUserID").innerHTML;
 	var publicityText = document.getElementById("publicityStatus").innerHTML;
 	var Status;
 	if(publicityText == "Public") {
-		Status = true;
+		Status = "mPrivate";
 	} else {
-		Status = false;
+		Status = "mPublic";
 	}
 	$.ajax({
 		url: "/settings/user/publicity",
+		type: 'POST',
 		data: {
-			"username": username,
+			"userID": userID,
 			"status": Status;
 		},
 		success: publicityChangeSuccess
 	});
 }
-function publicityChangeSuccess() {
-	
+function publicityChangeSuccess(data) {
+	//Change all Elements here
+	document.getElementById("publicityStatus").innerHTML = data;
+	if(data == "Public") {
+		document.getElementById("publicityStatus").classList.add("badge-success");
+		document.getElementById("publicityStatus").classList.remove("badge-danger");
+	} else {
+		document.getElementById("publicityStatus").classList.add("badge-danger");
+		document.getElementById("publicityStatus").classList.remove("badge-success");
+	}
 }
