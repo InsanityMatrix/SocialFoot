@@ -70,9 +70,9 @@ html,body {
 			<!-- badge-success for public badge-success for private -->
 		<ul class="list-group">
 			<!-- onClick will change publicity -->
-			<li class="list-group-item d-flex justify-content-between align-items-center">
+			<li class="list-group-item d-flex justify-content-between align-items-left">
 				Publicity
-				<span class="badge badge-primary ">{{.publicity}}</span>
+				<span id="publicityStatus" class="badge badge-primary ">{{.publicity}}</span>
 			</li>
 		</ul>
       </center>
@@ -91,6 +91,9 @@ html,body {
 
 		<script src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>
 
-
+		<script src="/assets/scripts/profile.js"></script>
+		<div id="data" style="display:none">
+			<p id="dataUsername">{{.username}}</p>
+		</div>
     </body>
 </html>
