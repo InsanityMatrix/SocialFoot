@@ -227,10 +227,6 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	user := User{}
 	user.username = msg.Value
 	user.password = r.Form.Get("password")
-	verified := store.CheckUserCredentials(&user)
-	if !verified {
-		http.Redirect(w, r, "/live/profile", http.StatusSeeOther)
-	}
 	//User is Verified
 	account := store.GetUserInfo(&user)
 	info := UserInfo{id: account.id, username: account.username, gender: account.gender, age: account.age, email: account.email}
