@@ -73,7 +73,7 @@ func (store *dbStore) GetUserInfo(user *User) *User {
   row := store.db.QueryRow("SELECT * FROM users WHERE username=$1",user.username)
   account := &User{}
   err := row.Scan(&account.id,&account.username,&account.gender,&account.age,&account.password,&account.email)
-  verified := comparePasswords(&account.password, user.password)
+  verified := comparePasswords(account.password, []byte(user.password))
   if err != nil {
     return nil
   }
