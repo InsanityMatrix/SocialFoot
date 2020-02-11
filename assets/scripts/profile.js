@@ -1,16 +1,21 @@
 function changePublicity() {
 	var username = document.getElementById("dataUsername").innerHTML;
 	var publicityText = document.getElementById("publicityStatus").innerHTML;
-	var status;
+	var Status;
 	if(publicityText == "Public") {
-		status = true;
+		Status = true;
 	} else {
-		status = false;
+		Status = false;
 	}
 	$.ajax({
 		url: "/settings/user/publicity",
 		data: {
-			
+			"username": username,
+			"status": Status;
 		},
+		success: publicityChangeSuccess
 	});
+}
+function publicityChangeSuccess() {
+	
 }
