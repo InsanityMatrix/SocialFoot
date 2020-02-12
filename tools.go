@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/smtp"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -22,4 +23,22 @@ func comparePasswords(hashedPwd string, plainPwd []byte) bool {
 	}
 
 	return true
+}
+
+func sendAuthMail(recipient string, content string) {
+	from := "SocialFoot@gmail.com"
+	password := "password"
+	
+	msg := "From: " + from + "\n" +
+	       "To: " + recipient + "\n" +
+	       "Subject: Email Authentication\n\n" +
+	       content
+	err := smtp.SendMail("smtp.gmail.com:587",
+			smtp.PlainAuth("", from, pass, "smtp.gmail.com"),
+			from, []string{recipient}, []byte(content))
+	if err != nil {
+		log.Printf("smtp error: %s", err)
+		return
+	}
+	log.Print("Sent")
 }
