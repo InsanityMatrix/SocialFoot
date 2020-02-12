@@ -56,6 +56,10 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live/profile", profileHandler)
 		r.HandleFunc("/live/post", postHandler)
 		r.HandleFunc("/live", liveIndexHandler)
+
+
+		//Settings FUNCTIONS
+		r.HandleFunc("/settings/user/publicity", changePublicityHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler)
 
@@ -248,6 +252,24 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
 	tmpl.Execute(w, map[string]string{"id":string(account.id), "username":account.username, "publicity":publicity})
+}
+func changePublicityHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error: %v", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	userID, _ := strconv.Atoi(r.Form.Get("userID"))
+	status := r.Form.Get("status")
+	if status == "mPrivate" {
+		//Make user private
+		store.SetUserPublicity(userID, false)
+		fmt.Fprint(w, "Private")
+		return
+	}
+	store.SetUserPublicity(userID, true)
+	fmt.Fprint(w, "Public")
 }
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{

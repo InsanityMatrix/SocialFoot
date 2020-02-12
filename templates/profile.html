@@ -70,7 +70,7 @@ html,body {
 			<!-- badge-success for public badge-success for private -->
 		<ul class="list-group">
 			<!-- onClick will change publicity -->
-			<li class="list-group-item d-flex justify-content-between align-items-left">
+			<li onclick="changePublicity()"class="list-group-item d-flex justify-content-between align-items-left">
 				Publicity
 				<span id="publicityStatus" class="badge badge-primary ">{{.publicity}}</span>
 			</li>

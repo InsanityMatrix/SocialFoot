@@ -88,6 +88,13 @@ func (store *dbStore) GetUserSettings(user *User) *UserSettings {
   }
   return settings
 }
+func (store *dbStore) SetUserPublicity(userID int, mode bool) bool {
+  _, err := store.db.Query("UPDATE TABLE user_settings SET publicity=$1 WHERE userid=$2",mode,userID)
+  if err != nil {
+    return false
+  }
+  return true
+}
 func (store *dbStore) GetUsers() ([]*User, error) {
 	rows, err := store.db.Query("SELECT username,gender,age,password,email from users")
 
