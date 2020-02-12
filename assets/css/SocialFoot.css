@@ -63,7 +63,12 @@ body {
 h2 {
 	background-clip: content-box;
 }
-
+.badge-success {
+  background-color: #green;
+}
+.badge-danger {
+  background-color: #ff0000;
+}
 .feed {
 	-moz-border-radius: 10px 10px 0 0 !important;
     -webkit-border-radius: 10px 10px 0 0 !important;
