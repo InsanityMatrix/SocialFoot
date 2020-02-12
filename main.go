@@ -64,6 +64,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/settings/user/location", changeLocationHandler)
 		r.HandleFunc("/settings/user/bio", changeBioHandler)
 		r.HandleFunc("/settings/user/delete", deleteUserHandler)
+		r.HandleFunc("/settings/user/signout", signoutHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler)
 
@@ -341,6 +342,15 @@ func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Failed")
 		return
 	}
+	c, err := r.Cookie("username")
+    if err != nil {
+        panic(err.Error())
+    }
+  c.Value = "Anonymous"
+  c.Expires = time.Unix(1414414788, 1414414788000)
+	fmt.Fprint(w,"Success")
+}
+func signoutHandler(w http.ResponseWriter, r *http.Request) {
 	c, err := r.Cookie("username")
     if err != nil {
         panic(err.Error())
