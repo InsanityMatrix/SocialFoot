@@ -26,8 +26,9 @@ func comparePasswords(hashedPwd string, plainPwd []byte) bool {
 }
 
 func sendAuthMail(recipient string, content string) {
-	from := "SocialFoot@gmail.com"
+	from := "SocialFoot.noreply@gmail.com"
 	password := "password"
+	//Need to set OS Environment variable with mail password
 	
 	msg := "From: " + from + "\n" +
 	       "To: " + recipient + "\n" +
