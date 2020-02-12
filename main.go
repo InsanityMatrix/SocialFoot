@@ -251,7 +251,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
-	idVal, _ := strconv.Itoa(account.id)
+	idVal := strconv.Itoa(account.id)
 	tmpl.Execute(w, map[string]string{"id": idVal, "username":account.username, "publicity":publicity})
 }
 func changePublicityHandler(w http.ResponseWriter, r *http.Request) {
