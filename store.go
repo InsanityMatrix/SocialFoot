@@ -96,7 +96,7 @@ func (store *dbStore) SetUserPublicity(userID int, mode bool) bool {
   return true
 }
 func (store *dbStore) ChangeUserEmail(userID int, email string) bool {
-  _, err := store.db.Query("UPDATE users SET email=$1 WHERE userid=$2",email, userID)
+  _, err := store.db.Query("UPDATE users SET email=$1 WHERE id=$2",email, userID)
   if err != nil {
     return false
   }
