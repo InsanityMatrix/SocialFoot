@@ -35,7 +35,7 @@ func sendAuthMail(recipient string, content string) {
 	       "Subject: Email Authentication\n\n" +
 	       content
 	err := smtp.SendMail("smtp.gmail.com:587",
-			smtp.PlainAuth("", from, pass, "smtp.gmail.com"),
+			smtp.PlainAuth("", from, password, "smtp.gmail.com"),
 			from, []string{recipient}, []byte(content))
 	if err != nil {
 		log.Printf("smtp error: %s", err)
