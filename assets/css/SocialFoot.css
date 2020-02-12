@@ -79,3 +79,11 @@ h2 {
 	-moz-box-shadow: 5px 5px 5px black;
 	padding-bottom: 50px;
 }
+
+input.label:empty {
+  display: inline;
+}
+input.label {
+  float: right;
+  padding: .3em .6em .4em;
+}
