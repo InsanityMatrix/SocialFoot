@@ -87,6 +87,11 @@ html,body {
 		<script>
 			var body = document.getElementById('body');
 			body.removeChild(body.childNodes[0]);
+
+      if(document.getElementById("publicityStatus").innerHTML == "Private") {
+        document.getElementById("publicityStatus").classList.add("badge-danger");
+        document.getElementById("publicityStatus").classList.remove("badge-success");
+      }
 		</script>
 
 
