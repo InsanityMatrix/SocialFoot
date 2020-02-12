@@ -69,6 +69,15 @@ html,body {
 
 
      <script>
+        //Dropdown open on hover
+        $(document).ready(function() {
+          $(".dropdown").hover(function(){
+            var dropdownMenu = $(this).children(".dropdown-menu");
+            if(dropdownMenu.is(":visible")) {
+              dropdownMenu.parent().toggleClass("open");
+            }
+          });
+        });
         var body = document.getElementById('body');
         body.removeChild(body.childNodes[0]);
      </script>
