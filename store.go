@@ -109,6 +109,13 @@ func (store *dbStore) ChangeUserLocation(userID int, location string) bool {
   }
   return true
 }
+func (store *dbStore) ChangeUserBio(userID int, bio string) bool {
+  _, err := store.db.Query("UPDATE user_settings SET bio=$1 WHERE userid=$2",bio,userID)
+  if err != nil {
+    return false
+  }
+  return true
+}
 func (store *dbStore) GetUsers() ([]*User, error) {
 	rows, err := store.db.Query("SELECT username,gender,age,password,email from users")
 

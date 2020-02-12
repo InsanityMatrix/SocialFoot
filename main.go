@@ -62,6 +62,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/settings/user/publicity", changePublicityHandler)
 		r.HandleFunc("/settings/user/email", changeEmailHandler)
 		r.HandleFunc("/settings/user/location", changeLocationHandler)
+		r.HandleFunc("/settings/user/bio", changeBioHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler)
 
@@ -287,7 +288,6 @@ func changeEmailHandler(w http.ResponseWriter, r *http.Request) {
 	email := r.Form.Get("email")
 	status := store.ChangeUserEmail(userID, email)
 	if !status {
-		//Make user private
 		fmt.Fprint(w, "Failed")
 		return
 	}
@@ -304,13 +304,28 @@ func changeLocationHandler(w http.ResponseWriter, r *http.Request) {
 	location := r.Form.Get("location")
 	status := store.ChangeUserLocation(userID, location)
 	if !status {
-		//Make user private
 		fmt.Fprint(w, "Failed")
 		return
 	}
 	fmt.Fprint(w, "Success")
 }
-
+func changeBioHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error: %v", err))
+		fmt.Fprint(w, "Failed")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	userID, _ := strconv.Atoi(r.Form.Get("userID"))
+	bio := r.Form.Get("bio")
+	status := store.ChangeUserBio(userID, bio)
+	if !status {
+		fmt.Fprint(w, "Failed")
+		return
+	}
+	fmt.Fprint(w, "Success")
+}
 //Page functions to help with stuff
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{

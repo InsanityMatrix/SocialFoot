@@ -41,6 +41,18 @@ function changeLocation(location) {
 		success: locationChangeSuccess
 	});
 }
+function changeBio(bio) {
+	var userID = document.getElementById("dataUserID").innerHTML;
+	$.ajax({
+		url: "/settings/user/bio",
+		type: 'POST',
+		data: {
+			"userID":userID,
+			"bio":bio
+		},
+		success: bioChangeSuccess
+	});
+}
 function publicityChangeSuccess(data) {
 	//Change all Elements here
 	document.getElementById("publicityStatus").innerHTML = data;
@@ -57,4 +69,7 @@ function emailChangeSuccess() {
 }
 function locationChangeSuccess(data) {
 	console.log("Change Location: " + data);
+}
+function bioChangeSuccess(data) {
+	console.log("Change Bio: " + data);
 }

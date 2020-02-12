@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 ﻿<html lang='en'>
     <head>
         <title>Home</title>
@@ -125,6 +125,10 @@ html,body {
       $("input[name='location']").focusout(function() {
           var location = $("input[name='location']").val();
           changeLocation(location);
+      });
+      $("textarea[name='bio']").focusout(function() {
+          var bio = $("textarea[name='bio']").val();
+          changeBio(bio);
       });
 		</script>
 
