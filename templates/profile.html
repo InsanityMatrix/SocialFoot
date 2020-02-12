@@ -79,6 +79,10 @@ html,body {
         Email:
         <input class="label label-default" type="text" placeholder="Email" name="email" id="emailinput" Value="{{.email}}">
       </li>
+      <li class="list-group-item d-flex justify-content-between align-items-left">
+        <span class="input-group-addon" id="location-addon">Location:</span>
+        <input type="text" class="form-control" aria-describedby="location-addon" name="location" value="{{.location}}">
+      </li>
 		</ul>
       </center>
 
@@ -101,10 +105,19 @@ html,body {
           $(this).blur();
         }
       });
+      $("input[name='location']").keypress(function(e) {
+        if(e.which == 13) {
+          $(this).blur();
+        }
+      });
       $("input[name='email']").focusout(function() {
           var email = $("input[name='email']").val();
           changeEmail(email);
-      })
+      });
+      $("input[name='location']").focusout(function() {
+          var location = $("input[name='location']").val();
+          changeLocation(location);
+      });
 		</script>
 
 

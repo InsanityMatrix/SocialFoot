@@ -29,6 +29,18 @@ function changeEmail(email) {
 		success: emailChangeSuccess
 	});
 }
+function changeLocation(location) {
+	var userID = document.getElementById("dataUserID").innerHTML;
+	$.ajax({
+		url: "/settings/user/location",
+		type: 'POST',
+		data: {
+			"userID": userID,
+			"location": location
+		},
+		success: locationChangeSuccess
+	});
+}
 function publicityChangeSuccess(data) {
 	//Change all Elements here
 	document.getElementById("publicityStatus").innerHTML = data;
@@ -42,4 +54,7 @@ function publicityChangeSuccess(data) {
 }
 function emailChangeSuccess() {
 	console.log("Changed email");
+}
+function locationChangeSuccess(data) {
+	console.log("Change Location: " + data);
 }

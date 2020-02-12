@@ -61,6 +61,7 @@ func newRouter() *mux.Router {
 		//Settings FUNCTIONS
 		r.HandleFunc("/settings/user/publicity", changePublicityHandler)
 		r.HandleFunc("/settings/user/email", changeEmailHandler)
+		r.HandleFunc("/settings/user/location", changeLocationHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler)
 
@@ -292,7 +293,23 @@ func changeEmailHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprint(w, "Success")
 }
-
+func changeLocationHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error: %v", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	userID, _ := strconv.Atoi(r.Form.Get("userID"))
+	location := r.Form.Get("location")
+	status := store.ChangeUserLocation(userID, location)
+	if !status {
+		//Make user private
+		fmt.Fprint(w, "Failed")
+		return
+	}
+	fmt.Fprint(w, "Success")
+}
 
 //Page functions to help with stuff
 func addCookie(w http.ResponseWriter, name string, value string) {
