@@ -20,6 +20,7 @@ html,body {
 }
   </style>
   <link rel='stylesheet' href='../assets/css/SocialFoot.css'>
+  <script src="/assets/scripts/live.js"></script>
     </head>
     <body id='body'>
         <nav class='navbar navbar-inverse bg-primary'>
@@ -29,20 +30,21 @@ html,body {
                 </div>
                 <ul class='nav navbar-nav'>
                   <li class='active'><a href='/live'>Home</a></li>
-                  <li class='dropdown'>
-                    <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Profile
-                      <span class='caret'></span></a>
-                    <ul class='dropdown-menu'>
-                      <li><a href='#'>Settings</a></li>
-                      <li><a href='#'>Messages</a></li>
-                      <li><a href='#'>Your Feed</a></li>
-                    </ul>
-                  </li>
                   <li><a href='#'>Search</a></li>
                   <li><a href='#'>Report</a></li>
                 </ul>
                 <ul class='nav navbar-nav navbar-right'>
-                  <li><a href='#'><span class='glyphicon glyphicon-user'></span> {{.username}}</a></li>
+		              <li><a href='/live/post'>Post</a></li>
+                  <li class='dropdown'>
+                    <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
+                    <ul class='dropdown-menu'>
+                      <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
+                      <li class='dropdown-item'><a href='#'>Messages</a></li>
+                      <li class='dropdown-item'><a href='#'>Your Feed</a></li>
+                      <div class='dropdown-divider'></div>
+                      <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
+                    </ul>
+                  </li>
                 </ul>
             </div>
         </nav>
