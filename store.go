@@ -65,7 +65,7 @@ func (store *dbStore) UpdateSetting(user *User,setting string, value string) boo
 func (store *dbStore) CheckUserCredentials(user *User) bool {
   row := store.db.QueryRow("SELECT password FROM users WHERE username=$1",user.username)
   account := User{}
-  err := row.Scan(account.password)
+  err := row.Scan(&account.password)
   if err != nil {
     return false
   }
