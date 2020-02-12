@@ -12,7 +12,7 @@ function changePublicity() {
 		type: 'POST',
 		data: {
 			"userID": userID,
-			"status": Status;
+			"status": Status
 		},
 		success: publicityChangeSuccess
 	});
