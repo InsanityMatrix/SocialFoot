@@ -21,13 +21,15 @@ type dbStore struct {
 }
 
 func (store *dbStore) CreateUser(user *User) error {
-	_, err := store.db.Query("INSERT INTO users(username,gender,age,password,email) VALUES ($1,$2,$3,$4,$5);",user.username,user.gender,user.age,user.password,user.email)
+	rows, err := store.db.Query("INSERT INTO users(username,gender,age,password,email) VALUES ($1,$2,$3,$4,$5) RETURNING id;",user.username,user.gender,user.age,user.password,user.email)
   if err != nil {
     return err
   }
-  row := store.db.QueryRow("SELECT id FROM users WHERE username=$1",user.username)
+  defer rows.Close()
   account := User{}
-  err = row.Scan(&account.id)
+  if rows.Next() {
+  err = rows.Scan(&account.id)
+}
   if err != nil {
     return err
   }
