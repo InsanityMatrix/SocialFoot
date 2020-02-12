@@ -27,7 +27,7 @@ func (store *dbStore) CreateUser(user *User) error {
   }
   row := store.db.QueryRow("SELECT id FROM users WHERE username=$1",user.username)
   account := User{}
-  err = row.Scan(account.id)
+  err = row.Scan(&account.id)
   if err != nil {
     return err
   }
