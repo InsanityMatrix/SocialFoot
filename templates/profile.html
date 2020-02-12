@@ -96,6 +96,11 @@ html,body {
         document.getElementById("publicityStatus").classList.add("badge-danger");
         document.getElementById("publicityStatus").classList.remove("badge-success");
       }
+
+      $("input[name='email']").focusout(function() {
+          var email = $("input[name='email']").val();
+          changeEmail(email);
+      })
 		</script>
 
 

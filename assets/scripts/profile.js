@@ -17,6 +17,18 @@ function changePublicity() {
 		success: publicityChangeSuccess
 	});
 }
+function changeEmail(email) {
+	var userID = document.getElementById("dataUserID").innerHTML;
+	$.ajax({
+		url: "/settings/user/email",
+		type: 'POST',
+		data: {
+			"userID": userID,
+			"email": email
+		},
+		success: emailChangeSuccess
+	});
+}
 function publicityChangeSuccess(data) {
 	//Change all Elements here
 	document.getElementById("publicityStatus").innerHTML = data;
@@ -27,4 +39,7 @@ function publicityChangeSuccess(data) {
 		document.getElementById("publicityStatus").classList.add("badge-danger");
 		document.getElementById("publicityStatus").classList.remove("badge-success");
 	}
+}
+function emailChangeSuccess() {
+	console.log("Changed email");
 }

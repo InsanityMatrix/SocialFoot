@@ -60,6 +60,7 @@ func newRouter() *mux.Router {
 
 		//Settings FUNCTIONS
 		r.HandleFunc("/settings/user/publicity", changePublicityHandler)
+		r.HandleFunc("/settings/user/email", changeEmailHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler)
 
@@ -254,6 +255,8 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	idVal := strconv.Itoa(account.id)
 	tmpl.Execute(w, map[string]string{"id": idVal, "username":account.username,"email":account.email, "publicity":publicity})
 }
+
+//SETTINGS FUNCTIONS
 func changePublicityHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -272,6 +275,26 @@ func changePublicityHandler(w http.ResponseWriter, r *http.Request) {
 	store.SetUserPublicity(userID, true)
 	fmt.Fprint(w, "Public")
 }
+func changeEmailHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error: %v", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	userID, _ := strconv.Atoi(r.Form.Get("userID"))
+	email := r.Form.Get("email")
+	status := store.ChangeUserEmail(userID, email)
+	if !status {
+		//Make user private
+		fmt.Fprint(w, "Failed")
+		return
+	}
+	fmt.Fprint(w, "Success")
+}
+
+
+//Page functions to help with stuff
 func addCookie(w http.ResponseWriter, name string, value string) {
     cookie := http.Cookie{
         Name:    name,
