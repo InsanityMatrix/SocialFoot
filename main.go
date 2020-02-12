@@ -254,7 +254,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
 	idVal := strconv.Itoa(account.id)
-	tmpl.Execute(w, map[string]string{"id": idVal, "username":account.username,"email":account.email, "publicity":publicity})
+	tmpl.Execute(w, map[string]string{"id": idVal, "username":account.username,"email":account.email, "publicity":publicity, "location":settings.location})
 }
 
 //SETTINGS FUNCTIONS
