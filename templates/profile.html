@@ -91,6 +91,11 @@ html,body {
           <textarea name="bio" aria-describedby="bio-addon" class="form-control">{{.bio}}</textarea>
         </div>
       </li>
+
+      <!--  Keep this at bottom of settings, to delete user's account -->
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <button class="btn btn-danger" onclick="deleteUser()">Delete Account</button>
+      </li>
 		</ul>
       </center>
 

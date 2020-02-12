@@ -116,6 +116,17 @@ func (store *dbStore) ChangeUserBio(userID int, bio string) bool {
   }
   return true
 }
+func (store *dbStore) DeleteAccount(userID int) bool {
+  _, err := store.db.Query("DELETE FROM users WHERE id=$1",userID)
+  if err != nil {
+    return false
+  }
+  _, err = store.db.Query("DELETE FROM user_settings WHERE userid=$1",userID)
+  if err != nil {
+    return false
+  }
+  return true
+}
 func (store *dbStore) GetUsers() ([]*User, error) {
 	rows, err := store.db.Query("SELECT username,gender,age,password,email from users")
 

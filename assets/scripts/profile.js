@@ -53,6 +53,17 @@ function changeBio(bio) {
 		success: bioChangeSuccess
 	});
 }
+function deleteUser() {
+	var userID = document.getElementById("dataUserID").innerHTML;
+	$.ajax({
+		url: "/settings/user/delete",
+		type: 'POST',
+		data: {
+			"userID":userID
+		},
+		success: sendToHomePage
+	});
+}
 function publicityChangeSuccess(data) {
 	//Change all Elements here
 	document.getElementById("publicityStatus").innerHTML = data;
@@ -72,4 +83,7 @@ function locationChangeSuccess(data) {
 }
 function bioChangeSuccess(data) {
 	console.log("Change Bio: " + data);
+}
+function sendToHomePage() {
+	window.location = "https://socialfoot.herokuapp.com/assets/";
 }
