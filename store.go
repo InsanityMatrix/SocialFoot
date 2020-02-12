@@ -26,17 +26,18 @@ func (store *dbStore) CreateUser(user *User) error {
     return err
   }
   row := store.db.QueryRow("SELECT id FROM users WHERE username=$1",user.username)
-  err = row.Scan(user.id)
+  account := User{}
+  err = row.Scan(account.id)
   if err != nil {
     return err
   }
-  _, err = store.db.Query("INSERT INTO user_settings(userid) VALUES ($1)",user.id)
+  _, err = store.db.Query("INSERT INTO user_settings(userid,publicity) VALUES ($1,$2)",account.id,true)
 	return err
 }
 func (store *dbStore) LoginUser(user *User) (*User, error) {
   row := store.db.QueryRow("SELECT username,gender,age,password,email from users where username=$1", user.username)
   account := &User{}
-  switch err := row.Scan(&account.username, &account.gender, &account.age, &account.password, &account.email); err {
+  switch err := row.Scan(&account.id, &account.username, &account.gender, &account.age, &account.password, &account.email); err {
   case sql.ErrNoRows:
     return nil, err
   case nil:
