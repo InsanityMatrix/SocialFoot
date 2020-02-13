@@ -49,6 +49,12 @@ body {
 	border-color: #407039;
 	background-color: #31572c !important;
 }
+h2.bg-primary {
+  margin: 0;
+  padding: 10px;
+  box-sizing: border-box;
+  width: 100%;
+}
 .bg-secondary {
 	background-clip: border-box;
 	border-color: #355e30;
@@ -76,7 +82,7 @@ h2 {
 	background-color: white;
 	box-shadow: 5px 5px 5px black;
 	-webkit-box-shadow: 5px 5px 5px black;
-	-moz-box-shadow: 5px 5px 5px black;
+  -moz-box-shadow: 5px 5px 5px black;
 	padding-bottom: 50px;
 }
 
