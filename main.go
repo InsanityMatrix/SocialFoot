@@ -228,7 +228,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	user := User{}
 	user.username = msg.Value
 	user = store.GetUserInfo(&user)
-	settings = store.GetUserSettings(user)
+	settings := store.GetUserSettings(&user)
 
 	publicity := "Private"
 	xpublicity := "Public"
@@ -236,7 +236,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		publicity = "Public"
 		xpublicity = "Private"
 	}
-	tmpl.Execute(w, map[string]string{"username":msg.Value, "publicity":publicity, "xpublicity":xpublicity})
+	tmpl.Execute(w, map[string]string{"username":user.username, "publicity":publicity, "xpublicity":xpublicity})
 }
 func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
