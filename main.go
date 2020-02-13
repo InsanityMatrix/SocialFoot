@@ -369,15 +369,18 @@ func reportHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
-	tmpl.Execute(w, map[string]string{"id":"null"})
+	msg, err := r.Cookie("username")
+	username := "Anonymous"
+	if err == nil {
+		username = msg.Value
+	}
+	tmpl.Execute(w, map[string]string{"username":username})
 }
 func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
-	if err != nil {
-		fmt.Println(fmt.Errorf("Error: %v", err))
-		fmt.Fprint(w, "Failed")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+	username := "Anonymous"
+	if err == nil {
+		username = msg.Value
 	}
 	err = r.ParseForm()
 	if err != nil {
@@ -387,7 +390,7 @@ func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	content := r.Form.Get("report")
-	store.SubmitBugReport(msg.Value, content)
+	store.SubmitBugReport(username, content)
 	http.Redirect(w, r, "/live", http.StatusSeeOther)
 }
 //Page functions to help with stuff
