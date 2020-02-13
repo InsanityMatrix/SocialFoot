@@ -34,7 +34,22 @@ html,body {
 	</nav>
 	<div class="container">
 		<form method="post" action="/processing/post"  class="paper">
-			<input type="file" name="upload" id="FileUpload" value="File Upload">
+      <div class="row">
+        <div class="col-xs-4">
+			     <input type="file" name="upload" id="FileUpload" value="File Upload">
+        </div>
+        <div class="col-xs-8">
+          <div class="row">
+            <div class="input-group col-md-6">
+              <span class="input-group-addon" id="tags-addon">Tags</span>
+              <input type="text" class="form-control" aria-describedby="tags-addon" placeholder: "Tags..." name="tags">
+            </div>
+            <div class="input-group col-md-6">
+
+            </div>
+          </div>
+        </div>
+      </div>
 		</form>
 	</div>
 

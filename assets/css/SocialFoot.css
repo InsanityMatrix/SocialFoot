@@ -54,6 +54,8 @@ h2.bg-primary {
   padding: 10px;
   box-sizing: border-box;
   width: 100%;
+  background-clip: border-box;
+  text-align: center;
 }
 .bg-secondary {
 	background-clip: border-box;
