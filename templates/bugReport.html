@@ -1,7 +1,7 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 ﻿<html lang='en'>
     <head>
-        <title>Home</title>
+        <title>Report a bug</title>
 		<meta charset='utf-8'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
@@ -29,9 +29,9 @@ html,body {
                     <a class='navbar-brand' href='/live'>SocialFoot</a>
                 </div>
                 <ul class='nav navbar-nav'>
-                  <li class='active'><a href='/live'>Home</a></li>
+                  <li><a href='/live'>Home</a></li>
                   <li><a href='#'>Search</a></li>
-                  <li><a href='#'>Report</a></li>
+                  <li class='active'><a href='/report'>Report</a></li>
                 </ul>
                 <ul class='nav navbar-nav navbar-right'>
 		              <li><a href='/live/post'>Post</a></li>
@@ -50,15 +50,22 @@ html,body {
         </nav>
 
 
-	<!-- New HTML Body Making -->
+
 	<div class='net container'>
 		<div class='col-md-9 col-sm-12'>
-			<!-- Feed Here -->
 			<div class='feed'>
 				<center>
-					<h2 class='bg-primary'>Your Feed</h2>
+					<h2 class='bg-primary'>Submit Bug Report</h2>
 				</center>
-				<!-- TODO: Insert data for feed -->
+        <form class='container' method="post" action="/report/submit/bugreport">
+          <div class="input-group">
+            <span class="input-group-addon" id="content-addon">Report:</span>
+            <textarea name="report" aria-describedby="content-addon" class="form-control"></textarea>
+          </div>
+          <div class="row">
+            <input class="btn btn-info" name="submit" value="Submit">
+          </div>
+        </form>
 			</div>
 		</div>
 	</div>
@@ -66,7 +73,6 @@ html,body {
 
 
 
-	<!-- End HTML Body -->
 
 
      <script>

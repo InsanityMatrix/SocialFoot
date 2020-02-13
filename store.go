@@ -3,6 +3,7 @@
 import (
     "database/sql"
     "strconv"
+    "time"
 )
 //Users DB : username (string), gender (bool), age (int), password (string), email (string)
 
@@ -155,7 +156,13 @@ func (store *dbStore) GetUsers() ([]*User, error) {
 
 	return users, nil
 }
-
+func (store *dbStore) SubmitBugReport(username string, content string) {
+  dt := time.Now()
+  _, err := store.db.Query("INSERT INTO bug_reports(username, content, submitted) VALUES ($1, $2, $3)",username,content,dt)
+  if err != nil {
+    return
+  }
+}
 
 var store dbStore
 

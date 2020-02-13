@@ -65,6 +65,11 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/settings/user/bio", changeBioHandler)
 		r.HandleFunc("/settings/user/delete", deleteUserHandler)
 		r.HandleFunc("/settings/user/signout", signoutHandler)
+
+
+		//report
+		r.HandleFunc("/report", reportHandler)
+		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler)
 
@@ -358,6 +363,32 @@ func signoutHandler(w http.ResponseWriter, r *http.Request) {
   c.Value = "Anonymous"
   c.Expires = time.Unix(1414414788, 1414414788000)
 	fmt.Fprint(w,"Success")
+}
+func reportHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("templates/bugReport.html")
+	if err != nil {
+		http.Redirect(w, r, "/live", http.StatusInternalServerError)
+	}
+	tmpl.Execute(w, map[string]string{"id":"null"})
+}
+func bugReportHandler(w http.ResponseWriter, r *http.Request) {
+	msg, err := r.Cookie("username")
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error: %v", err))
+		fmt.Fprint(w, "Failed")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	err = r.ParseForm()
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error: %v", err))
+		fmt.Fprint(w, "Failed")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	content := r.Form.Get("report")
+	store.SubmitBugReport(msg.Value, content)
+	http.Redirect(w, r, "/live", http.StatusSeeOther)
 }
 //Page functions to help with stuff
 func addCookie(w http.ResponseWriter, name string, value string) {
