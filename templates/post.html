@@ -42,10 +42,14 @@ html,body {
           <div class="row">
             <div class="input-group col-md-6">
               <span class="input-group-addon" id="tags-addon">Tags</span>
-              <input type="text" class="form-control" aria-describedby="tags-addon" placeholder: "Tags..." name="tags">
+              <input type="text" class="form-control" aria-describedby="tags-addon" placeholder="Tags..." name="tags">
             </div>
             <div class="input-group col-md-6">
-
+              <span class="input-group-addon" id="post-type-addon">Post Type</span>
+              <select name="type" class="form-control" aria-describedby="post-type-addon">
+                <option value="{{.publicity}}">{{.publicity}}</option>
+                <option value="{{.xpublicity}}">{{.xpublicity}}</option>
+              </select>
             </div>
           </div>
         </div>

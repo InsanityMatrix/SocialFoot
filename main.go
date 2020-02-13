@@ -225,7 +225,18 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	tmpl.Execute(w, map[string]string{"username":msg.Value})
+	user := User{}
+	user.username = msg.Value
+	user = store.GetUserInfo(&user)
+	settings = store.GetUserSettings(user)
+
+	publicity := "Private"
+	xpublicity := "Public"
+	if settings.publicity {
+		publicity = "Public"
+		xpublicity = "Private"
+	}
+	tmpl.Execute(w, map[string]string{"username":msg.Value, "publicity":publicity, "xpublicity":xpublicity})
 }
 func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
@@ -389,8 +400,8 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer in.Close()
-	
-	
+
+
 	caption := r.Form.Get("caption")
 	tags := r.Form.Get("tags")
 	username := r.Form.Get("username")
