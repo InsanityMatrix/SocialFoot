@@ -7,6 +7,7 @@ package main
 import (
 	"database/sql"
 	"os"
+	"io"
 	"strconv"
 	"html/template"
 	"fmt"
@@ -66,7 +67,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/settings/user/delete", deleteUserHandler)
 		r.HandleFunc("/settings/user/signout", signoutHandler)
 
-
+		r.HandleFunc("/user/post/imagepost", imagePostHandler)
 		//report
 		r.HandleFunc("/report", reportHandler)
 		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
@@ -375,6 +376,38 @@ func reportHandler(w http.ResponseWriter, r *http.Request) {
 		username = msg.Value
 	}
 	tmpl.Execute(w, map[string]string{"username":username})
+}
+
+func imagePostHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		panic(err.Error())
+	}
+	in, header, err := r.FormFile("upload")
+	if err != nil {
+		fmt.Fprint(w, "Could not parse upload")
+		return
+	}
+	defer in.Close()
+	
+	
+	caption := r.Form.Get("caption")
+	tags := r.Form.Get("tags")
+	username := r.Form.Get("username")
+	userid := r.Form.Get("id")
+
+
+	//Actually post image
+
+	//postid := store.PostUserImage()
+	out, err := os.OpenFile("./assets/uploads/imageposts/post", os.O_WRONLY, 0644)
+	if err != nil {
+		//handle error
+		panic(err.Error())
+	}
+	defer out.Close()
+	io.Copy(out, in)
+
 }
 func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
