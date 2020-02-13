@@ -227,8 +227,8 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	user := User{}
 	user.username = msg.Value
-	user = store.GetUserInfo(&user)
-	settings := store.GetUserSettings(&user)
+	account := store.GetUserInfo(&user)
+	settings := store.GetUserSettings(account)
 
 	publicity := "Private"
 	xpublicity := "Public"
