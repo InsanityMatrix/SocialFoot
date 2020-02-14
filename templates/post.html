@@ -70,7 +70,7 @@ html,body {
               </div>
             </div>
           </div>
-          <input type="text" style="display:none;" name="userid" readonly value="{{.userid}}">
+          <input type="text" style="display:none;" name="id" readonly value="{{.userid}}">
           <div class="row" style="margin-top:10px">
             <div class="col-sm-4">
               <input type="submit" value="Post" name="submit" class="btn btn-info">
@@ -88,7 +88,7 @@ html,body {
         $('.search-file-btn').children("input").bind('change', function() {
           var fileName = '';
           fileName = $(this).val().split("\\").slice(-1)[0];
-          $(this).parent().parent().children("span").html(fileName);
+          $(this).parent().parent().children("center").children("span").html(fileName);
         });
 
    </script>

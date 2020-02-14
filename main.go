@@ -415,7 +415,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	caption := r.Form.Get("caption")
 	tags := r.Form.Get("tags")
 	userid := r.Form.Get("id")
-	publicityText := r.Form.Get("publicity")
+	publicityText := r.Form.Get("type")
 
 
 	//Set publicity
