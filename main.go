@@ -405,7 +405,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	err := r.ParseForm()
+	err = r.ParseForm()
 	if err != nil {
 		panic(err.Error())
 	}
