@@ -19,7 +19,7 @@ html,body {
   padding: 0;
 }
   </style>
-  <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
+  <link rel='stylesheet' href='../assets/css/SocialFoot.css'>
     </head>
     <body id='body'>
 	<nav class='navbar navbar-inverse bg-primary'>
@@ -33,23 +33,46 @@ html,body {
 	    </div>
 	</nav>
 	<div class="container">
-		<form method="post" action="/processing/post"  class="paper">
+		<form method="post" action="/processing/post"  class="big-paper">
       <div class="row">
         <div class="col-xs-4">
-			     <input type="file" name="upload" id="FileUpload" value="File Upload">
+          <label class="btn btn-primary search-file-btn btn-large">
+			     <input type="file" name="upload" id="FileUpload" style="display:none;"> <span>Choose file</span>
+          </label>
+          <br>
+          <center>
+            <span>No file selected</span>
+          </center>
         </div>
         <div class="col-xs-8">
           <div class="row">
-            <div class="input-group col-md-6">
-              <span class="input-group-addon" id="tags-addon">Tags</span>
-              <input type="text" class="form-control" aria-describedby="tags-addon" placeholder="Tags..." name="tags">
+            <div class="col-md-5">
+              <div class="input-group">
+                <span class="input-group-addon" id="tags-addon">Tags</span>
+                <input type="text" class="form-control" aria-describedby="tags-addon" placeholder="Tags..." name="tags">
+              </div>
             </div>
-            <div class="input-group col-md-6">
-              <span class="input-group-addon" id="post-type-addon">Post Type</span>
-              <select name="type" class="form-control" aria-describedby="post-type-addon">
-                <option value="{{.publicity}}">{{.publicity}}</option>
-                <option value="{{.xpublicity}}">{{.xpublicity}}</option>
-              </select>
+            <div class="col-md-5">
+              <div class="input-group">
+                <span class="input-group-addon" id="post-type-addon">Post Type</span>
+                <select name="type" class="form-control" aria-describedby="post-type-addon">
+                  <option value="{{.publicity}}">{{.publicity}}</option>
+                  <option value="{{.xpublicity}}">{{.xpublicity}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div class="col-xs-10">
+              <div class="input-group">
+                <span class="input-group-addon" id="caption-addon">Caption</span>
+                <textarea class="form-control" aria-describedby="caption-addon" name="caption"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div class="col-sm-4">
+              <input type="submit" value="Post" name="submit" class="btn btn-info">
             </div>
           </div>
         </div>
@@ -60,6 +83,13 @@ html,body {
 	<script>
       var body = document.getElementById("body");
       body.removeChild(body.childNodes[0]);
+
+        $('.search-file-btn').children("input").bind('change', function() {
+          var fileName = '';
+          fileName = $(this).val().split("\\").slice(-1)[0];
+          $(this).parent().parent().children("span").html(fileName);
+        });
+
    </script>
 
 
