@@ -68,7 +68,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/settings/user/delete", deleteUserHandler)
 		r.HandleFunc("/settings/user/signout", signoutHandler)
 
-		r.HandleFunc("/user/post/imagepost", imagePostHandler)
+		r.HandleFunc("/user/post/imagepost", imagePostHandler).Methods("POST")
 		//report
 		r.HandleFunc("/report", reportHandler)
 		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
