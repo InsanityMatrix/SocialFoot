@@ -392,10 +392,6 @@ func reportHandler(w http.ResponseWriter, r *http.Request) {
 
 func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	//Setup and get image
-	err := r.ParseForm()
-	if err != nil {
-		panic(err.Error())
-	}
 	in, header, err := r.FormFile("upload")
 
 	if err != nil {
@@ -409,6 +405,11 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	err := r.ParseForm()
+	if err != nil {
+		panic(err.Error())
+	}
+
 	defer in.Close()
 
 	//Get Form Values
