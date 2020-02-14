@@ -395,7 +395,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	in, header, err := r.FormFile("upload")
 
 	if err != nil {
-		fmt.Fprint(w, "Could not parse upload")
+		fmt.Fprint(w, err.Error())
 		return
 	}
 	extension := filepath.Ext(header.Filename)
