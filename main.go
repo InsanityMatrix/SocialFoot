@@ -7,6 +7,7 @@ package main
 import (
 	"database/sql"
 	"os"
+	"strings"
 	"path/filepath"
 	"io"
 	"strconv"
@@ -398,7 +399,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, err.Error())
 		return
 	}
-	extension := filepath.Ext(header.Filename)
+	extension := strings.ToLower(filepath.Ext(header.Filename))
 	if extension != ".jpg" {
 		if extension != ".png" {
 			fmt.Fprint(w, "File wasnt a recognized image type, try png or jpg")
