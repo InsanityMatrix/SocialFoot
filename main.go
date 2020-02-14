@@ -435,7 +435,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Could not return post id or insert row")
 	}
 	idStr := strconv.Itoa(postid)
-	out, err := os.Create("/assets/uploads/imageposts/post" + idStr + extension)
+	out, err := os.Create("/app/assets/uploads/imageposts/post" + idStr + extension)
 	if err != nil {
 		//handle error
 		panic(err.Error())
