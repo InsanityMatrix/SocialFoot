@@ -213,6 +213,28 @@ func (store *dbStore) SubmitBugReport(username string, content string) {
   }
 }
 
+
+//Message functionalities
+func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) int {
+  dt := time.Now()
+  rows, err := store.db.Query("INSERT INTO private_conversations(userOne, userTwo, created) VALUES ($1, $2, $3) RETURNING convoID;",user1, user2, dt)
+  if err != nil {
+    return 0
+  }
+  defer rows.Close()
+
+	var convoID int
+
+	for rows.Next() {
+
+		if err := rows.Scan(&convoID); err != nil {
+			return 0
+		}
+	}
+
+	return convoID
+}
+
 var store dbStore
 
 func InitStore(s dbStore) {
