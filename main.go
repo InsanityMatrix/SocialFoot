@@ -397,12 +397,12 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 	in, header, err := r.FormFile("upload")
-	extension := filepath.Ext(header.Filename)
+
 	if err != nil {
 		fmt.Fprint(w, "Could not parse upload")
 		return
 	}
-
+	extension := filepath.Ext(header.Filename)
 	if extension != ".jpg" {
 		if extension != ".png" {
 			fmt.Fprint(w, "File wasnt a recognized image type, try png or jpg")
