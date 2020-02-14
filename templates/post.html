@@ -33,7 +33,7 @@ html,body {
 	    </div>
 	</nav>
 	<div class="container">
-		<form method="post" action="/processing/post"  class="big-paper">
+		<form method="post" action="/user/post/imagepost"  class="big-paper">
       <div class="row">
         <div class="col-xs-4">
           <label class="btn btn-primary search-file-btn btn-large">
@@ -70,6 +70,7 @@ html,body {
               </div>
             </div>
           </div>
+          <input type="text" style="display:none;" name="userid" readonly value="{{.userid}}">
           <div class="row" style="margin-top:10px">
             <div class="col-sm-4">
               <input type="submit" value="Post" name="submit" class="btn btn-info">

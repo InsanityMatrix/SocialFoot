@@ -7,7 +7,8 @@ package main
 import (
 	"database/sql"
 	"os"
-	//"io"
+	"path/filepath"
+	"io"
 	"strconv"
 	"html/template"
 	"fmt"
@@ -67,7 +68,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/settings/user/delete", deleteUserHandler)
 		r.HandleFunc("/settings/user/signout", signoutHandler)
 
-		//r.HandleFunc("/user/post/imagepost", imagePostHandler)
+		r.HandleFunc("/user/post/imagepost", imagePostHandler)
 		//report
 		r.HandleFunc("/report", reportHandler)
 		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
@@ -236,7 +237,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		publicity = "Public"
 		xpublicity = "Private"
 	}
-	tmpl.Execute(w, map[string]string{"username":user.username, "publicity":publicity, "xpublicity":xpublicity})
+	tmpl.Execute(w, map[string]string{"username":user.username, "publicity":publicity, "xpublicity":xpublicity, "userid":strconv.Itoa(account.id)})
 }
 func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
@@ -388,30 +389,51 @@ func reportHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl.Execute(w, map[string]string{"username":username})
 }
-/*
+
 func imagePostHandler(w http.ResponseWriter, r *http.Request) {
+	//Setup and get image
 	err := r.ParseForm()
 	if err != nil {
 		panic(err.Error())
 	}
 	in, header, err := r.FormFile("upload")
+	extension := filepath.Ext(header.Filename)
 	if err != nil {
 		fmt.Fprint(w, "Could not parse upload")
 		return
 	}
+
+	if extension != ".jpg" {
+		if extension != ".png" {
+			fmt.Fprint(w, "File wasnt a recognized image type, try png or jpg")
+			return
+		}
+	}
 	defer in.Close()
 
-
+	//Get Form Values
 	caption := r.Form.Get("caption")
 	tags := r.Form.Get("tags")
-	username := r.Form.Get("username")
 	userid := r.Form.Get("id")
+	publicityText := r.Form.Get("publicity")
+
+
+	//Set publicity
+	publicity := true
+	if publicityText == "Private" {
+		publicity = false
+	}
 
 
 	//Actually post image
-
-	//postid := store.PostUserImage()
-	out, err := os.OpenFile("./assets/uploads/imageposts/post", os.O_WRONLY, 0644)
+	id, _ := strconv.Atoi(userid)
+	postid := store.PostUserImage(publicity, caption, tags, id)
+	if postid == 0 {
+		//ERROR case
+		fmt.Fprint(w, "Could not return post id or insert row")
+	}
+	idStr := strconv.Itoa(postid)
+	out, err := os.OpenFile("/assets/uploads/imageposts/post" + idStr + extension, os.O_WRONLY, 0644)
 	if err != nil {
 		//handle error
 		panic(err.Error())
@@ -420,7 +442,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	io.Copy(out, in)
 
 
-}*/
+}
 func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
 	username := "Anonymous"

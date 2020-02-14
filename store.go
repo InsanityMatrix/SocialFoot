@@ -40,6 +40,22 @@ func (store *dbStore) CreateUser(user *User) error {
   }
 	return err
 }
+func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int) int {
+  rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type) VALUES ($1,$2,$3,$4,$5) RETURNING postid",userid,publicity,tags,caption,"IMAGE")
+  if err != nil {
+    return 0
+  }
+  defer rows.Close()
+  var postid int
+  if rows.Next() {
+    err = rows.Scan(&postid)
+    if err != nil {
+      return 0
+    }
+    return postid
+  }
+  return 0
+}
 func (store *dbStore) LoginUser(user *User) (*User, error) {
   row := store.db.QueryRow("SELECT id,username,gender,age,password,email from users where username=$1", user.username)
   account := &User{}
