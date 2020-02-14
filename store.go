@@ -40,8 +40,9 @@ func (store *dbStore) CreateUser(user *User) error {
   }
 	return err
 }
-func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int) int {
-  rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type) VALUES ($1,$2,$3,$4,$5) RETURNING postid",userid,publicity,tags,caption,"IMAGE")
+func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string) int {
+  dt := time.Now()
+  rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type,posted,extension) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING postid",userid,publicity,tags,caption,"IMAGE",dt,extension)
   if err != nil {
     return 0
   }
@@ -55,6 +56,29 @@ func (store *dbStore) PostUserImage(publicity bool, caption string, tags string,
     return postid
   }
   return 0
+}
+
+func (store *dbStore) GetPublicPosts() ([]*ImagePost, error) {
+  rows, err := store.db.Query("SELECT postid,userid,publicity,tags,caption,extension FROM posts WHERE publicity=$1",true)
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	posts := []*ImagePost{}
+
+	for rows.Next() {
+		post := &ImagePost{}
+
+		if err := rows.Scan(&post.postid, &post.userid, &post.public, &post.tags, &post.caption, &post.extension); err != nil {
+			return nil, err
+		}
+
+		posts = append(posts, post)
+	}
+
+	return posts, nil
 }
 func (store *dbStore) LoginUser(user *User) (*User, error) {
   row := store.db.QueryRow("SELECT id,username,gender,age,password,email from users where username=$1", user.username)
@@ -94,6 +118,15 @@ func (store *dbStore) CheckUserCredentials(user *User) bool {
 //ONLY EVER USE ONCE YOU HAVE VALIDATED THEIR INFO FIRST
 func (store *dbStore) GetUserInfo(user *User) *User {
   row := store.db.QueryRow("SELECT * FROM users WHERE username=$1",user.username)
+  account := &User{}
+  err := row.Scan(&account.id,&account.username,&account.gender,&account.age,&account.password,&account.email)
+  if err != nil {
+    return nil
+  }
+  return account
+}
+func (store *dbStore) GetUserInfoById(id int) *User {
+  row := store.db.QueryRow("SELECT * FROM users WHERE id=$1",id)
   account := &User{}
   err := row.Scan(&account.id,&account.username,&account.gender,&account.age,&account.password,&account.email)
   if err != nil {

@@ -49,6 +49,23 @@ type UserInfo struct {
 	 publicity bool
 }
 
+type ImagePost struct {
+	postid int
+	userid int
+	public bool
+	tags string
+	caption string
+	extension string
+}
+type LiveImagePost struct {
+	Username string
+	imageLink string
+}
+
+type FeedData struct {
+	username string
+	Feed []LiveImagePost
+}
 //Global variables
 func newRouter() *mux.Router {
     r := mux.NewRouter()
@@ -198,7 +215,21 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl.Execute(w, map[string]string{"username":msg.Value})
+	pubposts, err := store.GetPublicPosts()
+	if err != nil {
+		return
+	}
+	feed := []LiveImagePost{}
+	for _, post := range pubposts {
+		userinfo := store.GetUserInfoById(post.userid)
+		p := LiveImagePost{}
+		p.Username = userinfo.username
+		p.imageLink = "/assets/uploads/imageposts/post" + strconv.Itoa(post.postid) + post.extension
+		feed = append(feed, p)
+	}
+
+
+	tmpl.Execute(w, FeedData{username:msg.Value, Feed:feed})
 
 }
 func profileHandler(w http.ResponseWriter, r *http.Request) {
@@ -429,7 +460,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	//Actually post image
 	id, _ := strconv.Atoi(userid)
-	postid := store.PostUserImage(publicity, caption, tags, id)
+	postid := store.PostUserImage(publicity, caption, tags, id,extension)
 	if postid == 0 {
 		//ERROR case
 		fmt.Fprint(w, "Could not return post id or insert row")
