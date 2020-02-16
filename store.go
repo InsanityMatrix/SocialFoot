@@ -215,11 +215,11 @@ func (store *dbStore) SubmitBugReport(username string, content string) {
 
 
 //Message functionalities
-func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) int {
+func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) error {
   dt := time.Now()
   rows, err := store.db.Query("INSERT INTO private_conversations(userOne, userTwo, created) VALUES ($1, $2, $3) RETURNING convoID;",user1, user2, dt)
   if err != nil {
-    return 0
+    return err
   }
   defer rows.Close()
 
@@ -228,12 +228,25 @@ func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) int {
 	for rows.Next() {
 
 		if err := rows.Scan(&convoID); err != nil {
-			return 0
+			return err
 		}
 	}
 
-	return convoID
+	_, err = store.db.Query("CREATE TABLE " + strconv.Itoa(convoID) + "_pconv (messageID SERIAL, from VARCHAR(26), content TEXT, read BOOLEAN, PRIMARY KEY(messageID));")
+
+  return err
 }
+//returns 0 if error, convoID will never equal 0
+func (store *dbStore) GetConversationID(user1 int, user2 int) int {
+  row := store.db.QueryRow("SELECT convoID FROM private_conversations WHERE (userOne=$1 AND userTwo=$2) OR (userOne=$2 AND userTwo=$1)",user1, user2)
+
+  var convoID int
+
+  row.Scan(&convoID)
+  return convoID
+}
+
+//ESSENTIALS:
 
 var store dbStore
 
