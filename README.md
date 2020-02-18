@@ -16,3 +16,46 @@ Static Content in /assets/ (html/css/javascript)
 
 <h2>tools.go</h2>
 <p>Contains tools like password hashing, etc.</p>
+
+
+
+
+<h4>Database Tables + Explanations</h4>
+<p> users:
+    <ul>
+        <li>id - serial - PRIMARY KEY</li>
+        <li>username - VARCHAR(26)</li> 
+        <li>gender - BOOL</li>
+        <li>age - INT</li>
+        <li>password - VARCHAR(355)</li>
+        <li>email - VARCHAR(55)</li>
+    </ul>
+</p>
+<p>user_settings:
+    <ul>
+        <li>userid - INT - PRIMARY KEY</li>
+        <li>bio - TEXT</li>
+        <li>website - TEXT</li>
+        <li>location - TEXT</li>
+        <li>publicity - BOOL</li>
+    </ul>
+</p>
+<p>posts:
+    <ul>
+        <li>postid - SERIAL - PRIMARY KEY</li>
+        <li>userid - INT</li>
+        <li>tags - TEXT</li>
+        <li>caption - TEXT</li>
+        <li>type - TEXT</li>
+        <li>posted - date</li>
+        <li>extension - TEXT</li>
+    </ul>
+</p>
+<p>private_conversations:
+    <ul>
+        <li>convoID - SERIAL - PRIMARY KEY</li>
+        <li>userOne - VARCHAR(26)</li>
+        <li>userTwo - VARCHAR(26)</li>
+        <li>created - DATE</li>
+    </ul>
+</p>
