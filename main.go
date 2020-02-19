@@ -241,12 +241,12 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
 	pubposts, err := store.GetPublicPosts()
 	if err != nil {
-		fmt.Fprintf(w,"{ \"status\":\"fail\"}")
+		fmt.Fprint(w,"{ \"status\":\"fail\"}")
 		return
 	}
 	pagesJson, err := json.Marshal(pubposts)
     if err != nil {
-        fmt.Fprintf(w,"{ \"status\":\"fail\"}")
+        fmt.Fprint(w,"{ \"status\":\"fail\"}")
 				return
     }
     fmt.Fprintf(w, "%s", pagesJson)
