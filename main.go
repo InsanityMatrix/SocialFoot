@@ -51,12 +51,12 @@ type UserInfo struct {
 }
 
 type ImagePost struct {
-	postid int
-	userid int
-	public bool
-	tags string
-	caption string
-	extension string
+	postid int `json:"postid"`
+	userid int `json:"userid"`
+	public bool `json:"publicity"`
+	tags string `json:"tags"`
+	caption string `json:"caption"`
+	extension string `json:"extension"`
 }
 type LiveImagePost struct {
 	User string
