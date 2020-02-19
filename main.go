@@ -89,6 +89,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/settings/user/signout", signoutHandler)
 
 		r.HandleFunc("/user/post/imagepost", imagePostHandler).Methods("POST")
+		r.HandleFunc("/posts/public", getPublicPostsHandler)
 		//report
 		r.HandleFunc("/report", reportHandler)
 		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
@@ -235,7 +236,19 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 */
 //TODO: make feed data in ajax or something
 	tmpl.Execute(w, map[string]string{"username":msg.Value})
-
+}
+func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
+	pubposts, err := store.GetPublicPosts()
+	if err != nil {
+		fmt.Fprintf(w,"{ \"status\":\"fail\"}")
+		return
+	}
+	pagesJson, err := json.Marshal(pubposts)
+    if err != nil {
+        fmt.Fprintf(w,"{ \"status\":\"fail\"}")
+				return
+    }
+    fmt.Fprintf(w, "%s", pagesJson)
 }
 func profileHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live Profile settings

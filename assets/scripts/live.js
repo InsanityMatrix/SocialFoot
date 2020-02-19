@@ -5,3 +5,9 @@ function signOut() {
   });
   window.location = "/assets/";
 }
+
+function getPublicPosts() {
+  $.getJSON("/posts/public", function(data){
+    console.log(data);
+  });
+}
