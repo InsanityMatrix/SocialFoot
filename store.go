@@ -59,8 +59,7 @@ func (store *dbStore) PostUserImage(publicity bool, caption string, tags string,
 }
 
 func (store *dbStore) GetPublicPosts() ([]*ImagePost, error) {
-  rows, err := store.db.Query("SELECT postid,userid,publicity,tags,caption,extension FROM posts WHERE publicity=$1",true)
-
+  rows, err := store.db.Query("SELECT postid,userid,publicity,tags,caption,extension FROM posts WHERE publicity=$1;",true)
 	if err != nil {
 		return nil, err
 	}
@@ -246,7 +245,7 @@ func (store *dbStore) GetConversationID(user1 int, user2 int) int {
   return convoID
 }
 func (store *dbStore) addUserByUsername(user *User, toAddID int) {
-  
+
 }
 
 //ESSENTIALS:

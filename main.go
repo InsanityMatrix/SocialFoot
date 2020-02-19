@@ -239,6 +239,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, map[string]string{"username":msg.Value})
 }
 func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type","application/json")
 	pubposts, err := store.GetPublicPosts()
 	if err != nil {
 		fmt.Fprint(w,"{ \"status\":\"fail\"}")
