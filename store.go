@@ -245,6 +245,9 @@ func (store *dbStore) GetConversationID(user1 int, user2 int) int {
   row.Scan(&convoID)
   return convoID
 }
+func (store *dbStore) addUserByUsername(user *User, toAddID int) {
+  
+}
 
 //ESSENTIALS:
 
