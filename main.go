@@ -209,7 +209,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
-	tmpl, err := template.ParseFiles("templates/index.html")
+	tmpl, err := template.ParseFiles("./templates/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -224,7 +224,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 		userinfo := store.GetUserInfoById(post.userid)
 		p := LiveImagePost{}
 		p.Username = userinfo.username
-		p.imageLink = "/assets/uploads/imageposts/post" + strconv.Itoa(post.postid) + post.extension
+		p.imageLink = "./assets/uploads/imageposts/post" + strconv.Itoa(post.postid) + post.extension
 		feed = append(feed, p)
 	}
 
