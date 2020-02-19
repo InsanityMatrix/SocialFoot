@@ -50,14 +50,6 @@ type UserInfo struct {
 	 publicity bool
 }
 
-type ImagePost struct {
-	postid int `json:"postid"`
-	userid int `json:"userid"`
-	public bool `json:"publicity"`
-	tags string `json:"tags"`
-	caption string `json:"caption"`
-	extension string `json:"extension"`
-}
 type LiveImagePost struct {
 	User string
 	imageLink string
