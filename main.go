@@ -67,7 +67,7 @@ type FeedData struct {
 	Feed []LiveImagePost
 }
 var HOME string
-TEMPLATES := "/root/go/src/github.com/InsanityMatrix/SocialFoot/templates"
+var TEMPLATES string
 //Global variables
 func newRouter() *mux.Router {
     r := mux.NewRouter()
@@ -108,7 +108,7 @@ func main() {
     portEnv := os.Getenv("PORT")
     port := ":" + portEnv
 		HOME = filepath.Join(os.Getenv("HOME"), "/go/src/github.com/InsanityMatrix/SocialFoot")
-
+		TEMPLATES = "/root/go/src/github.com/InsanityMatrix/SocialFoot/templates"
 		url := os.Getenv("DATABASE_URL")
 		db, err := sql.Open("postgres", url)
 
