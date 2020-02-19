@@ -210,7 +210,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
-	tmpl, err := template.ParseFiles(HOME + "templates/index.html")
+	tmpl, err := template.ParseFiles(HOME + "/templates/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -241,7 +241,7 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/", http.StatusSeeOther)
 	}
-	tmpl, err := template.ParseFiles(HOME + "templates/ProfileSettings.html")
+	tmpl, err := template.ParseFiles(HOME + "/templates/ProfileSettings.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -255,7 +255,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
 	}
-	tmpl, err := template.ParseFiles(HOME + "templates/post.html")
+	tmpl, err := template.ParseFiles(HOME + "/templates/post.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
