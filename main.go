@@ -217,7 +217,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pubposts, err := store.GetPublicPosts()
+	/*pubposts, err := store.GetPublicPosts()
 	if err != nil {
 		tmpl.Execute(w, map[string]string{"username":msg.Value})
 		return
