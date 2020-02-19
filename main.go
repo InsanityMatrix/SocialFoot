@@ -106,7 +106,7 @@ func main() {
     router := newRouter()
     portEnv := os.Getenv("PORT")
     port := ":" + portEnv
-		HOME = os.Getenv("HOME") + "go/src/SocialFoot/"
+		HOME = os.Getenv("HOME") + "go/src/github.com/InsanityMatrix/SocialFoot/"
 
 		url := os.Getenv("DATABASE_URL")
 		db, err := sql.Open("postgres", url)
