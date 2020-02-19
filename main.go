@@ -66,6 +66,7 @@ type FeedData struct {
 	username string
 	Feed []LiveImagePost
 }
+var HOME string
 //Global variables
 func newRouter() *mux.Router {
     r := mux.NewRouter()
@@ -105,7 +106,7 @@ func main() {
     router := newRouter()
     portEnv := os.Getenv("PORT")
     port := ":" + portEnv
-
+		HOME = os.Getenv("HOME") + "go/src/SocialFoot/"
 
 		url := os.Getenv("DATABASE_URL")
 		db, err := sql.Open("postgres", url)
@@ -209,7 +210,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
-	tmpl, err := template.ParseFiles("./templates/index.html")
+	tmpl, err := template.ParseFiles(HOME + "/templates/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -239,7 +240,7 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/", http.StatusSeeOther)
 	}
-	tmpl, err := template.ParseFiles("templates/ProfileSettings.html")
+	tmpl, err := template.ParseFiles(HOME + "/templates/ProfileSettings.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -253,7 +254,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
 	}
-	tmpl, err := template.ParseFiles("templates/post.html")
+	tmpl, err := template.ParseFiles(HOME + "/templates/post.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -302,7 +303,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	if settings.publicity {
 		publicity = "Public"
 	}
-	tmpl, err := template.ParseFiles("templates/profile.html")
+	tmpl, err := template.ParseFiles(HOME + "/templates/profile.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
@@ -410,7 +411,7 @@ func signoutHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w,"Success")
 }
 func reportHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/bugReport.html")
+	tmpl, err := template.ParseFiles(HOME + "/templates/bugReport.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
