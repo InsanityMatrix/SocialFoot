@@ -21,6 +21,15 @@ type dbStore struct {
     db *sql.DB
 }
 
+type ImagePost struct {
+	postid int `json:"postid"`
+	userid int `json:"userid"`
+	public bool `json:"publicity"`
+	tags string `json:"tags"`
+	caption string `json:"caption"`
+	extension string `json:"extension"`
+}
+
 func (store *dbStore) CreateUser(user *User) error {
 	rows, err := store.db.Query("INSERT INTO users(username,gender,age,password,email) VALUES ($1,$2,$3,$4,$5) RETURNING id;",user.username,user.gender,user.age,user.password,user.email)
   if err != nil {
