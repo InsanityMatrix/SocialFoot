@@ -222,6 +222,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 		tmpl.Execute(w, map[string]string{"username":msg.Value})
 		return
 	}
+	/*
 	feed := []LiveImagePost{}
 	for _, post := range pubposts {
 		userinfo := store.GetUserInfoById(post.userid)
@@ -231,8 +232,9 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 		feed = append(feed, p)
 	}
 
-
-	tmpl.Execute(w, FeedData{username:msg.Value, Feed:feed})
+*/
+//TODO: make feed data in ajax or something
+	tmpl.Execute(w, map[string]string{"username":msg.Value})
 
 }
 func profileHandler(w http.ResponseWriter, r *http.Request) {
