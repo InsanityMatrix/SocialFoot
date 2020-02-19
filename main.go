@@ -67,6 +67,7 @@ type FeedData struct {
 	Feed []LiveImagePost
 }
 var HOME string
+TEMPLATES := "/root/go/src/github.com/InsanityMatrix/SocialFoot/templates"
 //Global variables
 func newRouter() *mux.Router {
     r := mux.NewRouter()
@@ -210,7 +211,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 	}
-	tmpl, err := template.ParseFiles(filepath.Join(HOME,"/templates/index.html"))
+	tmpl, err := template.ParseFiles(TEMPLATES + "/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -226,7 +227,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 		userinfo := store.GetUserInfoById(post.userid)
 		p := LiveImagePost{}
 		p.Username = userinfo.username
-		p.imageLink = "./assets/uploads/imageposts/post" + strconv.Itoa(post.postid) + post.extension
+		p.imageLink = "/assets/uploads/imageposts/post" + strconv.Itoa(post.postid) + post.extension
 		feed = append(feed, p)
 	}
 
@@ -241,7 +242,7 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/", http.StatusSeeOther)
 	}
-	tmpl, err := template.ParseFiles(filepath.Join(HOME,"/templates/ProfileSettings.html"))
+	tmpl, err := template.ParseFiles(TEMPLATES + "/ProfileSettings.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -255,7 +256,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
 	}
-	tmpl, err := template.ParseFiles(filepath.Join(HOME,"/templates/post.html"))
+	tmpl, err := template.ParseFiles(TEMPLATES + "/post.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -304,7 +305,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	if settings.publicity {
 		publicity = "Public"
 	}
-	tmpl, err := template.ParseFiles(filepath.Join(HOME, "/templates/profile.html"))
+	tmpl, err := template.ParseFiles(TEMPLATES + "/profile.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
@@ -412,7 +413,7 @@ func signoutHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w,"Success")
 }
 func reportHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles(filepath.Join(HOME,"templates/bugReport.html"))
+	tmpl, err := template.ParseFiles(TEMPLATES + "/bugReport.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
@@ -468,7 +469,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Could not return post id or insert row")
 	}
 	idStr := strconv.Itoa(postid)
-	out, err := os.Create("/app/assets/uploads/imageposts/post" + idStr + extension)
+	out, err := os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
 	if err != nil {
 		//handle error
 		panic(err.Error())
