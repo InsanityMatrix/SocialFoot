@@ -58,7 +58,7 @@ type ImagePost struct {
 	extension string
 }
 type LiveImagePost struct {
-	Username string
+	User string
 	imageLink string
 }
 
@@ -225,8 +225,8 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	feed := []LiveImagePost{}
 	for _, post := range pubposts {
 		userinfo := store.GetUserInfoById(post.userid)
-		p := LiveImagePost{}
-		p.Username = userinfo.username
+		p := &LiveImagePost{}
+		p.User = userinfo.username
 		p.imageLink = "/assets/uploads/imageposts/post" + strconv.Itoa(post.postid) + post.extension
 		feed = append(feed, p)
 	}
