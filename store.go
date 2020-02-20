@@ -4,16 +4,21 @@ import (
     "database/sql"
     "strconv"
     "time"
+    "github.com/bdwilliams/go-jsonify/jsonify"
 )
 //Users DB : username (string), gender (bool), age (int), password (string), email (string)
 
 type Store interface {
     CreateUser(user *User) error
+    PostUserImage(publicity bool, caption string, tags string, userid int, extension string) int
+    GetPublicPosts() ([]*ImagePost, error)
+    LoginUser(user *User) (*User, error)
     GetUserInfo(user *User) *User
     GetUserSettings(user *User) *UserSettings
     CheckUserCredentials(user *User) bool
-    LoginUser(user *User) (*User, error)
     UpdateSetting(user *User,setting string, value string) bool
+    GetUserInfoById(id int) *User
+    SetUserPublicity(userID int, mode bool) bool
 }
 
 
@@ -58,27 +63,15 @@ func (store *dbStore) PostUserImage(publicity bool, caption string, tags string,
   return 0
 }
 
-func (store *dbStore) GetPublicPosts() ([]*ImagePost, error) {
+func (store *dbStore) GetPublicPosts() string {
   rows, err := store.db.Query("SELECT postid,userid,publicity,tags,caption,extension FROM posts WHERE publicity=$1",true)
 
 	if err != nil {
-		return nil, err
+		return "{\"status\":\"error\"}"
 	}
 	defer rows.Close()
 
-	posts := []*ImagePost{}
-
-	for rows.Next() {
-		post := &ImagePost{}
-
-		if err := rows.Scan(&post.postid, &post.userid, &post.public, &post.tags, &post.caption, &post.extension); err != nil {
-			return nil, err
-		}
-
-		posts = append(posts, post)
-	}
-
-	return posts, nil
+  return jsonify.Jsonify(rows)
 }
 func (store *dbStore) LoginUser(user *User) (*User, error) {
   row := store.db.QueryRow("SELECT id,username,gender,age,password,email from users where username=$1", user.username)
@@ -246,7 +239,7 @@ func (store *dbStore) GetConversationID(user1 int, user2 int) int {
   return convoID
 }
 func (store *dbStore) addUserByUsername(user *User, toAddID int) {
-  
+
 }
 
 //ESSENTIALS:
