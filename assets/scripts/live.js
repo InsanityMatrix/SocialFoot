@@ -9,11 +9,13 @@ function signOut() {
 function getPublicPosts() {
   $.getJSON("/posts/public", function(data){
     var length = data.length;
-    document.getElementById("posts").innerHTML = "";
+    $("#posts").html("");
     for(var i = 0; i < length; i++) {
       var imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
-      document.getElementById("posts").innerHTML += "<div class='post'><div class='row userinfo'><p class='userName'>" + data[i].userid + "</p></div>";
-      document.getElementById("posts").innerHTML += "<div class='row'><div class='col-xs-12'><img src='" + imageLink + "' style='width:100%'></div></div></div>";
+      var stuff = $("#posts").html();
+      var text = "<div class='post'><div class='row userinfo'><p class='userName'>" + data[i].userid + "</p></div>";
+      text +=  "<div class='row'><div class='col-xs-12'><img src='" + imageLink + "' style='width:100%'></div></div></div>";
+      $("#posts").html(stuff
     }
   });
 }
