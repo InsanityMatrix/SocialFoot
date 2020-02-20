@@ -131,10 +131,11 @@ input.label {
 }
 .post {
   display: block;
-  width: 95%;
-  border: 1px solid grey;
-  border-collapse: collapse;
-  margin: 5px auto;
+  margin: 5px;
+}
+.postimg {
+  border: 2px solid;
+  border-style: inset;
 }
 .net-fluid {
   width: 100%;
