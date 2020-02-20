@@ -82,6 +82,11 @@ func newRouter() *mux.Router {
 
 		r.HandleFunc("/user/post/imagepost", imagePostHandler).Methods("POST")
 		r.HandleFunc("/posts/public", getPublicPostsHandler)
+
+
+
+		//JSON stuff
+		r.HandleFunc("/json/user/id", HandleJSONUserById)
 		//report
 		r.HandleFunc("/report", reportHandler)
 		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
@@ -494,6 +499,14 @@ func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 	content := r.Form.Get("report")
 	store.SubmitBugReport(username, content)
 	http.Redirect(w, r, "/live", http.StatusSeeOther)
+}
+
+func HandleJSONUserById(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type","application/json")
+	_ = r.ParseForm()
+	id, _ := strconv.Atoi(r.Form.Get("userid"))
+	userjson := store.GetJSONUserByID(id)
+	fmt.Fprint(w, userjson)
 }
 //Page functions to help with stuff
 func addCookie(w http.ResponseWriter, name string, value string) {

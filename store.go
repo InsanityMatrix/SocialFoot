@@ -72,18 +72,7 @@ func (store *dbStore) PostUserImage(publicity bool, caption string, tags string,
   return 0
 }
 
-func (store *dbStore) GetPublicPosts() []string {
-  rows, err := store.db.Query("SELECT postid,userid,publicity,tags,caption,extension FROM posts WHERE publicity=$1",true)
 
-	if err != nil {
-    var error []string
-    error[0] = "{\"status\":\"error\"}"
-		return error
-	}
-	defer rows.Close()
-
-  return jsonify.Jsonify(rows)
-}
 func (store *dbStore) LoginUser(user *User) (*User, error) {
   row := store.db.QueryRow("SELECT id,username,gender,age,password,email from users where username=$1", user.username)
   account := &User{}
@@ -253,6 +242,31 @@ func (store *dbStore) addUserByUsername(user *User, toAddID int) {
 
 }
 
+
+
+//JSON FUNCTIONS
+func (store *dbStore) GetPublicPosts() []string {
+  rows, err := store.db.Query("SELECT postid,userid,publicity,tags,caption,extension FROM posts WHERE publicity=$1",true)
+
+	if err != nil {
+    var error []string
+    error[0] = "{\"status\":\"error\"}"
+		return error
+	}
+	defer rows.Close()
+
+  return jsonify.Jsonify(rows)
+}
+func (store *dbStore) GetJSONUserByID(uid int) []string {
+  rows, err := store.db.Query("SELECT id,username,publicity FROM users WHERE id=$1", uid)
+  if err != nil {
+    var error []string
+    error[0] = "{\"status\":\"error\"}"
+		return error
+  }
+  defer rows.Close()
+  return jsonify.Jsonify(rows)
+}
 //ESSENTIALS:
 
 var store dbStore
