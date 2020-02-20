@@ -258,7 +258,7 @@ func (store *dbStore) GetPublicPosts() []string {
   return jsonify.Jsonify(rows)
 }
 func (store *dbStore) GetJSONUserByID(uid int) []string {
-  rows, err := store.db.Query("SELECT id,username,publicity FROM users WHERE id=$1", uid)
+  rows, err := store.db.Query("SELECT id,username FROM users WHERE id=$1", uid)
   if err != nil {
     var error []string
     error[0] = "{\"status\":\"error\"}"
