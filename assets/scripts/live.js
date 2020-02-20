@@ -13,7 +13,19 @@ function getPublicPosts() {
     for(var i = 0; i < length; i++) {
       var imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
       var stuff = $("#posts").html();
-      var text = "<div class='col-xs-12 post'><div class='row userinfo'><p class='col-md-6 userName' id='" + data[i].userid + "'></p></div>";
+      //Parse Date
+      var d = new Date(data[i].posted);
+      var dd = d.getDate();
+      var mm = d.getMonth() + 1;
+      var yyyy = d.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      var thisdate = mm + '/' + dd + '/' + yyyy;
+      var text = "<div class='col-xs-12 post'><div class='row userinfo'><p class='col-xs-6 userName' id='" + data[i].userid + "'></p><p class='col-xs-6 postDate'>" + thisdate + "</p></div>";
       text +=  "<div class='row'><div class='col-xs-12'><center><img src='" + imageLink + "' style='width:80%'></center></div></div></div>";
       $("#posts").html(stuff + text);
       $.ajax({
