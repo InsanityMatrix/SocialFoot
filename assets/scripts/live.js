@@ -9,6 +9,7 @@ function signOut() {
 function getPublicPosts() {
   $.getJSON("/posts/public", function(data){
     var length = data.length;
+    document.getElementById("posts").innerHTML = "";
     for(var i = 0; i < length; i++) {
       var imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
       document.getElementById("posts").innerHTML += "<div class='post'><div class='row userinfo'><p class='userName'>" + data[i].userid + "</p></div>";
