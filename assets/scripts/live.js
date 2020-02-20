@@ -13,8 +13,8 @@ function getPublicPosts() {
     for(var i = 0; i < length; i++) {
       var imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
       var stuff = $("#posts").html();
-      var text = "<div class='post'><div class='row userinfo'><p class='userName'>" + data[i].userid + "</p></div>";
-      text +=  "<div class='row'><div class='col-xs-12'><img src='" + imageLink + "' style='width:100%'></div></div></div>";
+      var text = "<div class='post'><div class='row userinfo'><p class='col-md-6 userName'>" + data[i].userid + "</p></div>";
+      text +=  "<div class='row'><div class='col-xs-12'><center><img src='" + imageLink + "' style='width:80%'></center></div></div></div>";
       $("#posts").html(stuff + text);
     }
   });

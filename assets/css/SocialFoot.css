@@ -124,3 +124,12 @@ input.label {
 	}
 
 }
+
+#posts {
+  padding: 20px;
+}
+p.userName {
+  text-align:left;
+  text-decoration: underline;
+  padding-left:15px;
+}
