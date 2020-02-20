@@ -20,7 +20,7 @@ html,body {
 }
   </style>
   <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
-  <script src="/assets/scripts/live.js"></script>
+
     </head>
     <body id='body'>
         <nav class='navbar navbar-inverse bg-primary'>
@@ -61,11 +61,7 @@ html,body {
 				<!-- TODO: Insert data for feed -->
         <div class="posts">
 
-          <script>
-            $(document).ready(function(){
-              getPublicPosts();
-            });
-          </script>
+
         </div>
 			</div>
 		</div>
@@ -91,9 +87,13 @@ html,body {
         body.removeChild(body.childNodes[0]);
      </script>
 
+     <script>
+       $(document).ready(function(){
+         getPublicPosts();
+       });
+     </script>
 
 
-
-
+  <script src="/assets/scripts/live.js"></script>
     </body>
 </html>
