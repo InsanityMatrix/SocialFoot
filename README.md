@@ -24,7 +24,7 @@ Static Content in /assets/ (html/css/javascript)
 <p> users:
     <ul>
         <li>id - serial - PRIMARY KEY</li>
-        <li>username - VARCHAR(26)</li> 
+        <li>username - VARCHAR(26)</li>
         <li>gender - BOOL</li>
         <li>age - INT</li>
         <li>password - VARCHAR(355)</li>
