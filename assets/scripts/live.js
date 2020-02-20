@@ -29,7 +29,6 @@ function getPublicPosts() {
 }
 
 function putPostUsernames(data) {
-  var obj = JSON.parse(data);
   var id = obj[0].id;
   $("#" + id).html(obj[0].username);
 }
