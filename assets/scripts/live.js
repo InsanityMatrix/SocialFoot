@@ -42,6 +42,6 @@ function getPublicPosts() {
 
 function putPostUsernames(data) {
   var id = data[0].id;
-  $("#" + id).html(data[0].username);
+  $("p#" + id).html(data[0].username);
 }
 
