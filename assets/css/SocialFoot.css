@@ -138,6 +138,7 @@ p.userName {
   padding-left:15px;
 }
 .userinfo {
+  margin: 2px auto;
   width: 90%;
   background-clip:border-box;
   border-radius: 10px;
