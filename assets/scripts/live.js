@@ -13,7 +13,7 @@ function getPublicPosts() {
     for(var i = 0; i < length; i++) {
       var imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
       var stuff = $("#posts").html();
-      var text = "<div class='post'><div class='row userinfo'><p class='col-md-6 userName' id='" + data[i].userid + "'></p></div>";
+      var text = "<div class='col-xs-12 post'><div class='row userinfo'><p class='col-md-6 userName' id='" + data[i].userid + "'></p></div>";
       text +=  "<div class='row'><div class='col-xs-12'><center><img src='" + imageLink + "' style='width:80%'></center></div></div></div>";
       $("#posts").html(stuff + text);
       $.ajax({
@@ -32,3 +32,4 @@ function putPostUsernames(data) {
   var id = data[0].id;
   $("#" + id).html(data[0].username);
 }
+
