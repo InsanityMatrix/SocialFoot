@@ -5,7 +5,6 @@
 package main
 
 import (
-	"encoding/json"
 	"database/sql"
 	"os"
 	"strings"
@@ -233,7 +232,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type","application/json")
 	pubposts := store.GetPublicPosts()
-    fmt.Fprint(w, pubposts)
+  fmt.Fprint(w, pubposts)
 }
 func profileHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live Profile settings

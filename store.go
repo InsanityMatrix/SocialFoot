@@ -72,11 +72,13 @@ func (store *dbStore) PostUserImage(publicity bool, caption string, tags string,
   return 0
 }
 
-func (store *dbStore) GetPublicPosts() string {
+func (store *dbStore) GetPublicPosts() []string {
   rows, err := store.db.Query("SELECT postid,userid,publicity,tags,caption,extension FROM posts WHERE publicity=$1",true)
 
 	if err != nil {
-		return "{\"status\":\"error\"}"
+    var error []string
+    error[0] = "{\"status\":\"error\"}"
+		return error
 	}
 	defer rows.Close()
 
