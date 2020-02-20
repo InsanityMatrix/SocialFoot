@@ -97,7 +97,8 @@ h2 {
 	box-shadow: 5px 5px 5px black;
 	-webkit-box-shadow: 5px 5px 5px black;
   -moz-box-shadow: 5px 5px 5px black;
-	padding-bottom: 50px;
+  padding-bottom: 50px;
+  display:block;
 }
 
 input.label:empty {
