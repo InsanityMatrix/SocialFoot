@@ -133,3 +133,9 @@ p.userName {
   text-decoration: underline;
   padding-left:15px;
 }
+.userinfo {
+  width: 90%;
+  background-clip:border-box;
+  border-radius: 10px;
+  box-shadow: 5px 5px 2.5px grey;
+}
