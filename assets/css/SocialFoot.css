@@ -160,3 +160,8 @@ p.userName {
   text-align: right;
   color: grey;
 }
+h2.bg-secondary {
+  text-align: center !important;
+  color: white !important;
+  background-clip: border-box !important;
+}
