@@ -168,3 +168,16 @@ h2.bg-secondary {
   color: white !important;
   background-clip: border-box !important;
 }
+.postTag {
+  color: #27a5db;
+  padding: 4px;
+  background-color: white;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+.postCaption {
+  border-top : 1px solid grey;
+  padding: 5px;
+  color: black;
+  text-decoration: none;
+}
