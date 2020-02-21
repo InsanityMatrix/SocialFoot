@@ -224,23 +224,6 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	/*pubposts, err := store.GetPublicPosts()
-	if err != nil {
-		tmpl.Execute(w, map[string]string{"username":msg.Value})
-		return
-	}
-	/*
-	feed := []LiveImagePost{}
-	for _, post := range pubposts {
-		userinfo := store.GetUserInfoById(post.userid)
-		p := LiveImagePost{}
-		p.User = userinfo.username
-		p.imageLink = "/assets/uploads/imageposts/post" + strconv.Itoa(post.postid) + post.extension
-		feed = append(feed, p)
-	}
-
-*/
-//TODO: make feed data in ajax or something
 	tmpl.Execute(w, map[string]string{"username":msg.Value})
 }
 func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
@@ -446,10 +429,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, err.Error())
 		return
 	}
-	extension := strings.ToLower(filepath.Ext(header.Filename))
-	if !isPictureFile(extension) {
-		fmt.Fprint(w,"File type not supported.")
-	}
+
 
 	err = r.ParseForm()
 	if err != nil {
@@ -457,11 +437,26 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	defer in.Close()
-
+	userid := r.Form.Get("id")
+	//VALIDATE FILE TYPE
+	extension := strings.ToLower(filepath.Ext(header.Filename))
+	if !isPictureFile(extension) {
+		tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
+		msg, err := r.Cookie("username")
+		var username string
+		if err != nil {
+			username = store.GetUserInfoById(id).username
+		} else {
+			username = msg.Value
+		}
+		status := "This file type is not supported. Try again with a different file type."
+		tmpl.Execute(w, map[string]string{"username":username,"status":status})
+		return
+	}
 	//Get Form Values
 	caption := r.Form.Get("caption")
 	tags := r.Form.Get("tags")
-	userid := r.Form.Get("id")
+
 	publicityText := r.Form.Get("type")
 
 
@@ -487,6 +482,17 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer out.Close()
 	io.Copy(out, in)
+	//Display results
+	tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
+	msg, err := r.Cookie("username")
+	var username string
+	if err != nil {
+		username = store.GetUserInfoById(id).username
+	} else {
+		username = msg.Value
+	}
+	status := "Your post has been created at http://www.socialfoot.me/live/view/post/" + userid + "." + idStr
+	tmpl.Execute(w, map[string]string{"username":username,"status":status})
 
 
 }
