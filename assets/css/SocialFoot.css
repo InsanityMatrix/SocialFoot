@@ -7,11 +7,14 @@
 .paper {
   background-color: white;
   display: block;
-  width: 50%;
+  width: 60%;
   margin: 0 auto;
   color: black;
-  padding: 20px;
+  padding-bottom: 10px;
   border-radius: 10px;
+}
+.paper p {
+  margin: 10px;
 }
 .big-paper {
   background-color: white;
