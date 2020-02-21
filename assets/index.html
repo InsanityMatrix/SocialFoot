@@ -3,7 +3,6 @@
    <head>
       <title>Social Foot</title>
       <meta charset="utf-8">
-      <meta charset="utf-8">
       <meta name="description" content="SocialFoot is  a new Social Media that is in development"/>
       <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1"/>
       <meta name="apple-mobile-web-app-capable" content="yes">
@@ -44,6 +43,11 @@
       <script>
          var body = document.getElementById("body");
          body.removeChild(body.childNodes[0]);
+         $(document).ready(function(){
+           if(window.innerWidth <= 900 && window.innerWidth > 0) {
+             document.location.href = "/assets/mobile/";
+           }
+         });
       </script>
       <div class="net">
          <div class="paper">
@@ -56,6 +60,5 @@
             <p>Would you like to learn more? Well you can't because I haven't gotten that far yet!</p>
          </div>
       </div>
-      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
    </body>
 </html>
