@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"html/template"
 	"fmt"
+	"regexp"
 	"time"
 		"log"
     "net/http"
@@ -157,6 +158,14 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
     user.password = r.Form.Get("password")
 		cpassword := r.Form.Get("cpassword")
     user.email = r.Form.Get("email")
+
+		//Email validation
+		re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+
+		if !re.MatchString(email) {
+			fmt.Fprint(w, "This email is not valid.")
+			return
+		}
 
 		if(user.password != cpassword) {
 			http.Redirect(w, r, "/assets/signup.html", http.StatusSeeOther)
