@@ -462,6 +462,13 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	caption := r.Form.Get("caption")
 	tags := r.Form.Get("tags")
 
+	tagsRe := regexp.MustCompile("((#\\w+),?\\s?)")
+
+	TAGS := ""
+	matches := tagsRe.FindAllStringSubmatch(tags)
+	for _, group := range matches {
+		TAGS += group[2]
+	}
 	publicityText := r.Form.Get("type")
 
 

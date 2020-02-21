@@ -25,9 +25,19 @@ function getPublicPosts() {
         mm = '0' + mm;
       }
       var thisdate = mm + '/' + dd + '/' + yyyy;
+      //get tags with regexp
+      var tagpattern = /(#\w+)/g;
+      var m;
+      tagstext = ""
+      do {
+        m = tagpattern.exec(data[i].tags);
+        if (m) {
+          tagstext += "<p id='postTag'>" + m[1] + "</p>";
+        }
+      } while (m);
       var text = "<div class='col-xs-12 post'><div class='row userinfo'><p class='col-xs-6 userName' id='" + data[i].userid + "'></p><p class='col-xs-6 postDate'>" + thisdate + "</p></div>";
       text +=  "<div class='row'><div class='col-xs-12'><center><img class='postimg' src='" + imageLink + "' style='width:80%'></center></div></div>";
-      text += "<div class='row'><div class='col-xs-4 postTags'></div><div class='col-xs-4 postCaption'>" + data[i].caption + "</div></div>";
+      text += "<div class='row'><div class='col-xs-4 postTags'>" + tagstext + "</div><div class='col-xs-4 postCaption'>" + data[i].caption + "</div></div>";
       text += "</div>";
       $("#posts").html(stuff + text);
       $.ajax({
