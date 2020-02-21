@@ -52,7 +52,20 @@ html,body {
 
 	<!-- New HTML Body Making -->
 	<div class='net container'>
-		<div class='col-md-9 col-sm-12'>
+    <div id="discover" class='col-md-2 col-sm-12'>
+      <!-- TODO: Make a discover thing
+        - Make Script to hide this whole thing if device is smaller than 700px wide
+          -->
+
+          <script>
+            $(document).ready(function(){
+              if(window.innerWidth <= 900 && window.innerWidth > 0) {
+                document.getElementById("discover").style.display = "none";
+              }
+            });
+          </script>
+    </div>
+		<div class='col-md-6 col-sm-12'>
 			<!-- Feed Here -->
 			<div class='h-auto feed'>
 				<center>
@@ -67,6 +80,9 @@ html,body {
         </div>
 			</div>
 		</div>
+    <div class='col-md-4 col-sm-12'>
+      <!-- TODO: Ads and stuff? -->
+    </div>
 	</div>
 
 
