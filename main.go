@@ -162,7 +162,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 		//Email validation
 		re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
-		if !re.MatchString(email) {
+		if !re.MatchString(user.email) {
 			fmt.Fprint(w, "This email is not valid.")
 			return
 		}
