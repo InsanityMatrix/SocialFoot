@@ -267,6 +267,17 @@ func (store *dbStore) GetJSONUserByID(uid int) []string {
   defer rows.Close()
   return jsonify.Jsonify(rows)
 }
+func (store *dbStore) GetJSONUsersByUsernames(username string) []string {
+  newName := "%" + username + "%"
+  rows, err := store.db.Query("SELECT id,username,gender FROM users WHERE username LIKE $1", newName)
+  if err != nil {
+    var error []string
+    error[0] = "{\"status\":\"error\"}"
+		return error
+  }
+  defer rows.Close()
+  return jsonify.Jsonify(rows)
+}
 //ESSENTIALS:
 
 var store dbStore

@@ -7,7 +7,7 @@ function searchFor(searchValue) {
     //DO AJAX HERE
     $.ajax({
 		url: "/search",
-		type: 'POST',
+		method: 'POST',
 		data: {
 			"term": searchValue
 		},

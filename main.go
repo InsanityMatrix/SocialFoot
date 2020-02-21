@@ -70,6 +70,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
 		r.HandleFunc("/live/profile", profileHandler)
 		r.HandleFunc("/live/post", postHandler)
+		r.HandleFunc("/live/search",searchPageHandler)
 		r.HandleFunc("/live", liveIndexHandler)
 
 
@@ -83,7 +84,7 @@ func newRouter() *mux.Router {
 
 		r.HandleFunc("/user/post/imagepost", imagePostHandler).Methods("POST")
 		r.HandleFunc("/posts/public", getPublicPostsHandler)
-
+		r.HandleFunc("/search", searchUserHandler)
 
 
 		//JSON stuff
@@ -528,12 +529,37 @@ func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/live", http.StatusSeeOther)
 }
 
+func searchPageHandler(w http.ResponseWriter, r *http.Request) {
+	msg, err := r.Cookie("username")
+	if err == nil {
+		http.Redirect(w,r,"/assets/login.html",http.StatusSeeOther)
+		return
+	}
+	tmpl, err := template.ParseFiles(TEMPLATES + "/search.html")
+	if err != nil {
+		http.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	tmpl.Execute(w, map[string]string{"username": msg.Value})
+}
+
 func HandleJSONUserById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type","application/json")
 	_ = r.ParseForm()
 	id, _ := strconv.Atoi(r.Form.Get("userid"))
 	userjson := store.GetJSONUserByID(id)
 	fmt.Fprint(w, userjson)
+}
+func searchUserHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		http.WriteHeader(404)
+		return
+	}
+	w.Header().Set("Content-Type","application/json")
+	term := r.Form.Get("term")
+	response := store.GetJSONUsersByUsernames(term)
+	fmt.Fprint(w, response)
 }
 //Page functions to help with stuff
 func addCookie(w http.ResponseWriter, name string, value string) {
