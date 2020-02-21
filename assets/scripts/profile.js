@@ -64,6 +64,12 @@ function deleteUser() {
 		success: sendToHomePage
 	});
 }
+function deleteUserHandler() {
+	var r = confirm("Are you sure you want to delete your account?");
+	if (r) {
+		deleteUser();
+	}
+}
 function publicityChangeSuccess(data) {
 	//Change all Elements here
 	document.getElementById("publicityStatus").innerHTML = data;

@@ -174,6 +174,10 @@ func (store *dbStore) DeleteAccount(userID int) bool {
   if err != nil {
     return false
   }
+  _, err = store.db.Query("DELETE FROM posts WHERE userid=$1",userID)
+  if err != nil {
+    return false
+  }
   return true
 }
 func (store *dbStore) GetUsers() ([]*User, error) {
