@@ -465,7 +465,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	tagsRe := regexp.MustCompile("((#\\w+),?\\s?)")
 
 	TAGS := ""
-	matches := tagsRe.FindAllStringSubmatch(tags)
+	matches := tagsRe.FindAllStringSubmatch(tags, -1)
 	for _, group := range matches {
 		TAGS += group[2]
 	}
