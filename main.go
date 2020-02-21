@@ -445,6 +445,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		msg, err := r.Cookie("username")
 		var username string
 		if err != nil {
+			id, _ := strconv.Atoi(userid)
 			username = store.GetUserInfoById(id).username
 		} else {
 			username = msg.Value
