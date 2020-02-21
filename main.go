@@ -407,12 +407,13 @@ func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w,"Success")
 }
 func signoutHandler(w http.ResponseWriter, r *http.Request) {
-	c, err := r.Cookie("username")
-    if err != nil {
-        panic(err.Error())
-    }
-  c.Value = "Anonymous"
-  c.Expires = time.Unix(1414414788, 1414414788000)
+	cookie := http.Cookie{
+		Name : "username",
+		Value: "",
+		MaxAge: 0,
+		Path: "/",
+	}
+	http.SetCookie(w, &cookie)
 	fmt.Fprint(w,"Success")
 }
 func reportHandler(w http.ResponseWriter, r *http.Request) {
@@ -537,7 +538,7 @@ func searchPageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl, err := template.ParseFiles(TEMPLATES + "/search.html")
 	if err != nil {
-		http.WriteHeader(http.StatusInternalServerError)
+	  w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	tmpl.Execute(w, map[string]string{"username": msg.Value})
@@ -553,7 +554,7 @@ func HandleJSONUserById(w http.ResponseWriter, r *http.Request) {
 func searchUserHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		http.WriteHeader(404)
+		w.WriteHeader(404)
 		return
 	}
 	w.Header().Set("Content-Type","application/json")
