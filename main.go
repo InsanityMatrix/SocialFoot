@@ -217,6 +217,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
+		return
 	}
 	tmpl, err := template.ParseFiles(TEMPLATES + "/index.html")
 	if err != nil {
@@ -237,6 +238,7 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/", http.StatusSeeOther)
+		return
 	}
 	tmpl, err := template.ParseFiles(TEMPLATES + "/ProfileSettings.html")
 	if err != nil {
@@ -251,6 +253,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
+		return
 	}
 	tmpl, err := template.ParseFiles(TEMPLATES + "/post.html")
 	if err != nil {
@@ -275,6 +278,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
 	if err != nil {
 	 	http.Redirect(w,r,"/assets/", http.StatusSeeOther)
+		return
 	}
 	err = r.ParseForm()
 	if err != nil {
