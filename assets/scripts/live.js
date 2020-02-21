@@ -46,3 +46,9 @@ function putPostUsernames(data) {
   var id = data[0].id;
   $('p[id="' + id + '"').html(data[0].username);
 }
+
+$(document).ready(function() {
+  $("body").on("contextmenu",function(e){
+    return false;
+  });
+});
