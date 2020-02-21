@@ -246,7 +246,7 @@ func (store *dbStore) addUserByUsername(user *User, toAddID int) {
 
 //JSON FUNCTIONS
 func (store *dbStore) GetPublicPosts() []string {
-  rows, err := store.db.Query("SELECT * FROM posts WHERE publicity=$1",true)
+  rows, err := store.db.Query("SELECT * FROM posts WHERE publicity=$1 ORDER BY postid DESC",true)
 
 	if err != nil {
     var error []string

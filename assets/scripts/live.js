@@ -26,7 +26,9 @@ function getPublicPosts() {
       }
       var thisdate = mm + '/' + dd + '/' + yyyy;
       var text = "<div class='col-xs-12 post'><div class='row userinfo'><p class='col-xs-6 userName' id='" + data[i].userid + "'></p><p class='col-xs-6 postDate'>" + thisdate + "</p></div>";
-      text +=  "<div class='row'><div class='col-xs-12'><center><img class='postimg' src='" + imageLink + "' style='width:80%'></center></div></div></div>";
+      text +=  "<div class='row'><div class='col-xs-12'><center><img class='postimg' src='" + imageLink + "' style='width:80%'></center></div></div>";
+      text += "<div class='row'><div class='col-xs-4 postTags'></div><div class='col-xs-4 postCaption'>" + data[i].caption + "</div></div>";
+      text += "</div>";
       $("#posts").html(stuff + text);
       $.ajax({
         url: '/json/user/id',
@@ -44,4 +46,3 @@ function putPostUsernames(data) {
   var id = data[0].id;
   $('p[id="' + id + '"').html(data[0].username);
 }
-

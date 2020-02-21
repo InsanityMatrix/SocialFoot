@@ -438,11 +438,9 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	extension := strings.ToLower(filepath.Ext(header.Filename))
-
-
-
-
-
+	if !isPictureFile(extension) {
+		fmt.Fprint(w,"File type not supported.")
+	}
 
 	err = r.ParseForm()
 	if err != nil {

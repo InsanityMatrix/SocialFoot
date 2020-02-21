@@ -29,7 +29,7 @@ func sendAuthMail(recipient string, content string) {
 	from := "SocialFoot.noreply@gmail.com"
 	password := "password"
 	//Need to set OS Environment variable with mail password
-	
+
 	msg := "From: " + from + "\n" +
 	       "To: " + recipient + "\n" +
 	       "Subject: Email Authentication\n\n" +
@@ -42,4 +42,13 @@ func sendAuthMail(recipient string, content string) {
 		return
 	}
 	log.Print("Sent")
+}
+func isPictureFile(extension string) bool {
+	pictureExtensions := []string{".jpg", ".jpeg", ".jpe", ".jif",".jfif",".jfi",".png",".tiff",".tif",".raw",".arw",".cr2",".bmp",".webp"}
+	for _, ext := range pictureExtensions {
+		if extension == ext {
+			return true
+		}
+	}
+	return false
 }
