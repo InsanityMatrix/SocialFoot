@@ -128,7 +128,9 @@ func main() {
 		db.SetMaxIdleConns(4)
 		db.SetConnMaxLifetime(time.Hour)
 		InitStore(dbStore{db: db})
-		http.ListenAndServe(port, router)
+		for {
+			http.ListenAndServe(port, router)
+		}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -150,7 +152,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
         w.WriteHeader(http.StatusInternalServerError)
         return
     }
-
+		w.WriteHeader(200)
     //Get the information about the user from user info
     user.username = r.Form.Get("username")
     user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
@@ -274,7 +276,6 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, map[string]string{"username":user.username, "publicity":publicity, "xpublicity":xpublicity, "userid":strconv.Itoa(account.id)})
 }
 func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html")
 	msg, err := r.Cookie("username")
 	if err != nil {
 	 	http.Redirect(w,r,"/assets/", http.StatusSeeOther)
@@ -286,6 +287,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "text/html")
 	user := User{}
 	user.username = msg.Value
 	user.password = r.Form.Get("password")
