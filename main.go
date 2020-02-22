@@ -184,7 +184,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
   //Set Cookie with username
 		addCookie(w, "username", user.username)
 
-    http.Redirect(w, r, "/live/", http.StatusFound)
+    http.Redirect(w, r, "/live", http.StatusFound)
 }
 func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	user := User{}
