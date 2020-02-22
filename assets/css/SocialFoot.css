@@ -192,3 +192,9 @@ h2.bg-secondary {
   color: black;
   text-decoration: none;
 }
+.fixed-bottom {
+  position: fixed;
+  display: block;
+  width: 100%;
+  bottom: 0;
+}
