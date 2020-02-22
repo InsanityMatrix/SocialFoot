@@ -532,7 +532,7 @@ func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 
 func searchPageHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
-	if err == nil {
+	if err != nil {
 		http.Redirect(w,r,"/assets/login.html",http.StatusSeeOther)
 		return
 	}
