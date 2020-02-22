@@ -84,7 +84,7 @@ func newRouter() *mux.Router {
 
 		r.HandleFunc("/user/post/imagepost", imagePostHandler).Methods("POST")
 		r.HandleFunc("/posts/public", getPublicPostsHandler)
-		r.HandleFunc("/search", searchUserHandler)
+		r.HandleFunc("/search", searchUserHandler).Methods("POST")
 
 
 		//JSON stuff
