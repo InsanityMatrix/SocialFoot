@@ -62,6 +62,13 @@
       <script>
          var body = document.getElementById("body");
          body.removeChild(body.childNodes[0]);
+
+         var viewportChecker = setInterval(checkViewportWidth, 3000);
+         function checkViewportWidth() {
+           if(window.innerWidth >= 900) {
+             document.location.href = "/assets/";
+           }
+         }
       </script>
     </body>
 </html>
