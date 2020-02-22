@@ -43,14 +43,14 @@ func (store *dbStore) CreateUser(user *User) error {
   defer rows.Close()
   account := User{}
   if rows.Next() {
-  err = rows.Scan(&account.id)
-}
+    err = rows.Scan(&account.id)
+  }
   if err != nil {
     return err
   }
   _, err = store.db.Query("INSERT INTO user_settings(userid,publicity) VALUES ($1,$2)",account.id,true)
   if err != nil {
-    panic(err)
+    return err
   }
 	return err
 }

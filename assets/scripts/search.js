@@ -1,5 +1,5 @@
 $("input[name='search']").keypress(function(e){
-    var searchValue= $(this).val();
+    var searchValue= $("input[name='search']").val();
     searchFor(searchValue);
 });
 
@@ -17,4 +17,5 @@ function searchFor(searchValue) {
 
 function resultsSuccess(data) {
     //Parse JSON and display results
+    console.log(data);
 }
