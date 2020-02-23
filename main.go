@@ -577,7 +577,7 @@ func postTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprint(w, "Error")
 	}
-	fmt.Fprint(w, data)
+	fmt.Fprint(w, string(data))
 }
 //Page functions to help with stuff
 func addCookie(w http.ResponseWriter, name string, value string) {
