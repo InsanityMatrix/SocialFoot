@@ -7,6 +7,7 @@ package main
 import (
 	"database/sql"
 	"os"
+	"os/exec"
 	"strings"
 	"path/filepath"
 	"io"
@@ -133,9 +134,10 @@ func main() {
 		db.SetMaxIdleConns(4)
 		db.SetConnMaxLifetime(time.Hour)
 		InitStore(dbStore{db: db})
-		for {
-			http.ListenAndServe(port, router)
-		}
+		http.ListenAndServe(port, router)
+		cmd := exec.Command("(sleep 5; $HOME/go/src/github.com/InsanityMatrix/SocialFoot/SocialFoot &) &")
+		_ = cmd.Run()
+		return
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
