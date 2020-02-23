@@ -568,7 +568,12 @@ func searchUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 func postTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
-	data, err := ioutil.ReadFile(TEMPLATES + "/feed/post.html")
+	file, err := os.Open(TEMPLATES + "/feed/post.html")
+	if err != nil {
+		fmt.Fprint(w, "Error")
+	}
+	defer file.Close()
+	data, err := ioutil.ReadAll(file)
 	if err != nil {
 		fmt.Fprint(w, "Error")
 	}
