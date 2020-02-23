@@ -3,7 +3,7 @@ function executeHTMLTemplate(template, data) {
   for (var i = 0; i < dataLength; i++) {
     var key = Object.keys(data)[i];
     if (template.includes("{{." + key +"}}")) {
-      template = template.replaceAll("{{." + key + "}}", data[key]);
+      template = template.replace("{{." + key + "}}", data[key]);
     }
   }
   return template;
