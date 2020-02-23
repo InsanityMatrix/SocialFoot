@@ -1,4 +1,4 @@
-﻿package main
+package main
 //Help from https://www.sohamkamani.com/blog/2017/10/18/golang-adding-database-to-web-application/
 import (
     "database/sql"
@@ -49,6 +49,14 @@ func (store *dbStore) CreateUser(user *User) error {
     return err
   }
   _, err = store.db.Query("INSERT INTO user_settings(userid,publicity) VALUES ($1,$2)",account.id,true)
+  if err != nil {
+    return err
+  }
+  _, err = store.db.Query("CREATE TABLE user" + strconv.Itoa(account.id) + "_following(relID serial,userid int, followed date, PRIMARY KEY(relID) );")
+  if err != nil {
+    return err
+  }
+  _, err = store.db.Query("CREATE TABLE user" + strconv.Itoa(account.id) + "_followers(relID serial,userid int, followed date, PRIMARY KEY(relID) );")
   if err != nil {
     return err
   }
