@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"html/template"
 	"fmt"
+	"io/ioutil"
 	"regexp"
 	"time"
 		"log"
@@ -92,6 +93,9 @@ func newRouter() *mux.Router {
 		//report
 		r.HandleFunc("/report", reportHandler)
 		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
+
+		//TEMPLATES stuff
+		r.HandleFunc("/templates/post", postTemplateHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler)
 
@@ -561,6 +565,14 @@ func searchUserHandler(w http.ResponseWriter, r *http.Request) {
 	term := r.Form.Get("term")
 	response := store.GetJSONUsersByUsernames(term)
 	fmt.Fprint(w, response)
+}
+func postTemplateHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(200)
+	data, err := ioutile.ReadFile(TEMPLATES + "/feed/post.html")
+	if err != nil {
+		fmt.Fprint(w, "Error")
+	}
+	fmt.Fprint(w, data)
 }
 //Page functions to help with stuff
 func addCookie(w http.ResponseWriter, name string, value string) {
