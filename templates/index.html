@@ -30,25 +30,33 @@
                     <a href='/live'>
                       <img src="/assets/images/SocialFootLogo.png" width="100px">
                     </a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#utilities">
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
                 </div>
-                <ul class='nav navbar-nav'>
-                  <li class='active'><a href='/live'>Home</a></li>
-                  <li><a href='/live/search'>Search</a></li>
-                  <li><a href='/report'>Report</a></li>
-                </ul>
-                <ul class='nav navbar-nav navbar-right'>
-		              <li><a href='/live/post'>Post</a></li>
-                  <li class='dropdown'>
-                    <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
-                    <ul class='dropdown-menu'>
-                      <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
-                      <li class='dropdown-item'><a href='#'>Messages</a></li>
-                      <li class='dropdown-item'><a href='#'>Your Feed</a></li>
-                      <div class='dropdown-divider'></div>
-                      <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
-                    </ul>
-                  </li>
-                </ul>
+                <div class="collapse navbar-collapse" id="utilities">
+                  <ul class="nav navbar-nav">
+                  <ul class='nav navbar-nav'>
+                    <li class='active'><a href='/live'>Home</a></li>
+                    <li><a href='/live/search'>Search</a></li>
+                    <li><a href='/report'>Report</a></li>
+                  </ul>
+                  <ul class='nav navbar-nav navbar-right'>
+  		              <li><a href='/live/post'>Post</a></li>
+                    <li class='dropdown'>
+                      <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
+                      <ul class='dropdown-menu'>
+                        <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
+                        <li class='dropdown-item'><a href='#'>Messages</a></li>
+                        <li class='dropdown-item'><a href='#'>Your Feed</a></li>
+                        <div class='dropdown-divider'></div>
+                        <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
             </div>
         </nav>
 
