@@ -74,6 +74,13 @@ func (store *dbStore) followUser(follower int, followed int) error {
   }
   return nil
 }
+func (store *dbStore) isUserFollowing(follower int, followed int) bool {
+  row, err := store.db.QueryRow("SELECT * FROM user" + strconv.Itoa(follower) + "_following WHERE userid=$1", followed)
+  if err != nil {
+     return false
+  }
+  return true
+}
 func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string) int {
   dt := time.Now()
   rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type,posted,extension) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING postid",userid,publicity,tags,caption,"IMAGE",dt,extension)

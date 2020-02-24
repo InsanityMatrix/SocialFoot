@@ -85,6 +85,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/settings/user/delete", deleteUserHandler)
 		r.HandleFunc("/settings/user/signout", signoutHandler)
 		r.HandleFunc("/user/follow", followUserHandler)
+		r.HandleFunc("/user/isfollowing", isFollowingUserHandler)
 		r.HandleFunc("/user/post/imagepost", imagePostHandler).Methods("POST")
 		r.HandleFunc("/posts/public", getPublicPostsHandler)
 		r.HandleFunc("/search", searchUserHandler).Methods("POST")
@@ -626,6 +627,21 @@ func followUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprint(w, "Successfully followed this user!")
+}
+func isFollowingUserHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Fprint(w,err.Error())
+		return
+	}
+	userid, _ := strconv.Atoi(r.Form.Get("userid"))
+	profileid, _ := strconv.Atoi(r.Form.Get("profileid"))
+	isf = store.isUserFollowing(userid, profileid)
+	if isf {
+		fmt.Fprint(w, "1")
+		return
+	}
+	fmt.Fprint(w, "0")
 }
 func postTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
