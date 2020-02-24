@@ -1,7 +1,7 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
     <head>
-        <title>Home</title>
+        <title>{{.username}}'s Feed</title>
 		<meta charset='utf-8'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
@@ -39,7 +39,7 @@
                 <div class="collapse navbar-collapse" id="utilities">
                   <ul class="nav navbar-nav">
                   <ul class='nav navbar-nav'>
-                    <li class='active'><a href='/live'>Home</a></li>
+                    <li><a href='/live'>Home</a></li>
                     <li><a href='/live/search'>Search</a></li>
                     <li><a href='/report'>Report</a></li>
                   </ul>
@@ -50,7 +50,7 @@
                       <ul class='dropdown-menu'>
                         <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
                         <li class='dropdown-item'><a href='#'>Messages</a></li>
-                        <li class='dropdown-item'><a href='/live/feed'>Your Feed</a></li>
+                        <li class='dropdown-item' class='active'><a href='#'>Your Feed</a></li>
                         <div class='dropdown-divider'></div>
                         <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
                       </ul>
@@ -120,9 +120,7 @@
      </script>
 
      <script>
-       $(document).ready(function(){
-         loadFeed();
-       });
+         //TODO: Custom Feed Loading
      </script>
 
 
