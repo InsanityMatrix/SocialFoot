@@ -83,7 +83,9 @@ function follow(userid, profileid) {
     success: followedUser
   });
   function followedUser(data) {
-    console.log(data);
+    if(data == "Successfully followed this user!") {
+      followingAlert();
+    }
   }
 }
 $(document).ready(function() {

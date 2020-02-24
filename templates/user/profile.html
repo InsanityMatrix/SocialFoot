@@ -21,7 +21,7 @@
     </style>
     <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
     <script src="/assets/scripts/SocialFoot.js"></script>
-    <script src="/assets/scripts/live.js"></script>
+    <script src="/assets/scripts/live.js?version=2"></script>
   </head>
   <body id='body'>
     <nav class='navbar navbar-inverse bg-primary'>
@@ -78,10 +78,11 @@
           </div>
           <div class="row">
             <div class="col-md-offset-1 col-md-8">
+              <h4>Bio:</h4>
               <p>{{.bio}}</p>
             </div>
             <div class="col-md-2">
-              <h4>Location:</h4><br>
+              <h4>Location:</h4>
               <p>{{.location}}</p>
             </div>
           </div>
@@ -92,5 +93,10 @@
     <script>
        var body = document.getElementById("body");
        body.removeChild(body.childNodes[0]);
+
+       var username = "{{.viewingUsername}}";
+       function followingAlert() {
+         alert("You are now Following " + username);
+       }
     </script>
   </html>
