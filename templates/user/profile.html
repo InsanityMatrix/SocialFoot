@@ -98,7 +98,7 @@
        function followingAlert() {
          alert("You are now Following " + username);
        }
-       var followTimer(isFollowed, 1000, {{.userid}}, {{.profileid}});
+       var followTimer = setInterval(isFollowed, 1000, parseInt({{.userid}}), parseInt({{.profileid}}));
        function isFollowed(userid, profileid) {
          $.ajax({
            url: "/users/isfollowing",
