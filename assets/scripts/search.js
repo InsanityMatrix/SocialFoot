@@ -2,7 +2,10 @@ $("input[name='search']").keypress(function(e){
     var searchValue= $("input[name='search']").val();
     searchFor(searchValue);
 });
-
+function search() {
+  var searchValue = $("input[name='search']").val();
+  searchFor(searchValue);
+}
 function searchFor(searchValue) {
     //DO AJAX HERE
     $.ajax({

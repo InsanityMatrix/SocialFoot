@@ -55,9 +55,20 @@
 
         <!-- Body -->
         <div id='search-bar'>
-            <div class="input-group">
-                <span class="input-group-addon bg-primary" id="searchAddon">search</span>
-                <input type="text" class="form-control" aria-describedby="searchAddon" name="search">
+            <div class="form-group row">
+                <div class="col-xs-2">
+                  <!-- Empty Div for formatting searchbar -->
+                </div>
+                <div class="col-xs-6">
+                  <input type="text" class="form-control" aria-describedby="searchAddon" name="search">
+                </div>
+                <div class="col-xs-2">
+                  <!-- Search Button -->
+                  <button class="btn btn-primary btn-block" type="button" onclick="search()">
+                </div>
+                <div class="col-xs-2">
+                  <!-- More empty spacing -->
+                </div>
             </div>
         </div>
         <div id='search-results'>
