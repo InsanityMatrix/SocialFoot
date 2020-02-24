@@ -101,7 +101,7 @@
        var followTimer = setInterval(isFollowed, 1000, parseInt({{.userid}}), parseInt({{.profileid}}));
        function isFollowed(userid, profileid) {
          $.ajax({
-           url: "/users/isfollowing",
+           url: "/user/isfollowing",
            data: {
              "userid":userid,
              "profileid":profileid
