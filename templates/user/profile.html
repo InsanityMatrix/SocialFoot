@@ -109,7 +109,7 @@
            success: sIsFollowed
          });
          function sIsFollowed(data) {
-           var isf = parseInt(isf);
+           var isf = parseInt(data);
            if(isf == 1) {
              $("#followBtn").html("Followed");
              $("#followBtn").addClass("btn-light");
