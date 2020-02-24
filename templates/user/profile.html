@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Home</title>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+    <meta name='mobile-web-app-capable' content='yes'>
+    <!-- Bootstrap CSS -->
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
+    <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>
+    <style>
+      html,body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
+    <script src="/assets/scripts/SocialFoot.js"></script>
+    <script src="/assets/scripts/live.js"></script>
+  </head>
+  <body id='body'>
+    <nav class='navbar navbar-inverse bg-primary'>
+        <div class='container-fluid'>
+            <div class='navbar-header'>
+                <a href='/live'>
+                  <img src="/assets/images/SocialFootLogo.png" width="100px">
+                </a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#utilities">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="utilities">
+              <ul class="nav navbar-nav">
+              <ul class='nav navbar-nav'>
+                <li class='active'><a href='/live'>Home</a></li>
+                <li><a href='/live/search'>Search</a></li>
+                <li><a href='/report'>Report</a></li>
+              </ul>
+              <ul class='nav navbar-nav navbar-right'>
+                <li><a href='/live/post'>Post</a></li>
+                <li class='dropdown'>
+                  <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
+                  <ul class='dropdown-menu'>
+                    <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
+                    <li class='dropdown-item'><a href='#'>Messages</a></li>
+                    <li class='dropdown-item'><a href='#'>Your Feed</a></li>
+                    <div class='dropdown-divider'></div>
+                    <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2 bg-white rounded-10">
+          <h2 class="bg-secondary"> {{.viewingUsername}}'s Profile</h2>
+          <div class="row">
+            <div class="col-md-7 col-xs-4">
+              <h5>{{.gender}}, {{.age}}</h5>
+            </div>
+            <div class="col-md-1 col-xs-4">
+              <center>
+                <h5 class="setting-{{.publicity}}">{{.publicity}}</h5>
+              </center>
+            </div>
+            <div class="col-xs-4">
+              <button class="btn btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-offset-1 col-md-8">
+              <p>{{.bio}}</p>
+            </div>
+            <div class="col-md-2">
+              <h4>Location:</h4><br>
+              <p>{{.location}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+       var body = document.getElementById("body");
+       body.removeChild(body.childNodes[0]);
+    </script>
+  </html>

@@ -72,6 +72,20 @@ function serveFeed(template) {
     $('p[id="' + id + '"').html(data[0].username);
   }
 }
+
+function follow(userid, profileid) {
+  $.ajax({
+    url: "/user/follow",
+    data: {
+      "userid":userid,
+      "profileid":profileid
+    },
+    success: followedUser
+  });
+  function followedUser(data) {
+    console.log(data);
+  }
+}
 $(document).ready(function() {
   $("body").on("contextmenu",function(e){
     return false;

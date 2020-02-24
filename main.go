@@ -84,7 +84,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/settings/user/bio", changeBioHandler)
 		r.HandleFunc("/settings/user/delete", deleteUserHandler)
 		r.HandleFunc("/settings/user/signout", signoutHandler)
-
+		r.HandleFunc("/user/follow", followUserHandler)
 		r.HandleFunc("/user/post/imagepost", imagePostHandler).Methods("POST")
 		r.HandleFunc("/posts/public", getPublicPostsHandler)
 		r.HandleFunc("/search", searchUserHandler).Methods("POST")
@@ -597,9 +597,35 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	if userViewing.gender {
 		gender := "Male"
 	}
-	pageData := map[string]string{"userid": strconv.Itoa(account.id), "profileid": stronv.Itoa(userViewing.id), "location": settings.location, "bio": settings.bio, "publicity":publicity, "gender": gender}
+	pageData := map[string]string{"userid": strconv.Itoa(account.id), "profileid": stronv.Itoa(userViewing.id),
+		 "location": settings.location,
+		 "bio": settings.bio,
+		 "publicity":publicity,
+		 "gender": gender,
+		 "username": account.username,
+		 "viewingUsername": userViewing.username,
+		 "age": strconv.Itoa(userViewing.age) }
 	// TODO: MAKE & Parse Template
-	bro this will throw an error so I remember to do this
+	tmpl, err := template.ParseFiles(TEMPLATES + "/user/profile.html")
+	if err != nil {
+		fmt.Fprint(w, "404: Page not found")
+	}
+	tmpl.Execute(w, pageData)
+}
+func followUserHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Fprint(w,"Error Following User")
+		return
+	}
+	userid, _ := strconv.Atoi(r.Form.Get("userid"))
+	profileid, _ := strconv.Atoi(r.Form.Get("profileid"))
+	err = store.followUser(userid, profileid)
+	if err != nil {
+		fmt.Fprint(w,"Error Following User")
+		return
+	}
+	fmt.Fprint(w, "Successfully followed this user!")
 }
 func postTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)

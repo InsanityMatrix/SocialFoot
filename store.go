@@ -62,7 +62,7 @@ func (store *dbStore) CreateUser(user *User) error {
   }
 	return err
 }
-func (store *dbStore) followUser(follower int, followed int) {
+func (store *dbStore) followUser(follower int, followed int) error {
   dt := time.Now()
   _, err = store.db.Query("INSERT INTO user" + strconv.Itoa(followed) + "_followers(userid, followed) VALUE ($1,$2)",follower, dt)
   if err != nil {
@@ -72,6 +72,7 @@ func (store *dbStore) followUser(follower int, followed int) {
   if err != nil {
     return err
   }
+  return nil
 }
 func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string) int {
   dt := time.Now()

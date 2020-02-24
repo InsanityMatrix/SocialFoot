@@ -221,3 +221,10 @@ h2.bg-secondary {
 .result-gender {
   font-size: 15px;
 }
+
+.setting-Public {
+  color: #00cc00;
+}
+.setting-Private {
+  color: #ff0000;
+}
