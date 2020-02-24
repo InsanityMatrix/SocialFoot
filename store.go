@@ -64,7 +64,7 @@ func (store *dbStore) CreateUser(user *User) error {
 }
 func (store *dbStore) followUser(follower int, followed int) error {
   dt := time.Now()
-  _, err = store.db.Query("INSERT INTO user" + strconv.Itoa(followed) + "_followers(userid, followed) VALUE ($1,$2)",follower, dt)
+  _, err := store.db.Query("INSERT INTO user" + strconv.Itoa(followed) + "_followers(userid, followed) VALUE ($1,$2)",follower, dt)
   if err != nil {
     return err
   }

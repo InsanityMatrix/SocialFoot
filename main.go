@@ -572,7 +572,7 @@ func searchUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
-	userid, err := strconv.Atoi(p[len(p) - 1])
+	userid, err := strconv.Atoi(params[len(params) - 1])
 	if err != nil {
 		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
 		return
@@ -584,9 +584,9 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	account := store.GetUserInfo(&User{username: msg.Value})
 	//Use user id to get stuff.
-	userViewing := GetUserInfoById(userid)
+	userViewing := store.GetUserInfoById(userid)
 	//Now we have User so lets get user Settings
-	settings := store.GetUserSetting(userViewing)
+	settings := store.GetUserSettings(userViewing)
 	var publicity string
 	if settings.publicity {
 		publicity := "Public"
@@ -597,7 +597,7 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	if userViewing.gender {
 		gender := "Male"
 	}
-	pageData := map[string]string{"userid": strconv.Itoa(account.id), "profileid": stronv.Itoa(userViewing.id),
+	pageData := map[string]string{"userid": strconv.Itoa(account.id), "profileid": strconv.Itoa(userViewing.id),
 		 "location": settings.location,
 		 "bio": settings.bio,
 		 "publicity":publicity,
