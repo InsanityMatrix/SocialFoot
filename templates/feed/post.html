@@ -1,5 +1,5 @@
 <div class='col-xs-12 post' id="post_{{.postid}}">
-  <div class='row userinfo'>
+  <div class='row userinfo' onclick="goToUser(this)">
     <a href="/live/user/{{.userid}}" style="display:none;"></a>
     <p class='col-xs-6 userName' id='{{.userid}}'></p>
     <p class='col-xs-6 postDate'>{{.thisdate}}</p>

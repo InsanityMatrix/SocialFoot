@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
     <head>
         <title>Home</title>
@@ -113,6 +113,10 @@
         });
         var body = document.getElementById('body');
         body.removeChild(body.childNodes[0]);
+
+        function goToUser(elm) {
+          window.location = $(elm).find("a").attr("href");
+        }
      </script>
 
      <script>
