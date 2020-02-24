@@ -75,11 +75,12 @@ func (store *dbStore) followUser(follower int, followed int) error {
   return nil
 }
 func (store *dbStore) isUserFollowing(follower int, followed int) bool {
-  row, err := store.db.QueryRow("SELECT * FROM user" + strconv.Itoa(follower) + "_following WHERE userid=$1", followed)
+  var exists bool
+  err := store.db.QueryRow("SELECT exists (SELECT * FROM user" + strconv.Itoa(follower) + "_following WHERE userid=$1)", followed).Scan(&exists)
   if err != nil {
      return false
   }
-  return true
+  return exists
 }
 func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string) int {
   dt := time.Now()

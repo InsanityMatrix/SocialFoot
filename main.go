@@ -636,7 +636,7 @@ func isFollowingUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	userid, _ := strconv.Atoi(r.Form.Get("userid"))
 	profileid, _ := strconv.Atoi(r.Form.Get("profileid"))
-	isf = store.isUserFollowing(userid, profileid)
+	isf := store.isUserFollowing(userid, profileid)
 	if isf {
 		fmt.Fprint(w, "1")
 		return
