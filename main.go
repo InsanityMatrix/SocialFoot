@@ -615,14 +615,14 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 func followUserHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		fmt.Fprint(w,"Error Following User")
+		fmt.Fprint(w,err.Error())
 		return
 	}
 	userid, _ := strconv.Atoi(r.Form.Get("userid"))
 	profileid, _ := strconv.Atoi(r.Form.Get("profileid"))
 	err = store.followUser(userid, profileid)
 	if err != nil {
-		fmt.Fprint(w,"Error Following User")
+		fmt.Fprint(w,err.Error())
 		return
 	}
 	fmt.Fprint(w, "Successfully followed this user!")
