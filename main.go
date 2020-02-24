@@ -73,6 +73,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live/profile", profileHandler)
 		r.HandleFunc("/live/post", postHandler)
 		r.HandleFunc("/live/search",searchPageHandler)
+		r.HandleFunc("/live/user/{uid}", userProfileHandler)
 		r.HandleFunc("/live", liveIndexHandler)
 
 
@@ -568,6 +569,37 @@ func searchUserHandler(w http.ResponseWriter, r *http.Request) {
 	term := r.Form.Get("term")
 	response := store.GetJSONUsersByUsernames(term)
 	fmt.Fprint(w, response)
+}
+func userProfileHandler(w http.ResponseWriter, r *http.Request) {
+	params := strings.Split(r.URL.Path, "/")
+	userid, err := strconv.Atoi(p[len(p) - 1])
+	if err != nil {
+		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
+		return
+	}
+	msg, err := r.Cookie("username")
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusInternalServerError)
+		return
+	}
+	account := store.GetUserInfo(&User{username: msg.Value})
+	//Use user id to get stuff.
+	userViewing := GetUserInfoById(userid)
+	//Now we have User so lets get user Settings
+	settings := store.GetUserSetting(userViewing)
+	var publicity string
+	if settings.publicity {
+		publicity := "Public"
+	} else {
+		publicity := "Private"
+	}
+	gender := "Female"
+	if userViewing.gender {
+		gender := "Male"
+	}
+	pageData := map[string]string{"userid": strconv.Itoa(account.id), "profileid": stronv.Itoa(userViewing.id), "location": settings.location, "bio": settings.bio, "publicity":publicity, "gender": gender}
+	// TODO: MAKE & Parse Template
+	bro this will throw an error so I remember to do this
 }
 func postTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)

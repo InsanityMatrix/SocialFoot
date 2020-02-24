@@ -62,6 +62,17 @@ func (store *dbStore) CreateUser(user *User) error {
   }
 	return err
 }
+func (store *dbStore) followUser(follower int, followed int) {
+  dt := time.Now()
+  _, err = store.db.Query("INSERT INTO user" + strconv.Itoa(followed) + "_followers(userid, followed) VALUE ($1,$2)",follower, dt)
+  if err != nil {
+    return err
+  }
+  _, err = store.db.Query("INSERT INTO user" + strconv.Itoa(follower) + "_following(userid, followed) VALUE ($1, $2)",followed, dt)
+  if err != nil {
+    return err
+  }
+}
 func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string) int {
   dt := time.Now()
   rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type,posted,extension) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING postid",userid,publicity,tags,caption,"IMAGE",dt,extension)
