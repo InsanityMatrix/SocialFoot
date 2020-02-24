@@ -94,7 +94,10 @@ html,body {
           fileName = $(this).val().split("\\").slice(-1)[0];
           $(this).parent().parent().children("center").children("span").html(fileName);
         });
-
+        $(".userinfo").click(function() {
+          window.location = $(this).find("a").attr("href");
+          return false;
+        });
    </script>
 
 

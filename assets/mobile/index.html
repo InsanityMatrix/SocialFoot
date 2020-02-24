@@ -62,7 +62,25 @@
       <script>
          var body = document.getElementById("body");
          body.removeChild(body.childNodes[0]);
-
+         //Get Cookie
+         if(getCookie("username") != "") {
+           document.location.href = "/live";
+         }
+         function getCookie(cname) {
+           var name = cname + "=";
+           var decodedCookie = decodeURIComponent(document.cookie);
+           var ca = decodedCookie.split(';');
+           for(var i = 0; i < ca.length; i++) {
+             var c = ca[i];
+             while (c.charAt(0) == ' ') {
+               c = c.substring(1);
+             }
+             if(c.indexOf(name) == 0) {
+               return c.substring(name.length, c.length);
+             }
+           }
+           return "";
+         }
          var viewportChecker = setInterval(checkViewportWidth, 3000);
          function checkViewportWidth() {
            if(window.innerWidth >= 900) {
