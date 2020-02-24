@@ -589,13 +589,13 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	settings := store.GetUserSettings(userViewing)
 	var publicity string
 	if settings.publicity {
-		publicity := "Public"
+		publicity = "Public"
 	} else {
-		publicity := "Private"
+		publicity = "Private"
 	}
 	gender := "Female"
 	if userViewing.gender {
-		gender := "Male"
+		gender = "Male"
 	}
 	pageData := map[string]string{"userid": strconv.Itoa(account.id), "profileid": strconv.Itoa(userViewing.id),
 		 "location": settings.location,
