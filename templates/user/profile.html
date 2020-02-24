@@ -73,7 +73,7 @@
               </center>
             </div>
             <div class="col-xs-4">
-              <button class="btn btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
+              <button id="followBtn" class="btn btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
             </div>
           </div>
           <div class="row">
@@ -97,6 +97,29 @@
        var username = "{{.viewingUsername}}";
        function followingAlert() {
          alert("You are now Following " + username);
+       }
+       var followTimer(isFollowed, 1000, {{.userid}}, {{.profileid}});
+       function isFollowed(userid, profileid) {
+         $.ajax({
+           url: "/users/isfollowing",
+           data: {
+             "userid":userid,
+             "profileid":profileid
+           },
+           success: sIsFollowed
+         });
+         function sIsFollowed(data) {
+           var isf = parseInt(isf);
+           if(isf == 1) {
+             $("#followBtn").html("Followed");
+             $("#followBtn").addClass("btn-light");
+             $("#followBtn").removeClass("btn-info");
+           } else {
+             $("#followBtn").html("Follow");
+             $("#followBtn").addClass("btn-info");
+             $("#followBtn").removeClass("btn-light");
+           }
+         }
        }
     </script>
   </html>
