@@ -78,7 +78,9 @@ h2.bg-primary {
   margin: 0;
   padding: 10px;
   box-sizing: border-box;
-  width: 100%;
+  width: 100.25%;
+  border: none;
+  border-radius: 10px 10px 0 0;
   background-clip: border-box;
   text-align: center;
 }
@@ -103,13 +105,14 @@ h2 {
   background-color: #ff0000;
 }
 .feed {
-	-moz-border-radius: 10px 10px 0 0 !important;
-    -webkit-border-radius: 10px 10px 0 0 !important;
-    border-radius: 10px 10px 0 0 !important;
+	-moz-border-radius: 15px 15px 0 0 !important;
+  -webkit-border-radius: 15px 15px 0 0 !important;
+  border-radius: 15px 15px 0 0 !important;
 	background-color: white;
   padding-bottom: 50px;
   display:block;
   border: 1px solid #1a4941;
+  border-top:none;
 }
 
 input.label:empty {
@@ -262,4 +265,19 @@ h2.bg-secondary {
 }
 .setting-Private {
   color: #ff0000;
+}
+.separationator {
+  width: 0;
+  height: 0;
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  .separationator {
+    height: 10px;
+    width: 100%;
+    display:block;
+  }
+}
+.navbar {
+  border: none;
 }
