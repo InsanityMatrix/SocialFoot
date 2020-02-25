@@ -419,7 +419,7 @@ func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 func signoutHandler(w http.ResponseWriter, r *http.Request) {
 	c, err := r.Cookie("username")
-	if err != {
+	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
