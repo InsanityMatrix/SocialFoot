@@ -92,11 +92,20 @@ function follow(userid, profileid) {
     }
   }
 }
+var template;
 $(document).ready(function() {
   $("body").on("contextmenu",function(e){
     return false;
   });
+  $.ajax({
+    url: '/templates/post',
+    success: function(data) {
+      template = data;
+    }
+  });
 });
+
+
 function getUserPosts() {
   if(postsRec) {
     return
