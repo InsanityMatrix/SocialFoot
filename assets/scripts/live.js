@@ -118,6 +118,7 @@ function getUserPosts() {
       "uid": uid
     },
     success: function(data) {
+      data = JSON.parse(data);
       postsRec = true;
       var length = data.length;
       $("#posts").html("");
@@ -168,4 +169,8 @@ function getUserPosts() {
     }
   }
 });
+function putPostUsernames(data) {
+  var id = data[0].id;
+  $('p[id="' + id + '"').html(data[0].username);
+}
 }
