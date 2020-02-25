@@ -200,8 +200,7 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := r.ParseForm()
 	if err != nil {
-		fmt.Println(fmt.Errorf("Error: %v", err))
-		w.WriteHeader(http.StatusInternalServerError)
+		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
 		return
 	}
 
@@ -212,14 +211,17 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		//Username may not have been right
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
+		return
 	}
 	if comparePasswords(account.password, bytePass) {
 		//Logged In
 		addCookie(w,"username",account.username)
 
 		http.Redirect(w, r, "/live", http.StatusFound)
+		return
 	} else {
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
+		return
 	}
 
 }
