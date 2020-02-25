@@ -109,6 +109,7 @@ h2 {
 	background-color: white;
   padding-bottom: 50px;
   display:block;
+  border: 1px solid #1a4941;
 }
 
 input.label:empty {
