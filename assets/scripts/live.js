@@ -113,7 +113,7 @@ function getUserPosts() {
   var uid = document.getElementById("profileUserId").innerHTML;
   $.ajax({
     url: '/live/user/posts',
-    type: 'POST',
+    method: 'POST',
     data: {
       "uid": uid
     },
