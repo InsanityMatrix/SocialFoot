@@ -107,9 +107,6 @@ h2 {
     -webkit-border-radius: 10px 10px 0 0 !important;
     border-radius: 10px 10px 0 0 !important;
 	background-color: white;
-	box-shadow: 5px 5px 5px black;
-	-webkit-box-shadow: 5px 5px 5px black;
-  -moz-box-shadow: 5px 5px 5px black;
   padding-bottom: 50px;
   display:block;
 }
@@ -205,7 +202,6 @@ p.userName {
   background-clip:border-box;
   border: 1px solid grey;
   border-radius: 10px;
-  box-shadow: 5px 5px 2.5px grey;
 }
 .postDate {
   text-align: right;
