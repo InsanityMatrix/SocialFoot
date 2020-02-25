@@ -418,13 +418,13 @@ func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w,"Success")
 }
 func signoutHandler(w http.ResponseWriter, r *http.Request) {
-	cookie := http.Cookie{
-		Name : "username",
-		Value: "",
-		MaxAge: 0,
-		Path: "/",
+	c, err := r.Cookie("username")
+	if err != {
+		fmt.Println(err.Error())
+		return
 	}
-	http.SetCookie(w, &cookie)
+	c.Value = ""
+	c.Expires = time.Unix(1414414788, 1414414788000)
 	fmt.Fprint(w,"Success")
 }
 func reportHandler(w http.ResponseWriter, r *http.Request) {
