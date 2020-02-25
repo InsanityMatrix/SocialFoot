@@ -121,7 +121,12 @@ input.label {
   float: right;
   padding: .3em .6em .4em;
 }
-
+.navbar-toggle {
+  background-color: #1A4941;
+}
+.navbar-toggle:hover,.navbar-toggle:focus {
+  background-color:#082B25;
+}
 
 @media screen and (min-width: 768px) {
   .dropdown:hover .dropdown-menu, .btn-group:hover .dropdown-menu {
@@ -138,7 +143,37 @@ input.label {
 	}
 
 }
+.form-background {
+    background-image: linear-gradient(#5FC4B6,#5FC4B6, #1C9683, #1A4941);
+}
+.login {
+  background-color: #1C9683;
+  border: 4px solid white;
+  padding: 20px;
+  color: #CADBDA;
+}
 
+.login center h2 {
+  border-bottom: 3px solid #CADBDA;
+  border-radius: 5px;
+}
+.login-text {
+  background-color: transparent;
+  color: white;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid #082B25;
+  border-radius: 5px;
+  outline: none;
+}
+.login-text::placeholder, .login-text::-ms-input-placeholder {
+  color: #a4c1bf;
+  opacity: 1;
+}
+.login-text:focus {
+
+}
 #posts {
   padding: 20px;
 }
