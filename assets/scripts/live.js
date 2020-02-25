@@ -2,8 +2,8 @@ function signOut() {
   //ajax to signout for the server to interpret
   $.ajax({
     url: '/settings/user/signout'
+    success: function() {   window.location = "/assets/"; }
   });
-  window.location = "/assets/";
 }
 function loadFeed() {
   $.ajax({
