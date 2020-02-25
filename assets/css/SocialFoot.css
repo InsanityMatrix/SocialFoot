@@ -147,6 +147,8 @@ input.label {
 .form-background {
     background-image: linear-gradient(#5FC4B6,#7dcfc4, #c7eae6);
     background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: contain;
 }
 .login {
   background-color: rgba(255,255,255,1);
