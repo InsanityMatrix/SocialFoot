@@ -118,7 +118,6 @@ function getUserPosts() {
       "uid": uid
     },
     success: function(data) {
-      data = JSON.parse(data);
       postsRec = true;
       var length = data.length;
       $("#posts").html("");
