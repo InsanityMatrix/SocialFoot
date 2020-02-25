@@ -157,5 +157,6 @@ function getUserPosts() {
           success: putPostUsernames
         });
     }
-  });
+  }
+});
 }
