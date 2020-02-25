@@ -147,11 +147,11 @@ input.label {
     background-image: linear-gradient(#5FC4B6,#5FC4B6, #1C9683, #1A4941);
 }
 .login {
-  background-color: #1C9683;
+  background-color: rgba(255,255,255,1);
   border: 4px solid white;
   border-radius: 20px;
   padding: 20px;
-  color: #CADBDA;
+  color: #1A4941;
 }
 
 .login center h2 {
