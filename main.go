@@ -425,6 +425,7 @@ func signoutHandler(w http.ResponseWriter, r *http.Request) {
 		MaxAge: -1,
 		HttpOnly:true,
 	}
+	http.SetCookie(w, &c)
 	fmt.Fprint(w,"Success")
 }
 func reportHandler(w http.ResponseWriter, r *http.Request) {
