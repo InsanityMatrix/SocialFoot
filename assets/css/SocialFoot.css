@@ -71,8 +71,8 @@ body {
 .navbar-inverse .navbar-nav>.active>a,
 .bg-primary,ul li.active {
 	background-clip: content-box;
-	border-color: #082B25;
-	background-color: #082B25 !important;
+	border-color: #1a4941;
+	background-color: #1a4941 !important;
 }
 h2.bg-primary {
   margin: 0;
@@ -84,8 +84,8 @@ h2.bg-primary {
 }
 .bg-secondary {
 	background-clip: border-box;
-	border-color: #1A4941;
-	background-color: #1A4941 !important;
+	border-color: #082B25;
+	background-color: #082B25 !important;
 }
 .navbar {
   -moz-border-radius: 0px !important;
