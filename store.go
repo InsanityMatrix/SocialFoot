@@ -289,6 +289,17 @@ func (store *dbStore) GetPublicPosts() []string {
 
   return jsonify.Jsonify(rows)
 }
+func (store *dbStore) GetUsersPosts(userid int) []string {
+  rows, err := store.db.Query("SELECT * FROM posts WHERE userid=$1 ORDER BY postid DESC", userid)
+  if err != nil {
+    var error []string
+    error[0] = "{\"status\":\"error\"}"
+		return error
+  }
+  defer rows.Close()
+
+  return jsonify.Jsonify(rows)
+}
 func (store *dbStore) GetJSONUserByID(uid int) []string {
   rows, err := store.db.Query("SELECT id,username FROM users WHERE id=$1", uid)
   if err != nil {

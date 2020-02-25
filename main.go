@@ -74,6 +74,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live/post", postHandler)
 		r.HandleFunc("/live/search",searchPageHandler)
 		r.HandleFunc("/live/user/{uid}", userProfileHandler)
+		r.HandleFunc("/live/user/posts", userPostHandler)
 		r.HandleFunc("/live", liveIndexHandler)
 
 
@@ -664,13 +665,27 @@ func resultTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	file, err := os.Open(TEMPLATES + "/search/result.html")
 	if err != nil {
 		fmt.Fprint(w, "Error")
+		return
 	}
 	defer file.Close()
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
 		fmt.Fprint(w, "Error")
+		return
 	}
 	fmt.Fprint(w, string(data))
+}
+func userPostHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Fprint(w, "Error")
+		return
+	}
+
+	uid, _ := strconv.Atoi(r.Form.Get("uid"))
+	response := store.GetUsersPosts(uid)
+	fmt.Fprint(w, response)
+	return
 }
 //Page functions to help with stuff
 func addCookie(w http.ResponseWriter, name string, value string) {

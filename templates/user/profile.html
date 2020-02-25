@@ -22,6 +22,7 @@
     <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
     <script src="/assets/scripts/SocialFoot.js"></script>
     <script src="/assets/scripts/live.js?version=2"></script>
+
   </head>
   <body id='body'>
     <nav class='navbar navbar-inverse bg-primary'>
@@ -59,6 +60,7 @@
             </div>
         </div>
     </nav>
+    <p style="display:none" id="profileUserId">{{.profileid}}</p>
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2 bg-white rounded-10">
@@ -89,7 +91,39 @@
         </div>
       </div>
     </div>
+<br>
+    <div class='net container'>
+      <div id="discover" class='col-md-2 col-sm-12'>
+        <!-- TODO: Make a discover thing
+          - Make Script to hide this whole thing if device is smaller than 700px wide
+            -->
 
+            <script>
+              $(document).ready(function(){
+                if(window.innerWidth <= 900 && window.innerWidth > 0) {
+                  document.getElementById("discover").style.display = "none";
+                }
+              });
+            </script>
+      </div>
+      <div class='col-md-6 col-sm-12'>
+        <!-- Feed Here -->
+        <div class='h-auto feed'>
+          <center>
+            <h2 class='bg-primary'>Your Feed</h2>
+          </center>
+          <div class="row">
+            <div id="posts" class="net-fluid">
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='col-md-4 col-sm-12'>
+        <!-- TODO: Ads and stuff? -->
+      </div>
+    </div>
     <script>
        var body = document.getElementById("body");
        body.removeChild(body.childNodes[0]);
@@ -112,14 +146,18 @@
          function sIsFollowed(data) {
            var isf = parseInt(data);
            if(isf == 1) {
+             isFlwd = true;
              $("#followBtn").html("Followed");
              $("#followBtn").addClass("btn-light");
              $("#followBtn").removeClass("btn-info");
+             getUserPosts();
            } else {
+             isFlwd = false;
              $("#followBtn").html("Follow");
              $("#followBtn").addClass("btn-info");
              $("#followBtn").removeClass("btn-light");
            }
+
          }
        }
     </script>
