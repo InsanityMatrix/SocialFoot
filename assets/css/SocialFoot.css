@@ -156,6 +156,7 @@ input.label {
 .login center h2 {
   border-bottom: 3px solid #CADBDA;
   border-radius: 5px;
+  padding-bottom: 5px;
 }
 .login-text {
   background-color: transparent;
@@ -166,13 +167,14 @@ input.label {
   border-bottom: 2px solid #082B25;
   border-radius: 5px;
   outline: none;
+  box-shadow: none;
 }
 .login-text::placeholder, .login-text::-ms-input-placeholder {
   color: #a4c1bf;
   opacity: 1;
 }
 .login-text:focus {
-
+  outline: none;
 }
 #posts {
   padding: 20px;
