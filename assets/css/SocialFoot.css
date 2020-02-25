@@ -161,7 +161,7 @@ input.label {
 }
 .login-text {
   background-color: transparent;
-  color: white;
+  color: #1A4941;
   padding: 5px 10px;
   box-sizing: border-box;
   border: none;
@@ -171,7 +171,7 @@ input.label {
   box-shadow: none;
 }
 .login-text::placeholder, .login-text::-ms-input-placeholder {
-  color: #a4c1bf;
+  color: rgba(8,43,37,0.75);
   opacity: 1;
 }
 .login-text:focus {
