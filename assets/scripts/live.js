@@ -108,7 +108,7 @@ $(document).ready(function() {
 
 function getUserPosts() {
   if(postsRec) {
-    return
+    return;
   }
   var uid = parseInt(document.getElementById("profileUserId").innerHTML);
   $.ajax({
