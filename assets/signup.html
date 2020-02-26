@@ -20,14 +20,18 @@ html,body {
   </style>
 	<link rel="stylesheet" href="./css/SocialFoot.css">
 	</head>
-	<body id="body" class="form-background">
-			<nav class="navbar navbar-inverse bg-primary">
+	<body id="body" class="bg-feet">
+			<nav class="navbar navbar-transparent">
 					<div class="container-fluid">
+						<button type="button" class="navbar-toggle col-md-2 col-xs-3" data-toggle="collapse" data-target="#utilities" width="100%">
+								<img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
+						</button>
 							<div class="navbar-header">
 									<a href="/assets/">
 										<img src="./images/SocialFootLogo.png" width="100px">
 									</a>
 							</div>
+							<div class="collapse navbar-collapse" id="utilities">
 							<ul class="nav navbar-nav">
 								<li><a href="/assets/">Home</a></li>
 								<li><a href="#">Search</a></li>
@@ -37,11 +41,12 @@ html,body {
 								<li><a href="./login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 								<li class="active"><a href="./signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 							</ul>
+						</div>
 					</div>
 			</nav>
 			<div class="container-fluid">
 				<div class="row">
-					<form class="col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2 bg-white rounded-10" method="post" action="/forms/signup">
+					<form class=" login col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2" method="post" action="/forms/signup">
 						<center>
 							<h2 class="color-t">Sign Up</h2>
 						</center>
@@ -72,9 +77,7 @@ html,body {
 	                  </select>
 	              </div>
 	          </div>
-	          <center>
-	              <input style="margin-top:10px" type="submit" class="btn btn-primary" value="Sign Up">
-	          </center>
+	              <input style="margin-top:10px" type="submit" class="col-xs-4 col-xs-offset-4 btn block btn btn-primary color-t margin-b-10" value="Sign Up">
 					</form>
 				</div>
 			</div>
