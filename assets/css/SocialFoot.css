@@ -32,6 +32,9 @@
   background-repeat: no-repeat;
   background-size: 100% auto;
 }
+.bg-feet {
+  background-image: url('/assets/images/Feet.png');
+}
 .fa-1x {
 font-size: 1.5rem;
 }
