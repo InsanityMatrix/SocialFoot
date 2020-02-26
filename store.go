@@ -285,6 +285,17 @@ func (store *dbStore) addUserByUsername(user *User, toAddID int) {
 
 
 //JSON FUNCTIONS
+func (store *dbStore) GetFollowersAmount(userid int) int {
+  rows, err := store.db.Query("SELECT * FROM user" + strconv.Itoa(userid) + "_followers;")
+  if err != nil {
+    return 0
+  }
+  count := 0
+  for rows.Next() {
+    count++
+  }
+  return count
+}
 func (store *dbStore) GetPublicPosts() []string {
   rows, err := store.db.Query("SELECT * FROM posts WHERE publicity=$1 ORDER BY postid DESC",true)
 

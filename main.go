@@ -609,6 +609,7 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 		 "bio": settings.bio,
 		 "publicity":publicity,
 		 "gender": gender,
+		 "followers":strconv.Itoa(store.GetFollowersAmount(userViewing.id)),
 		 "username": account.username,
 		 "viewingUsername": userViewing.username,
 		 "age": strconv.Itoa(userViewing.age) }
