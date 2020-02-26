@@ -32,6 +32,12 @@
   background-repeat: no-repeat;
   background-size: 100% auto;
 }
+.fa-1x {
+font-size: 1.5rem;
+}
+.dark-blue-text {
+color: #0A38F5;
+}
 .color-t {
   text-decoration: none;
   font-family: 'Open Sans', sans-serif;
@@ -206,6 +212,7 @@ input.label {
   margin: 5px;
   border: 5px solid #eaebef;
   border-radius: 10px;
+  background-color: white;
 }
 .postimg {
   display: block;
@@ -247,6 +254,8 @@ h2.bg-secondary {
 }
 .postCaption {
   padding: 5px;
+  padding-left:20px;
+  padding-right:20px;
 }
 .fixed-bottom {
   position: fixed;
