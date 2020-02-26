@@ -66,6 +66,7 @@ var TEMPLATES string
 //Global variables
 func newRouter() *mux.Router {
     r := mux.NewRouter()
+		r.HandleFunc("/favicon.ico", faviconHandler)
     r.HandleFunc("/user", createUserHandler).Methods("POST")
 		r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
 		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
@@ -616,6 +617,9 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "404: Page not found")
 	}
 	tmpl.Execute(w, pageData)
+}
+func faviconHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/images/favicon.ico")
 }
 func followUserHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
