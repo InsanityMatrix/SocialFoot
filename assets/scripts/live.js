@@ -110,7 +110,7 @@ function getUserPosts() {
   if(postsRec) {
     return
   }
-  var uid = document.getElementById("profileUserId").innerHTML;
+  var uid = parseInt(document.getElementById("profileUserId").innerHTML);
   $.ajax({
     url: '/live/user/posts',
     method: 'POST',
@@ -168,8 +168,8 @@ function getUserPosts() {
     }
   }
 });
-function putPostUsernames(data) {
-  var id = data[0].id;
-  $('p[id="' + id + '"]').html(data[0].username);
-}
+  function putPostUsernames(data) {
+    var id = data[0].id;
+    $('p[id="' + id + '"]').html(data[0].username);
+  }
 }
