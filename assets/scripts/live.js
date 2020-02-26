@@ -69,7 +69,7 @@ function serveFeed(template) {
   }
   function putPostUsernames(data) {
     var id = data[0].id;
-    $('p[id="' + id + '"').html(data[0].username);
+    $('p[id="' + id + '"]').html(data[0].username);
   }
 }
 var isFlwd = false;
@@ -170,6 +170,6 @@ function getUserPosts() {
 });
 function putPostUsernames(data) {
   var id = data[0].id;
-  $('p[id="' + id + '"').html(data[0].username);
+  $('p[id="' + id + '"]').html(data[0].username);
 }
 }
