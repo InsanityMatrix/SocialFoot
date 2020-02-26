@@ -19,6 +19,7 @@ import (
 	"time"
 		"log"
     "net/http"
+		"golang.org/x/crypto/acme/autocert"
     "github.com/gorilla/mux"
 	 _ "github.com/lib/pq"
 )
@@ -114,6 +115,7 @@ func newRouter() *mux.Router {
     return r
 }
 func main() {
+		var m *autocert.Handler
     router := newRouter()
     portEnv := os.Getenv("PORT")
     port := ":" + portEnv
@@ -121,6 +123,24 @@ func main() {
 		TEMPLATES = "/root/go/src/github.com/InsanityMatrix/SocialFoot/templates"
 		url := os.Getenv("DATABASE_URL")
 		db, err := sql.Open("postgres", url)
+
+		dataDir := ".cert"
+		hostPolicy := func(ctx context.Context, host string) error {
+			allowedHost := "www.socialfoot.me"
+			if host == allowedHost {
+				return nil
+			}
+			return fmt.Errorf("acme/autocert: only %s host is allowed", allowedHost)
+		}
+
+	  m := &autocert.Manager{
+			Prompt: autocert.AcceptTOS,
+			HostPolicy: hostPolicy,
+			Cache: autocert.DirCache(dataDir),
+		}
+		router.Addr = ":443"
+		router.TLSConfig = &tls.Config{GetCertificate: m.GetCertificate}
+
 
 		if err != nil {
 			log.Fatalf("Connection error: %s", err.Error())
@@ -139,7 +159,10 @@ func main() {
 		db.SetMaxIdleConns(4)
 		db.SetConnMaxLifetime(time.Hour)
 		InitStore(dbStore{db: db})
-		http.ListenAndServe(port, router)
+		err := router.ListenAndServeTLS("","")
+		if err != nil {
+			log.Fatalf("httpsSrv.ListendAndServeTLS() failed with %s", err)
+		}
 		cmd := exec.Command("(sleep 5; $HOME/go/src/github.com/InsanityMatrix/SocialFoot/SocialFoot &) &")
 		_ = cmd.Run()
 		return
