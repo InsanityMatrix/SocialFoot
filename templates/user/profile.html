@@ -64,29 +64,31 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2 bg-white rounded-10">
-          <h2 class="color-t"> {{.viewingUsername}}'s Profile</h2>
           <div class="row">
-            <div class="col-md-5 col-xs-3">
-              <h5 class="color-t">{{.gender}}, {{.age}}</h5>
-            </div>
-            <div class="col-md-1 col-xs-4">
-              <div class="row">
-                <div class="col-xs-6">
-                  <center>
-                    <p class="light-text">Followers</p>
-                    <p class="info-text">{{.followers}}</p>
-                  </center>
-                </div>
-                <div class="col-xs-6">
-                  <center>
-                    <p class="light-text">Following</p>
-                  </center>
+            <h2 class="color-t"> {{.viewingUsername}}'s Profile</h2>
+            <div class="row">
+              <div class="col-md-5 col-xs-4">
+                <h5 class="color-t">{{.gender}}, {{.age}}</h5>
+              </div>
+              <div class="col-md-3 col-xs-4">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <center>
+                      <p class="light-text">Followers</p>
+                      <p class="info-text">{{.followers}}</p>
+                    </center>
+                  </div>
+                  <div class="col-xs-6">
+                    <center>
+                      <p class="light-text">Following</p>
+                    </center>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-            <div class="col-xs-4">
-              <button id="followBtn" class="btn btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
+
+              <div class="col-xs-4">
+                <button id="followBtn" class="btn btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
+              </div>
             </div>
           </div>
           <div class="row">
@@ -99,6 +101,8 @@
               <p>{{.location}}</p>
             </div>
           </div>
+        </div>
+
         </div>
       </div>
 <br>

@@ -188,11 +188,11 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 		user.password = hashAndSalt([]byte(user.password))
     //Append existing list of users with a new entry
     err = store.CreateUser(&user)
-	if err != nil {
-		log.Println(err)
-		fmt.Println(err)
-		return
-	}
+		if err != nil {
+			log.Println(err)
+			fmt.Println(err)
+			return
+		}
   //Set Cookie with username
 		addCookie(w, "username", user.username)
 		//Wait for like 1 second
