@@ -96,10 +96,14 @@ body {
 
 }
 .navbar-inverse .navbar-nav>.active>a,
-.bg-primary,ul li.active {
+.bg-primary {
 	background-clip: content-box;
 	border-color: #1a4941;
-	background-color: #1a4941 !important;
+	background-color: #1a4941;
+}
+ul li.active {
+  background-color: #f7f8fa;
+  background-clip: content-box;
 }
 h2.bg-primary {
   margin: 0;

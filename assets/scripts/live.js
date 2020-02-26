@@ -51,6 +51,7 @@ function serveFeed(template) {
           "thisdate":thisdate,
           "imageLink":imageLink,
           "tags": tagstext,
+          "likes": data[i].likes,
           "caption":data[i].caption,
           "postid":data[i].postid
         };
