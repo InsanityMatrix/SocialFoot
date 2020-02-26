@@ -68,7 +68,7 @@
               <div class="col-md-5 col-xs-4">
                 <h5 class="color-t">{{.gender}}, {{.age}}</h5>
               </div>
-              <div class="col-md-3 col-xs-4">
+              <div class="col-md-3 col-xs-8">
                 <div class="row">
                   <div class="col-xs-6">
                     <center>
@@ -83,9 +83,10 @@
                   </div>
                 </div>
               </div>
-
-              <div class="col-xs-4">
-                <button id="followBtn" class="btn btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
+            </div>
+            <div class="row">
+              <div class="col-xs-offset-2 col-xs-8">
+                <button id="followBtn" class="btn btn-block btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
               </div>
             </div>
           </div>

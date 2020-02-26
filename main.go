@@ -139,7 +139,7 @@ func main() {
 		db.SetMaxIdleConns(4)
 		db.SetConnMaxLifetime(time.Hour)
 		InitStore(dbStore{db: db})
-		http.ListenAndServeTLS(port, "https-server.crt","https-server.key", router)
+		http.ListenAndServe(port, router)
 		cmd := exec.Command("(sleep 5; $HOME/go/src/github.com/InsanityMatrix/SocialFoot/SocialFoot &) &")
 		_ = cmd.Run()
 		return
