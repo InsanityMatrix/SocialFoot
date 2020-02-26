@@ -226,7 +226,7 @@ input.label {
 }
 p.userName {
   text-align:left;
-  text-decoration: underline;
+  text-decoration: none;
   padding-left:15px;
   font-size: 20px;
 }
