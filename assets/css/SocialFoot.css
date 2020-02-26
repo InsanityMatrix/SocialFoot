@@ -50,12 +50,7 @@ color: #0A38F5;
   background-color: transparent;
   color: black;
 }
-.navbar-toggle {
-  background-color: #0A38F5;
-}
-.navbar-toggle:focus, .navbar-toggle:hover {
-  background-color: #082B25;
-}
+
 body {
   background-color: #f1f1f1;
 }
