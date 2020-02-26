@@ -1,2 +1,4 @@
 assets/uploads
 assets/uploads/*
+https-server.crt
+https-server.key
