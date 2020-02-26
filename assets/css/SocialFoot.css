@@ -227,10 +227,6 @@ p.userName {
   margin-bottom: 2px;
   box-sizing: border-box;
   padding: 5px;
-  width: 100%;
-  background-clip:border-box;
-  border: 1px solid grey;
-  border-radius: 10px;
 }
 .postDate {
   text-align: right;
@@ -250,7 +246,6 @@ h2.bg-secondary {
   display: inline-block;
 }
 .postCaption {
-  border-top : 1px solid grey;
   padding: 5px;
 }
 .fixed-bottom {
