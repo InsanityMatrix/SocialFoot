@@ -148,12 +148,6 @@ input.label {
   float: right;
   padding: .3em .6em .4em;
 }
-.navbar-toggle {
-  background-color: #1A4941;
-}
-.navbar-toggle:hover,.navbar-toggle:focus {
-  background-color:#082B25;
-}
 
 @media screen and (min-width: 768px) {
   .dropdown:hover .dropdown-menu, .btn-group:hover .dropdown-menu {
