@@ -185,6 +185,7 @@ input.label {
   padding: 5px;
   background-color: white;
   border: 4px solid #c1ebe5;
+  background-clip: border-box;
 }
 .login-text {
   background-color: transparent;
@@ -206,6 +207,9 @@ input.label {
 }
 #posts {
   padding: 20px;
+}
+.margin-b-10 {
+  margin-bottom: 10px;
 }
 .post {
   display: block;
