@@ -72,9 +72,9 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
 		r.HandleFunc("/live/profile", profileHandler)
 		r.HandleFunc("/live/post", postHandler)
+		r.HandleFunc("/live/user/posts", userPostHandler)
 		r.HandleFunc("/live/search",searchPageHandler)
 		r.HandleFunc("/live/user/{uid}", userProfileHandler)
-		r.HandleFunc("/live/user/posts", userPostHandler)
 		r.HandleFunc("/live", liveIndexHandler)
 
 
