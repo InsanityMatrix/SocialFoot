@@ -39,42 +39,44 @@ html,body {
 							</ul>
 					</div>
 			</nav>
-			<div class="net =">
-				<form class="paper container" method="post" action="/forms/signup">
-					<center>
-						<h2>Sign Up</h2>
-					</center>
-					<div class="form-group">
-						<label for="username">Username:</label>
-						<input type="text" class="form-control" id="username" name="username" placeholder="Username">
-					</div>
-					<div class="form-group">
-						<label for="email">Email:</label>
-						<input type="text" class="form-control" id="email" name="email" placeholder="Email">
-					</div>
-          <div class="form-group">
-						<label for="password">Password:</label>
-						<input type="password" class="form-control" id="password" name="password" placeholder="Password">
-					</div>
-          <div class="form-group">
-						<label for="cpassword">Confirm Password:</label>
-						<input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="Confirm Password">
-					</div>
-          <div class="row justify-content-md-center">
-              <div class="col-sm-6">
-                  <input type="text" class="form-control" name="age" id="age" placeholder="Age">
-              </div>
-              <div class="col-sm-6">
-                  <select class="form-control" id="gender" name="gender">
-                    <option value="true" selected>Male</option>
-                    <option value="false">Female</option>
-                  </select>
-              </div>
-          </div>
-          <center>
-              <input style="margin-top:10px" type="submit" class="btn btn-primary" value="Sign Up">
-          </center>
-				</form>
+			<div class="container-fluid">
+				<div class="row">
+					<form class="col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2 bg-white rounded-10" method="post" action="/forms/signup">
+						<center>
+							<h2 class="color-t">Sign Up</h2>
+						</center>
+						<div class="form-group">
+							<label for="username">Username:</label>
+							<input type="text" class="form-control" id="username" name="username" placeholder="Username">
+						</div>
+						<div class="form-group">
+							<label for="email">Email:</label>
+							<input type="text" class="form-control" id="email" name="email" placeholder="Email">
+						</div>
+	          <div class="form-group">
+							<label for="password">Password:</label>
+							<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+						</div>
+	          <div class="form-group">
+							<label for="cpassword">Confirm Password:</label>
+							<input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="Confirm Password">
+						</div>
+	          <div class="row justify-content-md-center">
+	              <div class="col-sm-6">
+	                  <input type="text" class="form-control" name="age" id="age" placeholder="Age">
+	              </div>
+	              <div class="col-sm-6">
+	                  <select class="form-control" id="gender" name="gender">
+	                    <option value="true" selected>Male</option>
+	                    <option value="false">Female</option>
+	                  </select>
+	              </div>
+	          </div>
+	          <center>
+	              <input style="margin-top:10px" type="submit" class="btn btn-primary" value="Sign Up">
+	          </center>
+					</form>
+				</div>
 			</div>
 
 	<script>
