@@ -682,7 +682,10 @@ func userPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type","application/json")
-	uid, _ := strconv.Atoi(r.Form.Get("uid"))
+	uid, err := strconv.Atoi(r.Form.Get("uid"))
+	if err != nil {
+		panic(err)
+	}
 	response := store.GetUsersPosts(uid)
 	fmt.Fprint(w, response)
 	return
