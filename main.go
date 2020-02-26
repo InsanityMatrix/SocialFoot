@@ -7,6 +7,7 @@ package main
 import (
 	"database/sql"
 	"os"
+	"crypto/tls"
 	"os/exec"
 	"strings"
 	"path/filepath"
@@ -16,6 +17,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"regexp"
+	"context"
 	"time"
 		"log"
     "net/http"
@@ -115,7 +117,7 @@ func newRouter() *mux.Router {
     return r
 }
 func main() {
-		var m *autocert.Handler
+		var m *autocert.Manager
     router := newRouter()
     portEnv := os.Getenv("PORT")
     port := ":" + portEnv
@@ -138,7 +140,6 @@ func main() {
 			HostPolicy: hostPolicy,
 			Cache: autocert.DirCache(dataDir),
 		}
-		router.Addr = ":443"
 		router.TLSConfig = &tls.Config{GetCertificate: m.GetCertificate}
 
 
@@ -159,7 +160,7 @@ func main() {
 		db.SetMaxIdleConns(4)
 		db.SetConnMaxLifetime(time.Hour)
 		InitStore(dbStore{db: db})
-		err := router.ListenAndServeTLS("","")
+		err := http.ListenAndServeTLS("",router)
 		if err != nil {
 			log.Fatalf("httpsSrv.ListendAndServeTLS() failed with %s", err)
 		}
