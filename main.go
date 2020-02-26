@@ -196,7 +196,6 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
   //Set Cookie with username
 		addCookie(w, "username", user.username)
 		//Wait for like 1 second
-		time.Sleep(1 * time.Second)
     http.Redirect(w, r, "/live", http.StatusFound)
 }
 func loginUserHandler(w http.ResponseWriter, r *http.Request) {
