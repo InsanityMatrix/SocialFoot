@@ -42,6 +42,7 @@ type FollowerResult struct {
 	FFollowed string
 }
 type FollowersPageData struct {
+	Activity string
 	Userid int
 	Username string
 	Followers []FollowerResult
@@ -88,6 +89,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live/profile", profileHandler)
 		r.HandleFunc("/live/post", postHandler)
 		r.HandleFunc("/live/user/followers/{uid}", userFollowersHandler)
+		r.HandleFunc("/live/user/following/{uid}", userFollowingHandler)
 		r.HandleFunc("/live/user/posts", userPostHandler)
 		r.HandleFunc("/live/search",searchPageHandler)
 		r.HandleFunc("/live/user/{uid}", userProfileHandler)
@@ -602,6 +604,35 @@ func searchUserHandler(w http.ResponseWriter, r *http.Request) {
 	response := store.GetJSONUsersByUsernames(term)
 	fmt.Fprint(w, response)
 }
+func userFollowingHandler(w http.ResponseWriter, r *http.Request) {
+	params := strings.Split(r.URL.Path, "/")
+	userid, err := strconv.Atoi(params[len(params) - 1])
+	if err != nil {
+		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
+		return
+	}
+	w.Header().Set("Content-Type","text/html")
+	userViewing := store.GetUserInfoById(userid)
+	followersJSON := store.GetUserFollowing(userid)
+	followersSTR := "["
+	for _, data := range followersJSON {
+		followersSTR += data
+	}
+	followersSTR += "]"
+
+	var result []Follower
+	json.Unmarshal([]byte(followersSTR),&result)
+	var fResult []FollowerResult
+	for _, fData := range result {
+		fUser := store.GetUserInfoById(fData.Userid)
+		followedDate, _ := time.Parse("2006-01-02T15:04:05Z", fData.Followed)
+		newResult := FollowerResult{FUsername: fUser.username, FFollowed: followedDate.Format("01/02/2006")}
+		fResult = append(fResult, newResult)
+	}
+
+	tmpl, _ := template.ParseFiles(TEMPLATES + "/user/followers.html")
+	tmpl.Execute(w, FollowersPageData{Activity: "Follows", Userid: userid, Username: userViewing.username, Followers: fResult})
+}
 func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
 	userid, err := strconv.Atoi(params[len(params) - 1])
@@ -629,7 +660,7 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl, _ := template.ParseFiles(TEMPLATES + "/user/followers.html")
-	tmpl.Execute(w, FollowersPageData{Userid: userid, Username: userViewing.username, Followers: fResult})
+	tmpl.Execute(w, FollowersPageData{Activity: "Followers", Userid: userid, Username: userViewing.username, Followers: fResult})
 }
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
