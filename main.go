@@ -590,11 +590,12 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
 		return
 	}
-	msg, err := r.Cookie("username")
+	/*msg, err := r.Cookie("username")
 	if err != nil {
 		http.Redirect(w, r, "/", http.StatusInternalServerError)
 		return
 	}
+	*/
 	//account := store.GetUserInfo(&User{username: msg.Value})
 	//userViewing := store.GetUserInfoById(userid)
 	followersJSON := store.GetUserFollowers(userid)
