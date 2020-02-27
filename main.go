@@ -595,8 +595,8 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusInternalServerError)
 		return
 	}
-	account := store.GetUserInfo(&User{username: msg.Value})
-	userViewing := store.GetUserInfoById(userid)
+	//account := store.GetUserInfo(&User{username: msg.Value})
+	//userViewing := store.GetUserInfoById(userid)
 	followersJSON := store.GetUserFollowers(userid)
 	followersSTR := ""
 	for _, data := range followersJSON {
