@@ -54,7 +54,7 @@ func isPictureFile(extension string) bool {
 }
 func badReport(content string) bool {
 	blackList := []string{
-		"gay","gei","gae","gey"
+		"gay","gei","gae","gey",
 	}
 	spam := []string{"1", "gay", "bad", "Hi", "Hello"}
 
