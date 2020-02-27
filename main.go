@@ -42,6 +42,7 @@ type FollowerResult struct {
 	FFollowed string
 }
 type FollowersPageData struct {
+	Userid int
 	Username string
 	Followers []FollowerResult
 }
@@ -617,7 +618,7 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl, _ := template.ParseFiles(TEMPLATES + "/user/followers.html")
-	tmpl.Execute(w, FollowersPageData{Username: userViewing.username, Followers: fResult})
+	tmpl.Execute(w, FollowersPageData{Userid: userid, Username: userViewing.username, Followers: fResult})
 }
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
