@@ -21,8 +21,8 @@ html,body {
   </style>
   <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
     </head>
-<body id='body' class="form-background">
-	<nav class='navbar navbar-inverse bg-primary'>
+<body id='body' class="bg-feet">
+	<nav class='navbar navbar-transparent'>
 	    <div class='container-fluid'>
 			<div class='navbar-header'>
 				<a href='/'>
@@ -38,7 +38,7 @@ html,body {
 		<form method="post" enctype='multipart/form-data' action="/user/post/imagepost"  class="big-paper">
       <div class="row">
         <div class="col-xs-12 col-md-4">
-          <label class="btn btn-primary search-file-btn btn-large">
+          <label class="btn btn-primary search-file-btn btn-large color-t">
 			     <input type="file" name="upload" id="FileUpload" style="display:none;"> <span>Choose file</span>
           </label>
           <br>
@@ -49,20 +49,23 @@ html,body {
         <div class="col-xs-12 col-md-8">
           <div class="row">
 	        <center>
-            <div class="col-md-5 col-xs-12 post-options">
-              <div class="input-group padding-md">
-                <span class="input-group-addon" id="tags-addon">Tags</span>
-                <input type="text" class="form-control" aria-describedby="tags-addon" placeholder="Tags..." name="tags">
+            <div class="row col-md-5 col-sm-12">
+              <div class="col-xs-12 post-options">
+                <div class="input-group padding-md">
+                  <span class="input-group-addon" id="tags-addon">Tags</span>
+                  <input type="text" class="form-control" aria-describedby="tags-addon" placeholder="Tags..." name="tags">
+                </div>
               </div>
             </div>
-            <div class="separationator"></div>
-            <div class="col-md-5 col-xs-12 post-options">
-              <div class="input-group  padding-md">
-                <span class="input-group-addon" id="post-type-addon">Post Type</span>
-                <select name="type" class="form-control" aria-describedby="post-type-addon">
-                  <option value="{{.publicity}}">{{.publicity}}</option>
-                  <option value="{{.xpublicity}}">{{.xpublicity}}</option>
-                </select>
+            <div class="row col-md-5 col-sm-12">
+              <div class="col-xs-12 post-options">
+                <div class="input-group  padding-md">
+                  <span class="input-group-addon" id="post-type-addon">Post Type</span>
+                  <select name="type" class="form-control" aria-describedby="post-type-addon">
+                    <option value="{{.publicity}}">{{.publicity}}</option>
+                    <option value="{{.xpublicity}}">{{.xpublicity}}</option>
+                  </select>
+                </div>
               </div>
             </div>
 	        </center>
