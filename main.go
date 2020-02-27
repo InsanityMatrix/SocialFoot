@@ -42,7 +42,7 @@ type FollowerResult struct {
 	FFollowed string
 }
 type FollowersPageData struct {
-	username string
+	Username string
 	Followers []FollowerResult
 }
 type UserSettings struct {
@@ -598,6 +598,7 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
 		return
 	}
+	w.Header().Set("Content-Type","text/html")
 	userViewing := store.GetUserInfoById(userid)
 	followersJSON := store.GetUserFollowers(userid)
 	followersSTR := "["
@@ -616,7 +617,7 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl, _ := template.ParseFiles(TEMPLATES + "/user/followers.html")
-	tmpl.Execute(w, FollowersPageData{username: userViewing.username, Followers: fResult})
+	tmpl.Execute(w, FollowersPageData{Username: userViewing.username, Followers: fResult})
 }
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
