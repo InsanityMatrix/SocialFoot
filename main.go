@@ -178,7 +178,6 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
         w.WriteHeader(http.StatusInternalServerError)
         return
     }
-		w.WriteHeader(200)
     //Get the information about the user from user info
     user.username = r.Form.Get("username")
     user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
