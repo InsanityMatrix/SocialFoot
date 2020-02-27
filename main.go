@@ -599,17 +599,17 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 	//account := store.GetUserInfo(&User{username: msg.Value})
 	//userViewing := store.GetUserInfoById(userid)
 	followersJSON := store.GetUserFollowers(userid)
-	followersSTR := ""
+	followersSTR := "["
 	for _, data := range followersJSON {
 		followersSTR += data
 	}
+	followersSTR += "]"
 
 	var result []Follower
 	json.Unmarshal([]byte(followersSTR),&result)
 
 	fmt.Fprintf(w,"Followers: %+v", result)
 	fmt.Fprint(w,"\n" + followersSTR)
-	fmt.Fprint(w, followersJSON)
 }
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
