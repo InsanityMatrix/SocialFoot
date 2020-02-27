@@ -263,6 +263,7 @@ h2.bg-secondary {
 .postTag {
   color: #27a5db;
   padding: 4px;
+  margin: 5px;
   background-color: white;
   border: 1px solid grey;
   border-radius: 5px;
