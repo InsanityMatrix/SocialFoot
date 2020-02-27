@@ -612,7 +612,8 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 	var fResult []FollowerResult
 	for _, fData := range result {
 		fUser := store.GetUserInfoById(fData.Userid)
-		newResult := FollowerResult{FUsername: fUser.username, FFollowed: fData.Followed}
+		followedDate, err := time.Parse("2006-01-02T15:04:05Z", fData.Followed)
+		newResult := FollowerResult{FUsername: fUser.username, FFollowed: followedDate.Format("01/02/2006")}
 		fResult = append(fResult, newResult)
 	}
 
