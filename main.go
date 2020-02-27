@@ -202,7 +202,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
   //Set Cookie with username
 		addCookie(w, "username", user.username)
 		//Wait for like 1 second
-    http.Redirect(w, r, "/live", http.StatusFound)
+    http.Redirect(w, r, "/live", http.StatusSeeOther)
 }
 func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	user := User{}
@@ -226,7 +226,7 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 		//Logged In
 		addCookie(w,"username",account.username)
 
-		http.Redirect(w, r, "/live", http.StatusFound)
+		http.Redirect(w, r, "/live", http.StatusSeeOther)
 		return
 	} else {
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
