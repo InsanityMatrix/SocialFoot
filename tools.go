@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/smtp"
 	"golang.org/x/crypto/bcrypt"
+	"strings"
 )
 
 func hashAndSalt(pwd []byte) string {
