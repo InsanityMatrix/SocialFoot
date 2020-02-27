@@ -52,3 +52,22 @@ func isPictureFile(extension string) bool {
 	}
 	return false
 }
+func badReport(content string) bool {
+	blackList := []string{
+		"gay","gei","gae","gey"
+	}
+	spam := []string{"1", "gay", "bad", "Hi", "Hello"}
+
+	for _, blacklisted := range blackList {
+	  blacklisted = " " + blacklisted + " "
+		if strings.Contains(content, blacklisted) {
+			return true
+		}
+	}
+	for _, spamMessage := range spam {
+		if content == spamMessage {
+			return true
+		}
+	}
+	return false
+}

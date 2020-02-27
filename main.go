@@ -543,10 +543,13 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 }
 func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
-	username := "Anonymous"
-	if err == nil {
-		username = msg.Value
+
+	if err != nil {
+		http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
+		return
 	}
+
+	username := msg.Value
 	err = r.ParseForm()
 	if err != nil {
 		fmt.Println(fmt.Errorf("Error: %v", err))
@@ -555,6 +558,14 @@ func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	content := r.Form.Get("report")
+	if content == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+	if badReport(content) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	store.SubmitBugReport(username, content)
 	http.Redirect(w, r, "/live", http.StatusSeeOther)
 }

@@ -22,7 +22,7 @@ html,body {
   <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
   <script src="/assets/scripts/live.js"></script>
     </head>
-    <body id='body'>
+    <body id='body' class="bg-feet">
         <nav class='navbar navbar-transparent'>
             <div class='container-fluid'>
               <button type="button" class="navbar-toggle col-md-2 col-xs-3" data-toggle="collapse" data-target="#utilities">
@@ -60,11 +60,11 @@ html,body {
 
 	<div class='net container'>
 		<div class='col-md-9 col-sm-12'>
-			<div class='feed'>
+			<div class='login'>
 				<center>
-					<h2 class='bg-primary'>Submit Bug Report</h2>
+					<h2 class='color-t'>Submit Bug Report</h2>
 				</center>
-        <form class='container' style="width:100%" method="post" action="/report/submit/bugreport">
+        <form style="width:100%" method="post" action="/report/submit/bugreport">
           <div class="row">
             <div class="input-group col-xs-10 col-xs-offset-1">
               <span class="input-group-addon" id="content-addon">Report:</span>
@@ -76,7 +76,6 @@ html,body {
               <input type='submit' class=" btn-block w-100 btn btn-info" name="submit" value="Submit">
             </div>
           </div>
-
         </form>
 			</div>
 		</div>
