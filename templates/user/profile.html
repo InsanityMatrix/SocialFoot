@@ -70,7 +70,7 @@
               </div>
               <div class="col-md-3 col-xs-8">
                 <div class="row">
-                  <div class="col-xs-6" onclick="getProfileFollowers()">
+                  <div class="col-xs-6" id="profileFollowers">
                     <center>
                       <p class="light-text">Followers</p>
                       <p class="info-text">{{.followers}}</p>
@@ -117,7 +117,12 @@
     <script>
        var body = document.getElementById("body");
        body.removeChild(body.childNodes[0]);
-
+       $(document).ready(function() {
+         $("#profileFollowers").click(function() {
+           var loc = parseInt({{.profileid}});
+           window.locaton = "/live/user/followers/" + loc;
+         });
+       });
        var username = "{{.viewingUsername}}";
        function followingAlert() {
          alert("You are now Following " + username);
@@ -149,11 +154,6 @@
            }
 
          }
-       }
-
-       function getProfileFollowers() {
-         var loc = parseInt({{.profileid}});
-         window.locaton = "/live/user/followers/" + loc;
        }
     </script>
   </html>

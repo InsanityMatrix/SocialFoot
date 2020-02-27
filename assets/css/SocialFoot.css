@@ -335,3 +335,6 @@ h2.bg-secondary {
 .user-basic {
   padding-left: 20px;
 }
+.b-collapse {
+  border-collapse: collapse;
+}

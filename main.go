@@ -37,6 +37,14 @@ type Follower struct {
 	Userid int `json:"userid"`
 	Followed string `json:"followed"`
 }
+type FollowerResult struct {
+	FUsername string
+	FFollowed string
+}
+type FollowersPageData struct {
+	username string
+	Followers []FollowerResult
+}
 type UserSettings struct {
 	id int
 	bio string
@@ -590,14 +598,7 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
 		return
 	}
-	/*msg, err := r.Cookie("username")
-	if err != nil {
-		http.Redirect(w, r, "/", http.StatusInternalServerError)
-		return
-	}
-	*/
-	//account := store.GetUserInfo(&User{username: msg.Value})
-	//userViewing := store.GetUserInfoById(userid)
+	userViewing := store.GetUserInfoById(userid)
 	followersJSON := store.GetUserFollowers(userid)
 	followersSTR := "["
 	for _, data := range followersJSON {
@@ -607,9 +608,15 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 
 	var result []Follower
 	json.Unmarshal([]byte(followersSTR),&result)
+	var fResult []FollowerResult
+	for _, fData := range result {
+		fUser := store.GetUserInfoById(fData.Userid)
+		newResult := FollowerResult{FUsername: fUser.username, FFollowed: fData.Followed}
+		fResult = append(fResult, newResult)
+	}
 
-	fmt.Fprintf(w,"Followers: %+v", result)
-	fmt.Fprint(w,"\n" + followersSTR)
+	tmpl, _ := template.ParseFiles(TEMPLATES + "/user/followers.html")
+	tmpl.Execute(w, FollowersPageData{username: userViewing.username, Followers: fResult})
 }
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
