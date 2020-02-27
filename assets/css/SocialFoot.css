@@ -341,3 +341,6 @@ h2.bg-secondary {
 .b-collapse {
   border-collapse: collapse;
 }
+.navbar-header a {
+  float: left;
+}
