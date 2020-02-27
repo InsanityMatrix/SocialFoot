@@ -33,9 +33,9 @@ type User struct {
     email string `json:"email"`
 }
 type Follower struct {
-	relid int `json:"relid"`
-	userid int `json:"userid"`
-	followed string `json:"followed"`
+	Relid int `json:"relid"`
+	Userid int `json:"userid"`
+	Followed string `json:"followed"`
 }
 type UserSettings struct {
 	id int
@@ -608,6 +608,8 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal([]byte(followersSTR),&result)
 
 	fmt.Fprintf(w,"Followers: %+v", result)
+	fmt.Fprint(w,"\n" + followersSTR)
+	fmt.Fprint(w, followersJSON)
 
 }
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
