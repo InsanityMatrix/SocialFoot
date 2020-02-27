@@ -16,6 +16,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"regexp"
+	"encoding/json"
 	"time"
 		"log"
     "net/http"
@@ -31,7 +32,11 @@ type User struct {
     password string `json:"password"`
     email string `json:"email"`
 }
-
+type Follower struct {
+	relid int `json:"relid"`
+	userid int `json:"userid"`
+	followed string `json:"followed"`
+}
 type UserSettings struct {
 	id int
 	bio string
@@ -73,6 +78,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
 		r.HandleFunc("/live/profile", profileHandler)
 		r.HandleFunc("/live/post", postHandler)
+		r.HandleFunc("/live/user/followers/{uid}", userFollowersHandler)
 		r.HandleFunc("/live/user/posts", userPostHandler)
 		r.HandleFunc("/live/search",searchPageHandler)
 		r.HandleFunc("/live/user/{uid}", userProfileHandler)
@@ -577,6 +583,32 @@ func searchUserHandler(w http.ResponseWriter, r *http.Request) {
 	response := store.GetJSONUsersByUsernames(term)
 	fmt.Fprint(w, response)
 }
+func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
+	params := strings.Split(r.URL.Path, "/")
+	userid, err := strconv.Atoi(params[len(params) - 1])
+	if err != nil {
+		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
+		return
+	}
+	msg, err := r.Cookie("username")
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusInternalServerError)
+		return
+	}
+	account := store.GetUserInfo(&User{username: msg.Value})
+	userViewing := store.GetUserInfoById(userid)
+	followersJSON := store.GetUserFollowers(userid)
+	followersSTR := ""
+	for _, data := range followersJSON {
+		followersSTR += data
+	}
+
+	var result []Follower
+	json.Unmarshal([]byte(followersSTR),&result)
+
+	fmt.Fprintf(w,"Followers: %+v", result)
+
+}
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
 	userid, err := strconv.Atoi(params[len(params) - 1])
@@ -610,6 +642,7 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 		 "publicity":publicity,
 		 "gender": gender,
 		 "followers":strconv.Itoa(store.GetFollowersAmount(userViewing.id)),
+		 "following":strconv.Itoa(store.GetFollowingAmount(userViewing.id)),
 		 "username": account.username,
 		 "viewingUsername": userViewing.username,
 		 "age": strconv.Itoa(userViewing.age) }

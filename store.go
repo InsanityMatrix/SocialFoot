@@ -285,8 +285,26 @@ func (store *dbStore) addUserByUsername(user *User, toAddID int) {
 
 
 //JSON FUNCTIONS
+func (store *dbStore) GetUserFollowers(userid int) []string {
+  rows, err := store.db.Query("SELECT * FROM user" + strconv.Itoa(userid) + "_followers ORDER BY followed DESC")
+  if err != nil {
+    return []string{"Failed","Failed"}
+  }
+  return jsonify.Jsonify(rows)
+}
 func (store *dbStore) GetFollowersAmount(userid int) int {
   rows, err := store.db.Query("SELECT * FROM user" + strconv.Itoa(userid) + "_followers;")
+  if err != nil {
+    return 0
+  }
+  count := 0
+  for rows.Next() {
+    count++
+  }
+  return count
+}
+func (store *dbStore) GetFollowingAmount(userid int) int {
+  rows, err := store.db.Query("SELECT * FROM user" + strconv.Itoa(userid) + "_following;")
   if err != nil {
     return 0
   }
