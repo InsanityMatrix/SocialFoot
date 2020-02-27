@@ -610,7 +610,6 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w,"Followers: %+v", result)
 	fmt.Fprint(w,"\n" + followersSTR)
 	fmt.Fprint(w, followersJSON)
-
 }
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
