@@ -21,14 +21,18 @@
     </style>
     <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
   </head>
-  <body id="body">
-    <nav class='navbar navbar-inverse bg-primary'>
+  <body id="body" class="bg-feet">
+    <nav class='navbar navbar-transparent'>
         <div class='container-fluid'>
+          <button type="button" class="navbar-toggle col-md-1 col-xs-2" data-toggle="collapse" data-target="#utilities">
+              <img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
+          </button>
             <div class='navbar-header'>
                 <a href='/live'>
                   <img src="/assets/images/SocialFootLogo.png" width="100px">
                 </a>
             </div>
+              <div class="collapse navbar-collapse" id="utilities">
             <ul class='nav navbar-nav'>
               <li><a href='/live'>Home</a></li>
               <li><a href='/live/search'>Search</a></li>
@@ -47,6 +51,7 @@
                 </ul>
               </li>
             </ul>
+          </div>
         </div>
     </nav>
     <script>
@@ -54,9 +59,11 @@
        body.removeChild(body.childNodes[0]);
     </script>
     <div class="container">
-      <div class="paper">
-        <h2 class='bg-secondary'>Post Status</h2>
-        <p>{{.status}}</p>
+      <div class="login col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2">
+        <center>
+          <h2 class='color-t'>Post Status</h2>
+        </center>
+        <p class=" margin-b-10 margin-t-10">{{.status}}</p>
       </div>
     </div>
     <script src="/assets/scripts/live.js"></script>
