@@ -58,7 +58,7 @@ func encryptFile(filename string, data []byte) {
   defer f.Close()
   f.Write(encrypt(data))
 }
-func decryptFile(filename string, data []byte) {
+func decryptFile(filename string) []byte {
   data, _ := ioutil.ReadFile("/root/go/src/github.com/InsanityMatrix/SocialFoot/messages/" + filename)
   return decrypt(data)
 }
