@@ -32,7 +32,7 @@ func setEncryptedCookie(w http.ResponseWriter, name string, data []byte) {
 	ciphertext := gcm.Seal(nonce, nonce, data, nil)
 	cookie := http.Cookie{
 		Name: name,
-		Value: string(ciphertext),
+		Value: hex.EncodeToString(ciphertext),
 		Path: "/",
 		MaxAge: 86400,
 	}
@@ -53,7 +53,10 @@ func decryptCookie(r *http.Request, name string) (string, error) {
 	if err != nil {
 		return  "", err
 	}
-	data := []byte(msg.Value)
+	data, err := hex.DecodeString(msg.Value)
+	if err != nil {
+		return "", err
+	}
 	nonceSize := gcm.NonceSize()
 	nonce, ciphertext := data[:nonceSize], data[nonceSize:]
 	plaintext, err := gcm.Open(nil, nonce, ciphertext, nil)
