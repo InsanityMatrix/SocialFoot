@@ -523,16 +523,13 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Could not return post id or insert row")
 	}
 	idStr := strconv.Itoa(postid)
+	var out *os.File
 	if ft == "IMAGE" {
-		out, err := os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
+		out, _  = os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
 	} else {
-		out, err := os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/videoposts/post" + idStr + extension)
+		out, _  = os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/videoposts/post" + idStr + extension)
 	}
 
-	if err != nil {
-		//handle error
-		panic(err.Error())
-	}
 	defer out.Close()
 	io.Copy(out, in)
 
