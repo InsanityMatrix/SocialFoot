@@ -166,6 +166,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	_, err := r.Cookie("username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
+		return
 	}
 	http.Redirect(w,r,"/live",http.StatusSeeOther)
 }
@@ -214,7 +215,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
   //Set Cookie with username
-		addCookie(w, "username", user.username)
+		setEncryptedCookie(w, "username", []byte(user.username))
 		//Wait for like 1 second
     http.Redirect(w, r, "/live", http.StatusSeeOther)
 }
@@ -238,7 +239,7 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if comparePasswords(account.password, bytePass) {
 		//Logged In
-		addCookie(w,"username",account.username)
+		setEncryptedCookie(w,"username", []byte(account.username))
 
 		http.Redirect(w, r, "/live", http.StatusSeeOther)
 		return
@@ -251,7 +252,7 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live page with html templates
 	w.Header().Set("Content-Type", "text/html")
-	msg, err := r.Cookie("username")
+	name, err := decryptCookie(r, "username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
 		return
@@ -262,7 +263,7 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl.Execute(w, map[string]string{"username":msg.Value})
+	tmpl.Execute(w, map[string]string{"username": name})
 }
 func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type","application/json")
@@ -272,7 +273,7 @@ func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
 func profileHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live Profile settings
 	w.Header().Set("Content-Type", "text/html")
-	msg, err := r.Cookie("username")
+	name, err := decryptCookie(r, name)
 	if err != nil {
 		http.Redirect(w,r,"/assets/", http.StatusSeeOther)
 		return
@@ -283,11 +284,11 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl.Execute(w, map[string]string{"username":msg.Value})
+	tmpl.Execute(w, map[string]string{"username":name})
 }
 func postHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type","text/html")
-	msg, err := r.Cookie("username")
+	name, err := decryptCookie(r, "username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
 		return
@@ -298,7 +299,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	user := User{}
-	user.username = msg.Value
+	user.username = name
 	account := store.GetUserInfo(&user)
 	settings := store.GetUserSettings(account)
 
@@ -311,9 +312,9 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, map[string]string{"username":user.username, "publicity":publicity, "xpublicity":xpublicity, "userid":strconv.Itoa(account.id)})
 }
 func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
-	msg, err := r.Cookie("username")
+	name, err := decryptCookie(r, "username")
 	if err != nil {
-	 	http.Redirect(w,r,"/assets/", http.StatusSeeOther)
+		http.Redirect(w,r,"/assets/", http.StatusSeeOther)
 		return
 	}
 	err = r.ParseForm()
@@ -324,7 +325,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "text/html")
 	user := User{}
-	user.username = msg.Value
+	user.username = name
 	user.password = r.Form.Get("password")
 	//User is Verified
 	account := store.GetUserInfo(&user)
@@ -436,8 +437,8 @@ func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil {
         panic(err.Error())
     }
-  c.Value = "Anonymous"
-  c.Expires = time.Unix(1414414788, 1414414788000)
+  c.Value = ""
+  c.MaxAge = -1
 	fmt.Fprint(w,"Success")
 }
 func signoutHandler(w http.ResponseWriter, r *http.Request) {
@@ -456,10 +457,10 @@ func reportHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
 	}
-	msg, err := r.Cookie("username")
+	msg, err := decryptCookie(r, "username")
 	username := "Anonymous"
 	if err == nil {
-		username = msg.Value
+		username = msg
 	}
 	tmpl.Execute(w, map[string]string{"username":username})
 }
@@ -486,13 +487,13 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	ft, supported := isSupportedFile(extension)
 	if !supported {
 		tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
-		msg, err := r.Cookie("username")
+		msg, err := decryptCookie(r, "username")
 		var username string
 		if err != nil {
 			id, _ := strconv.Atoi(userid)
 			username = store.GetUserInfoById(id).username
 		} else {
-			username = msg.Value
+			username = msg
 		}
 		status := "This file type is not supported. Try again with a different file type."
 		tmpl.Execute(w, map[string]string{"username":username,"status":status})
@@ -543,13 +544,13 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 			store.DeleteUserPost(postid)
 			os.Remove("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/videoposts/post" + idStr + extension)
 			tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
-			msg, err := r.Cookie("username")
+			msg, err := decryptCookie(r, "username")
 			var username string
 			if err != nil {
 				id, _ := strconv.Atoi(userid)
 				username = store.GetUserInfoById(id).username
 			} else {
-				username = msg.Value
+				username = msg
 			}
 			status := "This file type is too large."
 			tmpl.Execute(w, map[string]string{"username":username,"status":status})
@@ -558,27 +559,25 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	//Display results
 	tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
-	msg, err := r.Cookie("username")
+	msg, err := decryptCookie(r, "username")
 	var username string
 	if err != nil {
 		username = store.GetUserInfoById(id).username
 	} else {
-		username = msg.Value
+		username = msg
 	}
 	status := "Your post has been created at http://www.socialfoot.me/live/view/post/" + userid + "." + idStr
 	tmpl.Execute(w, map[string]string{"username":username,"status":status})
-
-
 }
 func bugReportHandler(w http.ResponseWriter, r *http.Request) {
-	msg, err := r.Cookie("username")
+	msg, err := decryptCookie(r, "username")
 
 	if err != nil {
 		http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
 		return
 	}
 
-	username := msg.Value
+	username := msg
 	err = r.ParseForm()
 	if err != nil {
 		fmt.Println(fmt.Errorf("Error: %v", err))
@@ -600,7 +599,7 @@ func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func searchPageHandler(w http.ResponseWriter, r *http.Request) {
-	msg, err := r.Cookie("username")
+	msg, err := decryptCookie(r, "username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/login.html",http.StatusSeeOther)
 		return
@@ -610,7 +609,7 @@ func searchPageHandler(w http.ResponseWriter, r *http.Request) {
 	  w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	tmpl.Execute(w, map[string]string{"username": msg.Value})
+	tmpl.Execute(w, map[string]string{"username": msg})
 }
 
 func HandleJSONUserById(w http.ResponseWriter, r *http.Request) {
@@ -696,12 +695,12 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
 		return
 	}
-	msg, err := r.Cookie("username")
+	msg, err := decryptCookie(r, "username")
 	if err != nil {
 		http.Redirect(w, r, "/", http.StatusInternalServerError)
 		return
 	}
-	account := store.GetUserInfo(&User{username: msg.Value})
+	account := store.GetUserInfo(&User{username: msg})
 	//Use user id to get stuff.
 	userViewing := store.GetUserInfoById(userid)
 	//Now we have User so lets get user Settings
@@ -810,12 +809,3 @@ func userPostHandler(w http.ResponseWriter, r *http.Request) {
 	return
 }
 //Page functions to help with stuff
-func addCookie(w http.ResponseWriter, name string, value string) {
-    cookie := http.Cookie{
-        Name:    name,
-        Value:   value,
-				Path: "/",
-				MaxAge: 86400,
-    }
-    http.SetCookie(w, &cookie)
-}

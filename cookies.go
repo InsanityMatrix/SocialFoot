@@ -16,7 +16,7 @@ func getCookieHash() string {
 	hasher.Write([]byte(key))
 	return hex.EncodeToString(hasher.Sum(nil))
   }
-  
+
 func setEncryptedCookie(w http.ResponseWriter, name string, data []byte) {
 	block, _ := aes.NewCipher([]byte(getCookieHash()))
 	gcm, err := cipher.NewGCM(block)
@@ -36,8 +36,8 @@ func setEncryptedCookie(w http.ResponseWriter, name string, data []byte) {
 	}
 	http.SetCookie(w, &cookie)
 }
-  
-func decryptCookie(r *http.Request, name string) string {
+
+func decryptCookie(r *http.Request, name string) (string, error) {
 	key := []byte(getCookieHash())
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -47,7 +47,10 @@ func decryptCookie(r *http.Request, name string) string {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	msg, _ := r.Cookie(name)
+	msg, err := r.Cookie(name)
+	if err != nil {
+		return err
+	}
 	data := []byte(msg.Value)
 	nonceSize := gcm.NonceSize()
 	nonce, ciphertext := data[:nonceSize], data[nonceSize:]
