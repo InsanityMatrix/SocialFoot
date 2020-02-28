@@ -44,14 +44,17 @@ func sendAuthMail(recipient string, content string) {
 	}
 	log.Print("Sent")
 }
-func isPictureFile(extension string) bool {
-	pictureExtensions := []string{".jpg", ".jpeg", ".jpe", ".jif",".jfif",".jfi",".png",".tiff",".tif",".raw",".arw",".cr2",".bmp",".webp"}
+func isSupportedFile(extension string) (string, bool) {
+	pictureExtensions := []string{".jpg", ".jpeg", ".jpe", ".jif",".jfif",".jfi",".png",".tiff",".tif",".raw",".arw",".cr2",".bmp",".webp", ".mp4"}
 	for _, ext := range pictureExtensions {
 		if extension == ext {
-			return true
+			if extension == ".mp4" {
+				return "VIDEO", true
+			}
+			return "IMAGE",true
 		}
 	}
-	return false
+	return "",false
 }
 func badReport(content string) bool {
 	blackList := []string{

@@ -21,7 +21,12 @@ function serveFeed(template) {
       var length = data.length;
       $("#posts").html("");
       for(var i = 0; i < length; i++) {
-        var imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
+        var imageLink;
+        if data[i].type == "IMAGE" {
+          imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
+        } else {
+          imageLink = "/assets/uploads/videoposts/post" + data[i].postid + data[i].extension;
+        }
         var stuff = $("#posts").html();
         //Parse Date
         var d = new Date(data[i].posted);
@@ -45,11 +50,14 @@ function serveFeed(template) {
             tagstext += "<p class='postTag'>" + m[1] + "</p>";
           }
         } while (m);
-
+        var content = "<img class='postimg' src='" + imageLink + "'>";
+        if(data[i].type == "VIDEO") {
+          content = "<video class='postimg' controls><source src='" + imageLink + "' type='video/mp4'>Your browser doesnt support video</video>";
+        }
         var postData = {
           "userid":data[i].userid,
           "thisdate":thisdate,
-          "imageLink":imageLink,
+          "content": content,
           "tags": tagstext,
           "likes": data[i].likes,
           "caption":data[i].caption,
@@ -121,7 +129,12 @@ function getUserPosts() {
       var length = data.length;
       $("#posts").html("");
       for(var i = 0; i < length; i++) {
-        var imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
+        var imageLink;
+        if data[i].type == "IMAGE" {
+          imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
+        } else {
+          imageLink = "/assets/uploads/videoposts/post" + data[i].postid + data[i].extension;
+        }
         var stuff = $("#posts").html();
         //Parse Date
         var d = new Date(data[i].posted);
@@ -145,11 +158,14 @@ function getUserPosts() {
             tagstext += "<p class='postTag'>" + m[1] + "</p>";
           }
         } while (m);
-
+        var content = "<img class='postimg' src='" + imageLink + "'>";
+        if(data[i].type == "VIDEO") {
+          content = "<video class='postimg' controls><source src='" + imageLink + "' type='video/mp4'>Your browser doesnt support video</video>";
+        }
         var postData = {
           "userid":data[i].userid,
           "thisdate":thisdate,
-          "imageLink":imageLink,
+          "content":content,
           "tags": tagstext,
           "caption":data[i].caption,
           "postid":data[i].postid

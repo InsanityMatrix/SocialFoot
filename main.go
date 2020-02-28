@@ -479,7 +479,8 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	userid := r.Form.Get("id")
 	//VALIDATE FILE TYPE
 	extension := strings.ToLower(filepath.Ext(header.Filename))
-	if !isPictureFile(extension) {
+	ft, supported := isSupportedFile(extension)
+	if !supported {
 		tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
 		msg, err := r.Cookie("username")
 		var username string
@@ -516,19 +517,44 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	//Actually post image
 	id, _ := strconv.Atoi(userid)
-	postid := store.PostUserImage(publicity, caption, tags, id,extension)
+	postid := store.PostUserImage(publicity, caption, tags, id,extension, ft)
 	if postid == 0 {
 		//ERROR case
 		fmt.Fprint(w, "Could not return post id or insert row")
 	}
 	idStr := strconv.Itoa(postid)
-	out, err := os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
+	if ft == "IMAGE" {
+		out, err := os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
+	} else {
+		out, err := os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/videoposts/post" + idStr + extension)
+	}
+
 	if err != nil {
 		//handle error
 		panic(err.Error())
 	}
 	defer out.Close()
 	io.Copy(out, in)
+
+	if ft == "VIDEO" {
+		fInfo, _ := out.Stat()
+		if fInfo.Size() > 21000000 {
+			store.DeleteUserPost(postid)
+			os.Remove("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/videoposts/post" + idStr + extension)
+			tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
+			msg, err := r.Cookie("username")
+			var username string
+			if err != nil {
+				id, _ := strconv.Atoi(userid)
+				username = store.GetUserInfoById(id).username
+			} else {
+				username = msg.Value
+			}
+			status := "This file type is too large."
+			tmpl.Execute(w, map[string]string{"username":username,"status":status})
+			return
+		}
+	}
 	//Display results
 	tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
 	msg, err := r.Cookie("username")

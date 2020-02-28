@@ -90,9 +90,9 @@ func (store *dbStore) isUserFollowing(follower int, followed int) bool {
   }
   return exists
 }
-func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string) int {
+func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string,type string) int {
   dt := time.Now()
-  rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type,posted,extension) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING postid",userid,publicity,tags,caption,"IMAGE",dt,extension)
+  rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type,posted,extension) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING postid",userid,publicity,tags,caption,type,dt,extension)
   if err != nil {
     return 0
   }
@@ -107,7 +107,9 @@ func (store *dbStore) PostUserImage(publicity bool, caption string, tags string,
   }
   return 0
 }
-
+func (store *dbStore) DeleteUserPost(postid int) {
+  store.db.Query("DELETE FROM posts WHERE postid=$1",postid)
+}
 
 func (store *dbStore) LoginUser(user *User) (*User, error) {
   row := store.db.QueryRow("SELECT id,username,gender,age,password,email from users where username=$1", user.username)
