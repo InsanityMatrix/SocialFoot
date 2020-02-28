@@ -273,7 +273,7 @@ func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
 func profileHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live Profile settings
 	w.Header().Set("Content-Type", "text/html")
-	name, err := decryptCookie(r, name)
+	name, err := decryptCookie(r, "username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/", http.StatusSeeOther)
 		return

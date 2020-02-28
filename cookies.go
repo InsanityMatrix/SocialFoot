@@ -7,6 +7,8 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"os"
+	"io"
+	"fmt"
 	"net/http"
 )
 
@@ -49,7 +51,7 @@ func decryptCookie(r *http.Request, name string) (string, error) {
 	}
 	msg, err := r.Cookie(name)
 	if err != nil {
-		return err
+		return  "", err
 	}
 	data := []byte(msg.Value)
 	nonceSize := gcm.NonceSize()
@@ -58,5 +60,5 @@ func decryptCookie(r *http.Request, name string) (string, error) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	return string(plaintext)
+	return string(plaintext), nil
 }
