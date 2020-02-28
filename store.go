@@ -3,6 +3,7 @@ package main
 import (
     "database/sql"
     "strconv"
+    "errors"
     "time"
     "github.com/bdwilliams/go-jsonify/jsonify"
 )
@@ -36,6 +37,15 @@ type ImagePost struct {
 }
 
 func (store *dbStore) CreateUser(user *User) error {
+  var exists bool
+  row := store.db.QueryRow("SELECT exists(SELECT * FROM users WHERE LOWER(username)=LOWER($1))", user.username)
+  err := row.Scan(&exists)
+  if err != nil {
+    return err
+  }
+  if exists {
+    return errors.New("User Exists")
+  }
 	rows, err := store.db.Query("INSERT INTO users(username,gender,age,password,email) VALUES ($1,$2,$3,$4,$5) RETURNING id;",user.username,user.gender,user.age,user.password,user.email)
   if err != nil {
     return err
@@ -112,7 +122,7 @@ func (store *dbStore) DeleteUserPost(postid int) {
 }
 
 func (store *dbStore) LoginUser(user *User) (*User, error) {
-  row := store.db.QueryRow("SELECT id,username,gender,age,password,email from users where username=$1", user.username)
+  row := store.db.QueryRow("SELECT id,username,gender,age,password,email from users where LOWER(username)=LOWER($1)", user.username)
   account := &User{}
   switch err := row.Scan(&account.id, &account.username, &account.gender, &account.age, &account.password, &account.email); err {
   case sql.ErrNoRows:
@@ -267,7 +277,7 @@ func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) error {
 		}
 	}
 
-	_, err = store.db.Query("CREATE TABLE " + strconv.Itoa(convoID) + "_pconv (messageID SERIAL, from VARCHAR(26), content TEXT, read BOOLEAN, PRIMARY KEY(messageID));")
+	_, err = store.db.Query("CREATE TABLE " + strconv.Itoa(convoID) + "_pconv (messageID SERIAL, read BOOLEAN, PRIMARY KEY(messageID));")
 
   return err
 }
