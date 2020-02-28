@@ -22,50 +22,60 @@ html,body {
   <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
   <script src="/assets/scripts/live.js"></script>
     </head>
-    <body id='body'>
-        <nav class='navbar navbar-inverse bg-primary'>
+    <body id='body' class="bg-feet">
+        <nav class='navbar navbar-transparent'>
             <div class='container-fluid'>
+              <button type="button" class="navbar-toggle col-md-1 col-xs-2" data-toggle="collapse" data-target="#utilities">
+                  <img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
+              </button>
                 <div class='navbar-header'>
                     <a href='/live'>
                       <img src="/assets/images/SocialFootLogo.png" width="100px">
                     </a>
                 </div>
-                <ul class='nav navbar-nav'>
-                  <li><a href='/live'>Home</a></li>
-                  <li><a href='#'>Search</a></li>
-                  <li class='active'><a href='/report'>Report</a></li>
-                </ul>
-                <ul class='nav navbar-nav navbar-right'>
-		              <li><a href='/live/post'>Post</a></li>
-                  <li class='dropdown'>
-                    <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
-                    <ul class='dropdown-menu'>
-                      <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
-                      <li class='dropdown-item'><a href='#'>Messages</a></li>
-                      <li class='dropdown-item'><a href='/live/feed'>Your Feed</a></li>
-                      <div class='dropdown-divider'></div>
-                      <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
-                    </ul>
-                  </li>
-                </ul>
+                <div class="collapse navbar-collapse" id="utilities">
+                  <ul class='nav navbar-nav'>
+                    <li><a href='/live'>Home</a></li>
+                    <li><a href='#'>Search</a></li>
+                    <li class='active'><a href='/report'>Report</a></li>
+                  </ul>
+                  <ul class='nav navbar-nav navbar-right'>
+  		              <li><a href='/live/post'>Post</a></li>
+                    <li class='dropdown'>
+                      <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
+                      <ul class='dropdown-menu'>
+                        <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
+                        <li class='dropdown-item'><a href='#'>Messages</a></li>
+                        <li class='dropdown-item'><a href='/live/feed'>Your Feed</a></li>
+                        <div class='dropdown-divider'></div>
+                        <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
             </div>
         </nav>
 
 
 
 	<div class='net container'>
-		<div class='col-md-9 col-sm-12'>
-			<div class='feed'>
+		<div class='col-md-9 col-xs-12'>
+			<div class='login'>
 				<center>
-					<h2 class='bg-primary'>Submit Bug Report</h2>
+					<h2 style="width:80%;" class='color-t'>Submit Bug Report</h2>
 				</center>
-        <form class='container' style="width:100%" method="post" action="/report/submit/bugreport">
-          <div class="input-group">
-            <span class="input-group-addon" id="content-addon">Report:</span>
-            <textarea name="report" aria-describedby="content-addon" class="form-control"></textarea>
+        <form style="width:100%" method="post" action="/report/submit/bugreport">
+          <div class="row margin-t-10">
+            <div class="input-group col-xs-10 col-xs-offset-1">
+              <span class="input-group-addon" id="content-addon">Report:</span>
+              <textarea name="report" aria-describedby="content-addon" class="form-control"></textarea>
+            </div>
           </div>
-          <input type='submit' class="btn btn-info" name="submit" value="Submit">
-
+          <div class="row margin-t-10 margin-b-10">
+            <div class="col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
+              <input type='submit' class=" btn-block w-100 btn btn-info" name="submit" value="Submit">
+            </div>
+          </div>
         </form>
 			</div>
 		</div>

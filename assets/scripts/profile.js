@@ -91,5 +91,5 @@ function bioChangeSuccess(data) {
 	console.log("Change Bio: " + data);
 }
 function sendToHomePage() {
-	window.location = "https://socialfoot.herokuapp.com/assets/";
+	window.location = "http://www.socialfoot.me/assets/";
 }

@@ -18,16 +18,20 @@
 		  padding: 0;
 		}
   </style>
-	<link rel="stylesheet" href="./css/SocialFoot.css">
+	<link rel="stylesheet" href="./css/SocialFoot.css?version=2">
 	</head>
-	<body id="body">
-			<nav class="navbar navbar-inverse bg-primary">
+	<body id="body" class="bg-feet">
+			<nav class="navbar navbar-transparent">
 					<div class="container-fluid">
+						<button type="button" class="navbar-toggle col-md-1 col-xs-2"  data-toggle="collapse" data-target="#utilities" width="100%">
+								<img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
+						</button>
 							<div class="navbar-header">
 									<a href="/assets/">
 									<img src="/assets/images/SocialFootLogo.png" width="100px">
 								</a>
 							</div>
+							<div class="collapse navbar-collapse" id="utilities">
 							<ul class="nav navbar-nav">
 								<li><a href="/assets/">Home</a></li>
 								<li><a href="#">Search</a></li>
@@ -37,23 +41,26 @@
 								<li class="active"><a href="./login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 								<li><a href="./signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 							</ul>
+						</div>
 					</div>
 			</nav>
-			<div class="net">
-				<form class="paper" method="post" action="/forms/login">
-					<center>
-						<h2>Log In</h2>
-					</center>
-					<div class="form-group">
-						<label for="username">Username:</label>
-						<input type="text" class="form-control" id="username" name="username" placeholder="Username">
-					</div>
-					<div class="form-group">
-						<label for="password">Password:</label>
-						<input type="password" class="form-control" id="password" name="password" placeholder="Password">
-					</div>
-					<input value="Log In" type="submit" class="btn btn-primary">
-				</form>
+			<div class="container-fluid">
+				<div class="row">
+					<form class="login col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2" method="post" action="/forms/login">
+						<center>
+							<h2 class="color-t">Log In</h2>
+						</center>
+						<div class="form-group col-xs-10 col-xs-offset-1">
+							<label for="username">Username:</label>
+							<input type="text" class="form-control login-text" id="username" name="username" placeholder="Username">
+						</div>
+						<div class="form-group col-xs-10 col-xs-offset-1">
+							<label for="password">Password:</label>
+							<input type="password" class="form-control login-text" id="password" name="password" placeholder="Password">
+						</div>
+						<input value="Log In" type="submit" class="col-xs-4 col-xs-offset-4 btn block btn btn-primary color-t margin-b-10">
+					</form>
+				</div>
 			</div>
 
 	<script>

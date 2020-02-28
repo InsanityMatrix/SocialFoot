@@ -21,28 +21,9 @@
       </style>
       <link rel="stylesheet" href="./css/SocialFoot.css">
    </head>
-   <body id="body">
-      <nav class="navbar navbar-inverse bg-primary">
-         <div class="container-fluid">
-            <div class="navbar-header">
-               <a href="/assets/">
-                 <img src="/assets/images/SocialFootLogo.png" width="100px">
-               </a>
-            </div>
-            <ul class="nav navbar-nav">
-               <li class="active"><a href="/assets/">Home</a></li>
-               <li><a href="#">Search</a></li>
-               <li><a href="/report">Report</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-               <li><a href="./login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-               <li><a href="./signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            </ul>
-         </div>
-      </nav>
+   <body id="body" class="bg-welcome">
+
       <script>
-         var body = document.getElementById("body");
-         body.removeChild(body.childNodes[0]);
          if(getCookie("username") != "") {
            document.location.href = "/live";
          }
@@ -61,22 +42,46 @@
            }
            return "";
          }
+         /*
          $(document).ready(function(){
            if(window.innerWidth <= 900 && window.innerWidth > 0) {
              document.location.href = "/assets/mobile/";
            }
          });
+         */
       </script>
-      <div class="net">
-         <div class="paper">
-            <h2 class="bg-primary"> Welcome to SocialFoot</h2>
-            <p>SocialFoot is a new revolutionary Social Media platform with the intent on making the world better.
-               It is a Social Media made by a 10th grader, which is just what the world needs. We have a user-base
-               of 10 trillion people, which makes it the largest social media in the mid-west.
-            </p>
-            <br/>
-            <p>Would you like to learn more? Well you can't because I haven't gotten that far yet!</p>
-         </div>
-      </div>
+      <div class="container-fluid" style="margin-top:20px;">
+        <div class="row">
+            <img class="col-lg-2 col-lg-offset-5 col-md-2 col-md-offset-5 col-xs-4 col-xs-offset-4" src="/assets/images/SocialFootLogo.png" alt="Site-Welcome background">
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
+            <center>
+              <h3 class="color-t">Welcome to Social Foot</h3>
+            </center>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8 col-xs-offset-2">
+            <center>
+              <p class="color-t">SocialFoot is a new revolutionary Social Media platform with the intent on making the world better.
+                 It is a Social Media made by a 10th grader, which is just what the world needs. We have a user-base
+                 of 10 trillion people, which makes it the largest social media in the mid-west. Would you like to learn more?
+                 Well you can't because I haven't gotten that far yet!</p>
+            </center>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-5 col-xs-4 col-xs-offset-4">
+            <a class="btn btn-primary btn-block color-t w-100" href="/assets/login.html">Log In</a>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-5 col-xs-4 col-xs-offset-4">
+            <a class="btn btn-primary btn-block color-t w-100" href="/assets/signup.html">Sign Up</a>
+          </div>
+        </div>
    </body>
 </html>

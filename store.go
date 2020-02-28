@@ -52,19 +52,27 @@ func (store *dbStore) CreateUser(user *User) error {
   if err != nil {
     return err
   }
-  _, err = store.db.Query("CREATE TABLE user" + strconv.Itoa(account.id) + "_following(relID serial,userid int, followed date, PRIMARY KEY(relID) );")
+  _, err = store.db.Query("CREATE TABLE user" + strconv.Itoa(account.id) + "_following(relID serial,userid int UNIQUE, followed date, PRIMARY KEY(relID) );")
   if err != nil {
     return err
   }
-  _, err = store.db.Query("CREATE TABLE user" + strconv.Itoa(account.id) + "_followers(relID serial,userid int, followed date, PRIMARY KEY(relID) );")
+  _, err = store.db.Query("CREATE TABLE user" + strconv.Itoa(account.id) + "_followers(relID serial,userid int UNIQUE, followed date, PRIMARY KEY(relID) );")
   if err != nil {
     return err
   }
 	return err
 }
 func (store *dbStore) followUser(follower int, followed int) error {
+  var exists bool
+  err := store.db.QueryRow("SELECT exists(SELECT * FROM user" + strconv.Itoa(follower) + "_following WHERE userid=$1)", follower).Scan(&exists)
+  if err != nil {
+    return err
+  }
+  if exists {
+    return nil
+  }
   dt := time.Now()
-  _, err := store.db.Query("INSERT INTO user" + strconv.Itoa(followed) + "_followers(userid, followed) VALUES ($1,$2)",follower, dt)
+  _, err = store.db.Query("INSERT INTO user" + strconv.Itoa(followed) + "_followers(userid, followed) VALUES ($1,$2)",follower, dt)
   if err != nil {
     return err
   }
@@ -82,9 +90,9 @@ func (store *dbStore) isUserFollowing(follower int, followed int) bool {
   }
   return exists
 }
-func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string) int {
+func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string, t string) int {
   dt := time.Now()
-  rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type,posted,extension) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING postid",userid,publicity,tags,caption,"IMAGE",dt,extension)
+  rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type,posted,extension) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING postid",userid,publicity,tags,caption,t,dt,extension)
   if err != nil {
     return 0
   }
@@ -99,7 +107,9 @@ func (store *dbStore) PostUserImage(publicity bool, caption string, tags string,
   }
   return 0
 }
-
+func (store *dbStore) DeleteUserPost(postid int) {
+  store.db.Query("DELETE FROM posts WHERE postid=$1",postid)
+}
 
 func (store *dbStore) LoginUser(user *User) (*User, error) {
   row := store.db.QueryRow("SELECT id,username,gender,age,password,email from users where username=$1", user.username)
@@ -277,6 +287,42 @@ func (store *dbStore) addUserByUsername(user *User, toAddID int) {
 
 
 //JSON FUNCTIONS
+func (store *dbStore) GetUserFollowing(userid int) []string {
+  rows, err := store.db.Query("SELECT * FROM user" + strconv.Itoa(userid) + "_following ORDER BY followed DESC")
+  if err != nil {
+    return []string{"Failed","Failed"}
+  }
+  return jsonify.Jsonify(rows)
+}
+func (store *dbStore) GetUserFollowers(userid int) []string {
+  rows, err := store.db.Query("SELECT * FROM user" + strconv.Itoa(userid) + "_followers ORDER BY followed DESC")
+  if err != nil {
+    return []string{"Failed","Failed"}
+  }
+  return jsonify.Jsonify(rows)
+}
+func (store *dbStore) GetFollowersAmount(userid int) int {
+  rows, err := store.db.Query("SELECT * FROM user" + strconv.Itoa(userid) + "_followers;")
+  if err != nil {
+    return 0
+  }
+  count := 0
+  for rows.Next() {
+    count++
+  }
+  return count
+}
+func (store *dbStore) GetFollowingAmount(userid int) int {
+  rows, err := store.db.Query("SELECT * FROM user" + strconv.Itoa(userid) + "_following;")
+  if err != nil {
+    return 0
+  }
+  count := 0
+  for rows.Next() {
+    count++
+  }
+  return count
+}
 func (store *dbStore) GetPublicPosts() []string {
   rows, err := store.db.Query("SELECT * FROM posts WHERE publicity=$1 ORDER BY postid DESC",true)
 
@@ -286,6 +332,17 @@ func (store *dbStore) GetPublicPosts() []string {
 		return error
 	}
 	defer rows.Close()
+
+  return jsonify.Jsonify(rows)
+}
+func (store *dbStore) GetUsersPosts(userid int) []string {
+  rows, err := store.db.Query("SELECT * FROM posts WHERE userid=$1 ORDER BY postid DESC", userid)
+  if err != nil {
+    var error []string
+    error[0] = "{\"status\":\"error\"}"
+		return error
+  }
+  defer rows.Close()
 
   return jsonify.Jsonify(rows)
 }

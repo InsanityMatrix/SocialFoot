@@ -16,6 +16,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"regexp"
+	"encoding/json"
 	"time"
 		"log"
     "net/http"
@@ -31,7 +32,21 @@ type User struct {
     password string `json:"password"`
     email string `json:"email"`
 }
-
+type Follower struct {
+	Relid int `json:"relid"`
+	Userid int `json:"userid"`
+	Followed string `json:"followed"`
+}
+type FollowerResult struct {
+	FUsername string
+	FFollowed string
+}
+type FollowersPageData struct {
+	Activity string
+	Userid int
+	Username string
+	Followers []FollowerResult
+}
 type UserSettings struct {
 	id int
 	bio string
@@ -66,12 +81,16 @@ var TEMPLATES string
 //Global variables
 func newRouter() *mux.Router {
     r := mux.NewRouter()
+		r.HandleFunc("/favicon.ico", faviconHandler)
     r.HandleFunc("/user", createUserHandler).Methods("POST")
 		r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
 		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
 		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
 		r.HandleFunc("/live/profile", profileHandler)
 		r.HandleFunc("/live/post", postHandler)
+		r.HandleFunc("/live/user/followers/{uid}", userFollowersHandler)
+		r.HandleFunc("/live/user/following/{uid}", userFollowingHandler)
+		r.HandleFunc("/live/user/posts", userPostHandler)
 		r.HandleFunc("/live/search",searchPageHandler)
 		r.HandleFunc("/live/user/{uid}", userProfileHandler)
 		r.HandleFunc("/live", liveIndexHandler)
@@ -162,7 +181,6 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
         w.WriteHeader(http.StatusInternalServerError)
         return
     }
-		w.WriteHeader(200)
     //Get the information about the user from user info
     user.username = r.Form.Get("username")
     user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
@@ -186,22 +204,22 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 		user.password = hashAndSalt([]byte(user.password))
     //Append existing list of users with a new entry
     err = store.CreateUser(&user)
-	if err != nil {
-		log.Println(err)
-		fmt.Println(err)
-	}
+		if err != nil {
+			log.Println(err)
+			fmt.Println(err)
+			return
+		}
   //Set Cookie with username
 		addCookie(w, "username", user.username)
-
-    http.Redirect(w, r, "/live", http.StatusFound)
+		//Wait for like 1 second
+    http.Redirect(w, r, "/live", http.StatusSeeOther)
 }
 func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	user := User{}
 
 	err := r.ParseForm()
 	if err != nil {
-		fmt.Println(fmt.Errorf("Error: %v", err))
-		w.WriteHeader(http.StatusInternalServerError)
+		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
 		return
 	}
 
@@ -212,14 +230,17 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		//Username may not have been right
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
+		return
 	}
 	if comparePasswords(account.password, bytePass) {
 		//Logged In
 		addCookie(w,"username",account.username)
 
-		http.Redirect(w, r, "/live", http.StatusFound)
+		http.Redirect(w, r, "/live", http.StatusSeeOther)
+		return
 	} else {
 		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
+		return
 	}
 
 }
@@ -416,13 +437,14 @@ func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w,"Success")
 }
 func signoutHandler(w http.ResponseWriter, r *http.Request) {
-	cookie := http.Cookie{
-		Name : "username",
+	c := &http.Cookie{
+		Name:    "username",
 		Value: "",
-		MaxAge: 0,
 		Path: "/",
+		MaxAge: -1,
+		HttpOnly:true,
 	}
-	http.SetCookie(w, &cookie)
+	http.SetCookie(w, c)
 	fmt.Fprint(w,"Success")
 }
 func reportHandler(w http.ResponseWriter, r *http.Request) {
@@ -457,7 +479,8 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	userid := r.Form.Get("id")
 	//VALIDATE FILE TYPE
 	extension := strings.ToLower(filepath.Ext(header.Filename))
-	if !isPictureFile(extension) {
+	ft, supported := isSupportedFile(extension)
+	if !supported {
 		tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
 		msg, err := r.Cookie("username")
 		var username string
@@ -494,19 +517,41 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	//Actually post image
 	id, _ := strconv.Atoi(userid)
-	postid := store.PostUserImage(publicity, caption, tags, id,extension)
+	postid := store.PostUserImage(publicity, caption, tags, id,extension, ft)
 	if postid == 0 {
 		//ERROR case
 		fmt.Fprint(w, "Could not return post id or insert row")
 	}
 	idStr := strconv.Itoa(postid)
-	out, err := os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
-	if err != nil {
-		//handle error
-		panic(err.Error())
+	var out *os.File
+	if ft == "IMAGE" {
+		out, _  = os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
+	} else {
+		out, _  = os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/videoposts/post" + idStr + extension)
 	}
+
 	defer out.Close()
 	io.Copy(out, in)
+
+	if ft == "VIDEO" {
+		fInfo, _ := out.Stat()
+		if fInfo.Size() > 21000000 {
+			store.DeleteUserPost(postid)
+			os.Remove("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/videoposts/post" + idStr + extension)
+			tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
+			msg, err := r.Cookie("username")
+			var username string
+			if err != nil {
+				id, _ := strconv.Atoi(userid)
+				username = store.GetUserInfoById(id).username
+			} else {
+				username = msg.Value
+			}
+			status := "This file type is too large."
+			tmpl.Execute(w, map[string]string{"username":username,"status":status})
+			return
+		}
+	}
 	//Display results
 	tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
 	msg, err := r.Cookie("username")
@@ -523,10 +568,13 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 }
 func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 	msg, err := r.Cookie("username")
-	username := "Anonymous"
-	if err == nil {
-		username = msg.Value
+
+	if err != nil {
+		http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
+		return
 	}
+
+	username := msg.Value
 	err = r.ParseForm()
 	if err != nil {
 		fmt.Println(fmt.Errorf("Error: %v", err))
@@ -535,6 +583,14 @@ func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	content := r.Form.Get("report")
+	if content == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+	if badReport(content) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	store.SubmitBugReport(username, content)
 	http.Redirect(w, r, "/live", http.StatusSeeOther)
 }
@@ -571,6 +627,64 @@ func searchUserHandler(w http.ResponseWriter, r *http.Request) {
 	response := store.GetJSONUsersByUsernames(term)
 	fmt.Fprint(w, response)
 }
+func userFollowingHandler(w http.ResponseWriter, r *http.Request) {
+	params := strings.Split(r.URL.Path, "/")
+	userid, err := strconv.Atoi(params[len(params) - 1])
+	if err != nil {
+		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
+		return
+	}
+	w.Header().Set("Content-Type","text/html")
+	userViewing := store.GetUserInfoById(userid)
+	followersJSON := store.GetUserFollowing(userid)
+	followersSTR := "["
+	for _, data := range followersJSON {
+		followersSTR += data
+	}
+	followersSTR += "]"
+
+	var result []Follower
+	json.Unmarshal([]byte(followersSTR),&result)
+	var fResult []FollowerResult
+	for _, fData := range result {
+		fUser := store.GetUserInfoById(fData.Userid)
+		followedDate, _ := time.Parse("2006-01-02T15:04:05Z", fData.Followed)
+		newResult := FollowerResult{FUsername: fUser.username, FFollowed: followedDate.Format("01/02/2006")}
+		fResult = append(fResult, newResult)
+	}
+
+	tmpl, _ := template.ParseFiles(TEMPLATES + "/user/followers.html")
+	tmpl.Execute(w, FollowersPageData{Activity: "Follows", Userid: userid, Username: userViewing.username, Followers: fResult})
+}
+func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
+	params := strings.Split(r.URL.Path, "/")
+	userid, err := strconv.Atoi(params[len(params) - 1])
+	if err != nil {
+		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
+		return
+	}
+	w.Header().Set("Content-Type","text/html")
+	userViewing := store.GetUserInfoById(userid)
+	followersJSON := store.GetUserFollowers(userid)
+	followersSTR := "["
+	for _, data := range followersJSON {
+		followersSTR += data
+	}
+	followersSTR += "]"
+
+	var result []Follower
+	json.Unmarshal([]byte(followersSTR),&result)
+	var fResult []FollowerResult
+	for _, fData := range result {
+		fUser := store.GetUserInfoById(fData.Userid)
+		followedDate, _ := time.Parse("2006-01-02T15:04:05Z", fData.Followed)
+		newResult := FollowerResult{FUsername: fUser.username, FFollowed: followedDate.Format("01/02/2006")}
+		fResult = append(fResult, newResult)
+	}
+
+	tmpl, _ := template.ParseFiles(TEMPLATES + "/user/followers.html")
+	tmpl.Execute(w, FollowersPageData{Activity: "Followers", Userid: userid, Username: userViewing.username, Followers: fResult})
+}
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
 	userid, err := strconv.Atoi(params[len(params) - 1])
@@ -603,6 +717,8 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 		 "bio": settings.bio,
 		 "publicity":publicity,
 		 "gender": gender,
+		 "followers":strconv.Itoa(store.GetFollowersAmount(userViewing.id)),
+		 "following":strconv.Itoa(store.GetFollowingAmount(userViewing.id)),
 		 "username": account.username,
 		 "viewingUsername": userViewing.username,
 		 "age": strconv.Itoa(userViewing.age) }
@@ -612,6 +728,9 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "404: Page not found")
 	}
 	tmpl.Execute(w, pageData)
+}
+func faviconHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/images/favicon.ico")
 }
 func followUserHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
@@ -661,13 +780,30 @@ func resultTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	file, err := os.Open(TEMPLATES + "/search/result.html")
 	if err != nil {
 		fmt.Fprint(w, "Error")
+		return
 	}
 	defer file.Close()
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
 		fmt.Fprint(w, "Error")
+		return
 	}
 	fmt.Fprint(w, string(data))
+}
+func userPostHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Fprint(w, "Error")
+		return
+	}
+	w.Header().Set("Content-Type","application/json")
+	uid, err := strconv.Atoi(r.Form.Get("uid"))
+	if err != nil {
+		panic(err)
+	}
+	response := store.GetUsersPosts(uid)
+	fmt.Fprint(w, response)
+	return
 }
 //Page functions to help with stuff
 func addCookie(w http.ResponseWriter, name string, value string) {
@@ -675,6 +811,7 @@ func addCookie(w http.ResponseWriter, name string, value string) {
         Name:    name,
         Value:   value,
 				Path: "/",
+				MaxAge: 86400,
     }
     http.SetCookie(w, &cookie)
 }

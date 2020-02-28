@@ -25,32 +25,37 @@
         <script src="/assets/scripts/search.js"></script>
         <script src="/assets/scripts/SocialFoot.js"></script>
     </head>
-    <body id='body'>
-        <nav class='navbar navbar-inverse bg-primary'>
+    <body id='body' class="bg-feet">
+        <nav class='navbar navbar-transparent'>
             <div class='container-fluid'>
+              <button type="button" class="navbar-toggle col-md-1 col-xs-2" data-toggle="collapse" data-target="#utilities">
+                  <img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
+              </button>
                 <div class='navbar-header'>
                     <a href='/live'>
                       <img src="/assets/images/SocialFootLogo.png" width="100px">
                     </a>
                 </div>
-                <ul class='nav navbar-nav'>
-                  <li><a href='/live'>Home</a></li>
-                  <li class='active'><a href='/live/search'>Search</a></li>
-                  <li><a href='/report'>Report</a></li>
-                </ul>
-                <ul class='nav navbar-nav navbar-right'>
-		              <li><a href='/live/post'>Post</a></li>
-                  <li class='dropdown'>
-                    <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
-                    <ul class='dropdown-menu'>
-                      <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
-                      <li class='dropdown-item'><a href='#'>Messages</a></li>
-                      <li class='dropdown-item'><a href='/live/feed'>Your Feed</a></li>
-                      <div class='dropdown-divider'></div>
-                      <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
-                    </ul>
-                  </li>
-                </ul>
+                <div class="collapse navbar-collapse" id="utilities">
+                  <ul class='nav navbar-nav'>
+                    <li><a href='/live'>Home</a></li>
+                    <li class='active'><a href='/live/search'>Search</a></li>
+                    <li><a href='/report'>Report</a></li>
+                  </ul>
+                  <ul class='nav navbar-nav navbar-right'>
+  		              <li><a href='/live/post'>Post</a></li>
+                    <li class='dropdown'>
+                      <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
+                      <ul class='dropdown-menu'>
+                        <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
+                        <li class='dropdown-item'><a href='#'>Messages</a></li>
+                        <li class='dropdown-item'><a href='/live/feed'>Your Feed</a></li>
+                        <div class='dropdown-divider'></div>
+                        <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
             </div>
         </nav>
 
@@ -65,7 +70,7 @@
                 </div>
                 <div class="col-md-2 col-xs-4">
                   <!-- Search Button -->
-                  <button class="btn btn-primary btn-block w-100" type="button" onclick="search()">Search</button>
+                  <button class="btn btn-primary color-t btn-block w-100" type="button" onclick="search()">Search</button>
                 </div>
                 <div class="col-md-2 col-xs-1">
                   <!-- More empty spacing -->

@@ -21,20 +21,19 @@
     </style>
     <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
     <script src="/assets/scripts/SocialFoot.js"></script>
-    <script src="/assets/scripts/live.js?version=2"></script>
+    <script src="/assets/scripts/live.js"></script>
+
   </head>
-  <body id='body'>
-    <nav class='navbar navbar-inverse bg-primary'>
+  <body id='body' class="bg-feet">
+    <nav class='navbar navbar-transparent'>
         <div class='container-fluid'>
+          <button type="button" class="navbar-toggle col-md-1 col-xs-2" data-toggle="collapse" data-target="#utilities">
+              <img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
+          </button>
             <div class='navbar-header'>
                 <a href='/live'>
                   <img src="/assets/images/SocialFootLogo.png" width="100px">
                 </a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#utilities">
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
             </div>
             <div class="collapse navbar-collapse" id="utilities">
               <ul class="nav navbar-nav">
@@ -59,21 +58,37 @@
             </div>
         </div>
     </nav>
+    <p style="display:none" id="profileUserId">{{.profileid}}</p>
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2 bg-white rounded-10">
-          <h2 class="bg-secondary"> {{.viewingUsername}}'s Profile</h2>
           <div class="row">
-            <div class="col-md-7 col-xs-4">
-              <h5>{{.gender}}, {{.age}}</h5>
+            <h2 class="color-t"> {{.viewingUsername}}'s Profile</h2>
+            <div class="row">
+              <div class="col-md-5 col-xs-4 user-basic">
+                <h5 class="color-t">{{.gender}}, {{.age}}</h5>
+              </div>
+              <div class="col-md-3 col-xs-8">
+                <div class="row">
+                  <a class="col-xs-6" href="/live/user/followers/{{.profileid}}" style="text-decoration:none;" id="profileFollowers">
+                    <center>
+                      <p class="light-text">Followers</p>
+                      <p class="info-text">{{.followers}}</p>
+                    </center>
+                  </a>
+                  <a class="col-xs-6" href="/live/user/following/{{.profileid}}"  style="text-decoration:none;">
+                    <center>
+                      <p class="light-text">Following</p>
+                      <p class="info-text">{{.following}}</p>
+                    </center>
+                  </a>
+                </div>
+              </div>
             </div>
-            <div class="col-md-1 col-xs-4">
-              <center>
-                <h5 class="setting-{{.publicity}}">{{.publicity}}</h5>
-              </center>
-            </div>
-            <div class="col-xs-4">
-              <button id="followBtn" class="btn btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
+            <div class="row">
+              <div class="col-xs-offset-2 col-xs-8">
+                <button id="followBtn" class="btn btn-block btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
+              </div>
             </div>
           </div>
           <div class="row">
@@ -87,13 +102,27 @@
             </div>
           </div>
         </div>
+
+        </div>
+      </div>
+<br>
+    <div class='container'>
+        <!-- Feed Here -->
+      <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2">
+        <div class="row">
+          <div id="posts" class="net-fluid"></div>
+        </div>
       </div>
     </div>
-
     <script>
        var body = document.getElementById("body");
        body.removeChild(body.childNodes[0]);
-
+       $(document).ready(function() {
+         $("#profileFollowers").click(function() {
+           var loc = parseInt({{.profileid}});
+           window.locaton = "/live/user/followers/" + loc;
+         });
+       });
        var username = "{{.viewingUsername}}";
        function followingAlert() {
          alert("You are now Following " + username);
@@ -112,14 +141,18 @@
          function sIsFollowed(data) {
            var isf = parseInt(data);
            if(isf == 1) {
+             isFlwd = true;
              $("#followBtn").html("Followed");
              $("#followBtn").addClass("btn-light");
              $("#followBtn").removeClass("btn-info");
+             getUserPosts();
            } else {
+             isFlwd = false;
              $("#followBtn").html("Follow");
              $("#followBtn").addClass("btn-info");
              $("#followBtn").removeClass("btn-light");
            }
+
          }
        }
     </script>

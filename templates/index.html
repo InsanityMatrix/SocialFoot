@@ -8,6 +8,7 @@
     <meta name='apple-mobile-web-app-capable' content='yes'>
     <meta name='mobile-web-app-capable' content='yes'>
 		<!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
@@ -23,21 +24,18 @@
     <script src="/assets/scripts/SocialFoot.js"></script>
 
     </head>
-    <body id='body'>
-        <nav class='navbar navbar-inverse bg-primary'>
+    <body id='body' class="bg-feet">
+        <nav class='navbar navbar-transparent'>
             <div class='container-fluid'>
+              <button type="button" class="navbar-toggle col-md-1 col-xs-2" data-toggle="collapse" data-target="#utilities">
+                  <img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
+              </button>
                 <div class='navbar-header'>
                     <a href='/live'>
                       <img src="/assets/images/SocialFootLogo.png" width="100px">
                     </a>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#utilities">
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
                 </div>
                 <div class="collapse navbar-collapse" id="utilities">
-                  <ul class="nav navbar-nav">
                   <ul class='nav navbar-nav'>
                     <li class='active'><a href='/live'>Home</a></li>
                     <li><a href='/live/search'>Search</a></li>
@@ -63,24 +61,11 @@
 
 	<!-- New HTML Body Making -->
 	<div class='net container'>
-    <div id="discover" class='col-md-2 col-sm-12'>
-      <!-- TODO: Make a discover thing
-        - Make Script to hide this whole thing if device is smaller than 700px wide
-          -->
-
-          <script>
-            $(document).ready(function(){
-              if(window.innerWidth <= 900 && window.innerWidth > 0) {
-                document.getElementById("discover").style.display = "none";
-              }
-            });
-          </script>
-    </div>
-		<div class='col-md-6 col-sm-12'>
+		<div class='col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1'>
 			<!-- Feed Here -->
-			<div class='h-auto feed'>
+			<div class='h-auto w-100'>
 				<center>
-					<h2 class='bg-primary'>Your Feed</h2>
+					<h2 class='color-t'>Your Feed</h2>
 				</center>
         <div class="row">
           <div id="posts" class="net-fluid">
@@ -90,9 +75,6 @@
         </div>
 			</div>
 		</div>
-    <div class='col-md-4 col-sm-12'>
-      <!-- TODO: Ads and stuff? -->
-    </div>
 	</div>
 
 

@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/smtp"
 	"golang.org/x/crypto/bcrypt"
+	"strings"
 )
 
 func hashAndSalt(pwd []byte) string {
@@ -43,10 +44,35 @@ func sendAuthMail(recipient string, content string) {
 	}
 	log.Print("Sent")
 }
-func isPictureFile(extension string) bool {
-	pictureExtensions := []string{".jpg", ".jpeg", ".jpe", ".jif",".jfif",".jfi",".png",".tiff",".tif",".raw",".arw",".cr2",".bmp",".webp"}
+func isSupportedFile(extension string) (string, bool) {
+	pictureExtensions := []string{".jpg", ".jpeg", ".jpe", ".jif",".jfif",".jfi",".png",".tiff",".tif",".raw",".arw",".cr2",".bmp",".webp", ".mp4", ".mov"}
 	for _, ext := range pictureExtensions {
 		if extension == ext {
+			if extension == ".mp4" {
+				return "VIDEO", true
+			}
+			if extension == ".mov" {
+				return "VIDEO", true
+			}
+			return "IMAGE",true
+		}
+	}
+	return "",false
+}
+func badReport(content string) bool {
+	blackList := []string{
+		"gay","gei","gae","gey",
+	}
+	spam := []string{"1", "gay", "bad", "Hi", "Hello"}
+
+	for _, blacklisted := range blackList {
+	  blacklisted = " " + blacklisted + " "
+		if strings.Contains(content, blacklisted) {
+			return true
+		}
+	}
+	for _, spamMessage := range spam {
+		if content == spamMessage {
 			return true
 		}
 	}

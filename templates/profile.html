@@ -24,14 +24,18 @@ html,body {
       <script src="/assets/scripts/live.js"></script>
   <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
     </head>
-    <body id='body'>
-        <nav class='navbar navbar-inverse bg-primary'>
+    <body id='body' class="bg-feet">
+        <nav class='navbar navbar-transparent'>
             <div class='container-fluid'>
+              <button type="button" class="navbar-toggle col-md-1 col-xs-2" data-toggle="collapse" data-target="#utilities">
+                  <img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
+              </button>
                 <div class='navbar-header'>
                     <a href='/live'>
                       <img src="/assets/images/SocialFootLogo.png" width="100px">
                     </a>
                 </div>
+                <div class="collapse navbar-collapse" id="utilities">
                 <ul class='nav navbar-nav'>
                   <li><a href='/live'>Home</a></li>
                   <li><a href='/live/search'>Search</a></li>
@@ -50,6 +54,7 @@ html,body {
                     </ul>
                   </li>
                 </ul>
+              </div>
             </div>
         </nav>
 
@@ -69,6 +74,8 @@ html,body {
         </ol>
     </nav>
 	</div>
+
+  
     <div class="container paper">
       <center>
         <h3>{{.username}}'s Settings</h3>
