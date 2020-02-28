@@ -13,7 +13,7 @@ import (
 )
 //TODO: Better error handling
 
-func getHash() string {
+func getMessageHash() string {
   hasher := md5.New()
   key := os.Getenv("MESSAGEKEY")
   hasher.Write([]byte(key))
@@ -21,7 +21,7 @@ func getHash() string {
 }
 
 func encrypt(data []byte) []byte {
-  block, _ := aes.NewCipher([]byte(getHash()))
+  block, _ := aes.NewCipher([]byte(getMessageHash()))
   gcm, err := cipher.NewGCM(block)
   if err != nil {
     fmt.Println(err.Error())
@@ -35,7 +35,7 @@ func encrypt(data []byte) []byte {
 }
 
 func decrypt(data []byte) []byte {
-  key := []byte(getHash())
+  key := []byte(getMessageHash())
   block, err := aes.NewCipher(key)
   if err != nil {
     fmt.Println(err.Error())
