@@ -45,10 +45,13 @@ func sendAuthMail(recipient string, content string) {
 	log.Print("Sent")
 }
 func isSupportedFile(extension string) (string, bool) {
-	pictureExtensions := []string{".jpg", ".jpeg", ".jpe", ".jif",".jfif",".jfi",".png",".tiff",".tif",".raw",".arw",".cr2",".bmp",".webp", ".mp4"}
+	pictureExtensions := []string{".jpg", ".jpeg", ".jpe", ".jif",".jfif",".jfi",".png",".tiff",".tif",".raw",".arw",".cr2",".bmp",".webp", ".mp4", ".mov"}
 	for _, ext := range pictureExtensions {
 		if extension == ext {
 			if extension == ".mp4" {
+				return "VIDEO", true
+			}
+			if extension == ".mov" {
 				return "VIDEO", true
 			}
 			return "IMAGE",true
