@@ -205,6 +205,10 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
     //Append existing list of users with a new entry
     err = store.CreateUser(&user)
 		if err != nil {
+			if err.Error() == "User Exists" {
+				http.Redirect(w, r, "/assets/signup.html", http.StatusSeeOther)
+				return
+			}
 			log.Println(err)
 			fmt.Println(err)
 			return

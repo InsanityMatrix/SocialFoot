@@ -3,6 +3,7 @@ package main
 import (
     "database/sql"
     "strconv"
+    "errors"
     "time"
     "github.com/bdwilliams/go-jsonify/jsonify"
 )
@@ -36,6 +37,15 @@ type ImagePost struct {
 }
 
 func (store *dbStore) CreateUser(user *User) error {
+  var exists bool
+  row := store.db.QueryRow("SELECT exists(SELECT * FROM users WHERE LOWER(username)=LOWER($1))", user.username)
+  err := row.Scan(&exists)
+  if err != nil {
+    return err
+  }
+  if exists {
+    return errors.New("User Exists")
+  }
 	rows, err := store.db.Query("INSERT INTO users(username,gender,age,password,email) VALUES ($1,$2,$3,$4,$5) RETURNING id;",user.username,user.gender,user.age,user.password,user.email)
   if err != nil {
     return err
