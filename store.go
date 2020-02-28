@@ -90,9 +90,9 @@ func (store *dbStore) isUserFollowing(follower int, followed int) bool {
   }
   return exists
 }
-func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string,type string) int {
+func (store *dbStore) PostUserImage(publicity bool, caption string, tags string, userid int, extension string, t string) int {
   dt := time.Now()
-  rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type,posted,extension) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING postid",userid,publicity,tags,caption,type,dt,extension)
+  rows, err := store.db.Query("INSERT INTO posts(userid,publicity,tags,caption,type,posted,extension) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING postid",userid,publicity,tags,caption,t,dt,extension)
   if err != nil {
     return 0
   }
