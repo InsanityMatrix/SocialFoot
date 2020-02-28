@@ -22,7 +22,7 @@ function serveFeed(template) {
       $("#posts").html("");
       for(var i = 0; i < length; i++) {
         var imageLink;
-        if data[i].type == "IMAGE" {
+        if (data[i].type == "IMAGE") {
           imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
         } else {
           imageLink = "/assets/uploads/videoposts/post" + data[i].postid + data[i].extension;
@@ -130,7 +130,7 @@ function getUserPosts() {
       $("#posts").html("");
       for(var i = 0; i < length; i++) {
         var imageLink;
-        if data[i].type == "IMAGE" {
+        if (data[i].type == "IMAGE") {
           imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
         } else {
           imageLink = "/assets/uploads/videoposts/post" + data[i].postid + data[i].extension;
