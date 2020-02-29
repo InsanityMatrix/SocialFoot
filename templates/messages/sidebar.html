@@ -1,0 +1,8 @@
+{{define "sidebar"}}
+  {{range .Conversations}}
+  <button class="btn-block bg-white color-t w-100 " onclick="chooseConversation(this)">
+    <p style="display:none;">{{.ConvoID}}</p>
+    <h5 class="color-t">{{.ParticipantName}}</h5>
+  </button>
+  {{end}}
+{{end}}

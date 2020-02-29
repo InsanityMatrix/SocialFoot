@@ -32,6 +32,17 @@ type User struct {
     password string `json:"password"`
     email string `json:"email"`
 }
+type Post struct {
+	Postid int
+	Userid int
+	Tags string
+	Caption string
+	Type string
+	Posted time.Time
+	Extension string
+	Publicity bool
+	Likes int
+}
 type Follower struct {
 	Relid int `json:"relid"`
 	Userid int `json:"userid"`
@@ -76,6 +87,24 @@ type FeedData struct {
 	username string
 	Feed []LiveImagePost
 }
+type Message struct {
+	MessageID int
+	Content string
+	From int
+	Read bool
+}
+type Conversation struct {
+	ConvoID int
+	ParticipantID int
+	ParticipantName string
+	Created time.Time
+}
+type MessagePage struct {
+	Username string
+	Conversations []Conversation
+	Messages []Message
+	Home bool
+}
 var HOME string
 var TEMPLATES string
 //Global variables
@@ -87,6 +116,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
 		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
 		r.HandleFunc("/live/profile", profileHandler)
+		r.HandleFunc("/live/view/post/{postid}", viewPostHandler)
 		r.HandleFunc("/live/post", postHandler)
 		r.HandleFunc("/live/user/followers/{uid}", userFollowersHandler)
 		r.HandleFunc("/live/user/following/{uid}", userFollowingHandler)
@@ -109,6 +139,8 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/posts/public", getPublicPostsHandler)
 		r.HandleFunc("/search", searchUserHandler).Methods("POST")
 
+		//MESSAGES FUNCTIONS
+		r.HandleFunc("/messages/send/text", sendTextMessageHandler)
 
 		//JSON stuff
 		r.HandleFunc("/json/user/id", HandleJSONUserById)
@@ -474,7 +506,6 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
 	err = r.ParseForm()
 	if err != nil {
 		panic(err.Error())
@@ -808,4 +839,70 @@ func userPostHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, response)
 	return
 }
-//Page functions to help with stuff
+func viewPostHandler(w http.ResponseWriter, r *http.Request) {
+	params := strings.Split(r.URL.Path, "/")
+	identifier := params[len(params) - 1]
+	params = strings.Split(identifier, ".")
+	postid, _ := strconv.Atoi(params[len(params) - 1])
+	//TODO: Finish View Post Handler
+	fmt.Fprint(w, postid)
+
+}
+
+//{MESSAGES}
+func sendTextMessageHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+
+	uidFrom, _ := strconv.Atoi(r.Form.Get("uidFrom"))
+	uidTo, _ := strconv.Atoi(r.Form.Get("uidTo"))
+	message := r.Form.Get("message")
+	err = store.SendMessage(uidFrom, uidTo, message)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+	fmt.Fprint(w, "Success")
+}
+func loadMessages(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		name, err := decryptCookie(r, "username")
+		if err != nil {
+			http.Redirect(w,r,"/assets/login.html",http.StatusSeeOther)
+			return
+		}
+		account := store.GetUserInfo(&User{username: name})
+		conversations := store.GetConversations(account.id)
+		for i, convo := range conversations {
+			usr := store.GetUserInfoById(convo.ParticipantID)
+			convo.ParticipantName = usr.username
+			conversations[i] = convo
+		}
+		pageData := MessagePage{Username: name, Conversations: conversations}
+		pageData.Home = true
+
+		tmpl, _ := template.ParseFiles(TEMPLATES + "/messages/index.html", TEMPLATES + "/messages/sidebar.html")
+		//TODO PARSE and combine sidebar
+		tmpl.Execute(w, pageData)
+		return
+	}
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+	}
+	name, err := decryptCookie(r, "username")
+	if err != nil {
+		http.Redirect(w,r,"/assets/login.html",http.StatusSeeOther)
+		return
+	}
+	account := store.GetUserInfo(&User{username: name})
+	conversations := store.GetConversations(account.id)
+
+	pageData := MessagePage{Username: name, Conversations: conversations, Home: false}
+	tmpl, _ := template.ParseFiles(TEMPLATES + "/messages/index.html", TEMPLATES + "/messages/sidebar.html")
+
+	tmpl.Execute(w, pageData)
+}

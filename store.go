@@ -5,6 +5,7 @@ import (
     "strconv"
     "errors"
     "time"
+    "os"
     "github.com/bdwilliams/go-jsonify/jsonify"
 )
 //Users DB : username (string), gender (bool), age (int), password (string), email (string)
@@ -259,42 +260,6 @@ func (store *dbStore) SubmitBugReport(username string, content string) {
 }
 
 
-//Message functionalities
-func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) error {
-  dt := time.Now()
-  rows, err := store.db.Query("INSERT INTO private_conversations(userOne, userTwo, created) VALUES ($1, $2, $3) RETURNING convoID;",user1, user2, dt)
-  if err != nil {
-    return err
-  }
-  defer rows.Close()
-
-	var convoID int
-
-	for rows.Next() {
-
-		if err := rows.Scan(&convoID); err != nil {
-			return err
-		}
-	}
-
-	_, err = store.db.Query("CREATE TABLE " + strconv.Itoa(convoID) + "_pconv (messageID SERIAL, read BOOLEAN, PRIMARY KEY(messageID));")
-
-  return err
-}
-//returns 0 if error, convoID will never equal 0
-func (store *dbStore) GetConversationID(user1 int, user2 int) int {
-  row := store.db.QueryRow("SELECT convoID FROM private_conversations WHERE (userOne=$1 AND userTwo=$2) OR (userOne=$2 AND userTwo=$1)",user1, user2)
-
-  var convoID int
-
-  row.Scan(&convoID)
-  return convoID
-}
-func (store *dbStore) addUserByUsername(user *User, toAddID int) {
-
-}
-
-
 
 //JSON FUNCTIONS
 func (store *dbStore) GetUserFollowing(userid int) []string {
@@ -356,6 +321,15 @@ func (store *dbStore) GetUsersPosts(userid int) []string {
 
   return jsonify.Jsonify(rows)
 }
+func (store *dbStore) GetPostById(postid int) *Post {
+  row := store.db.QueryRow("SELECT * FROM posts WHERE postid=$1",postid)
+  postData := &Post{}
+  err := row.Scan(&postData.Postid,&postData.Userid,&postData.Tags,&postData.Caption,&postData.Type,&postData.Posted,&postData.Extension,&postData.Publicity,&postData.Likes)
+  if err != nil {
+    return nil
+  }
+  return postData
+}
 func (store *dbStore) GetJSONUserByID(uid int) []string {
   rows, err := store.db.Query("SELECT id,username FROM users WHERE id=$1", uid)
   if err != nil {
@@ -377,6 +351,89 @@ func (store *dbStore) GetJSONUsersByUsernames(username string) []string {
   defer rows.Close()
   return jsonify.Jsonify(rows)
 }
+//{MESSAGES}
+func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) error {
+  dt := time.Now()
+  rows, err := store.db.Query("INSERT INTO private_conversations(userOne, userTwo, created) VALUES ($1, $2, $3) RETURNING convoID;",user1, user2, dt)
+  if err != nil {
+    return err
+  }
+  defer rows.Close()
+
+	var convoID int
+
+	for rows.Next() {
+
+		if err := rows.Scan(&convoID); err != nil {
+			return err
+		}
+	}
+
+  os.Mkdir("/root/go/src/github.com/InsanityMatrix/SocialFoot/messages/" + strconv.Itoa(convoID), 0755)
+	_, err = store.db.Query("CREATE TABLE " + strconv.Itoa(convoID) + "_pconv (messageid SERIAL,from int, read BOOLEAN, PRIMARY KEY(messageid));")
+
+  return err
+}
+//returns 0 if error, convoID will never equal 0
+func (store *dbStore) GetConversationID(user1 int, user2 int) int {
+  row := store.db.QueryRow("SELECT convoID FROM private_conversations WHERE (userOne=$1 AND userTwo=$2) OR (userOne=$2 AND userTwo=$1)",user1, user2)
+
+  var convoID int
+
+  row.Scan(&convoID)
+  return convoID
+}
+func (store *dbStore) SendMessage(uidFrom int, uidTo int, message string) error {
+  convoID := store.GetConversationID(uidFrom, uidTo)
+  if convoID == 0 {
+    return errors.New("Conversation doesn't exist, can't send message!")
+  }
+  row := store.db.QueryRow("INSERT INTO " + strconv.Itoa(convoID) + "_pconv (from,read) VALUES ($1,$2) RETURNING messageid",uidFrom, true)
+  var messageID int
+  row.Scan(&messageID)
+  encryptMessageFile(strconv.Itoa(messageID) + ".txt", []byte(message))
+  return nil
+}
+func (store *dbStore) GetConversations(uid int) []Conversation {
+  rows, err := store.db.Query("SELECT convoid,usertwo,created FROM private_conversations WHERE userOne=$1", uid)
+  if err != nil {
+    return nil
+  }
+  defer rows.Close()
+
+  conversations := []Conversation{}
+  for rows.Next() {
+    conversation := Conversation{}
+    rows.Scan(&conversation.ConvoID, &conversation.ParticipantID,&conversation.Created)
+
+    conversations = append(conversations, conversation)
+  }
+  rows, err = store.db.Query("SELECT convoid,userone,created FROM private_conversations WHERE usertwo=$1", uid)
+  if err != nil {
+    return nil
+  }
+  defer rows.Close()
+  for rows.Next() {
+    conversation := Conversation{}
+    rows.Scan(&conversation.ConvoID, &conversation.ParticipantID,&conversation.Created)
+
+    conversations = append(conversations, conversation)
+  }
+  return conversations
+}
+func (store *dbStore) GetConversation(convoid int) []*Message {
+  rows, _ := store.db.Query("SELECT * FROM " + strconv.Itoa(convoid) + "_pconv")
+  defer rows.Close()
+  messages := []*Message{}
+  for rows.Next() {
+    message := &Message{}
+    rows.Scan(&message.MessageID, &message.From, &message.Read)
+
+    messages = append(messages, message)
+  }
+  return messages
+}
+
 //ESSENTIALS:
 
 var store dbStore

@@ -1,5 +1,5 @@
-assets/uploads
-assets/uploads/*
-messages
-https-server.crt
-https-server.key
+./assets/uploads
+./assets/uploads/*
+./messages
+./https-server.crt
+./https-server.key

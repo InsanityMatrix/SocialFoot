@@ -20,7 +20,7 @@ func getMessageHash() string {
   return hex.EncodeToString(hasher.Sum(nil))
 }
 
-func encrypt(data []byte) []byte {
+func encryptMessage(data []byte) []byte {
   block, _ := aes.NewCipher([]byte(getMessageHash()))
   gcm, err := cipher.NewGCM(block)
   if err != nil {
@@ -34,7 +34,7 @@ func encrypt(data []byte) []byte {
   return ciphertext
 }
 
-func decrypt(data []byte) []byte {
+func decryptMessage(data []byte) []byte {
   key := []byte(getMessageHash())
   block, err := aes.NewCipher(key)
   if err != nil {
@@ -53,12 +53,12 @@ func decrypt(data []byte) []byte {
   return plaintext
 }
 
-func encryptFile(filename string, data []byte) {
+func encryptMessageFile(filename string, data []byte) {
   f, _ := os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/messages/" + filename)
   defer f.Close()
-  f.Write(encrypt(data))
+  f.Write(encryptMessage(data))
 }
-func decryptFile(filename string) []byte {
+func decryptMessageFile(filename string) []byte {
   data, _ := ioutil.ReadFile("/root/go/src/github.com/InsanityMatrix/SocialFoot/messages/" + filename)
-  return decrypt(data)
+  return decryptMessage(data)
 }

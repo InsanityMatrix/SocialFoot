@@ -52,7 +52,7 @@ function serveFeed(template) {
         } while (m);
         var content = "<img class='postimg' src='" + imageLink + "'>";
         if(data[i].type == "VIDEO") {
-          content = "<video class='postimg' controls><source src='" + imageLink + "' type='video/mp4'>Your browser doesnt support video</video>";
+          content = "<video class='postimg' controls loop><source src='" + imageLink + "' type='video/mp4'>Your browser doesnt support video</video>";
         }
         var postData = {
           "userid":data[i].userid,
@@ -160,7 +160,7 @@ function getUserPosts() {
         } while (m);
         var content = "<img class='postimg' src='" + imageLink + "'>";
         if(data[i].type == "VIDEO") {
-          content = "<video class='postimg' controls><source src='" + imageLink + "' type='video/mp4'>Your browser doesnt support video</video>";
+          content = "<video class='postimg' controls loop><source src='" + imageLink + "' type='video/mp4'>Your browser doesnt support video</video>";
         }
         var postData = {
           "userid":data[i].userid,
