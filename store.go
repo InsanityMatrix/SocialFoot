@@ -380,7 +380,10 @@ func (store *dbStore) GetConversationID(user1 int, user2 int) int {
 
   var convoID int
 
-  row.Scan(&convoID)
+  err := row.Scan(&convoID)
+  if err != nil {
+    return 0;
+  }
   return convoID
 }
 func (store *dbStore) SendMessage(uidFrom int, uidTo int, message string) error {
@@ -391,7 +394,7 @@ func (store *dbStore) SendMessage(uidFrom int, uidTo int, message string) error 
   row := store.db.QueryRow("INSERT INTO " + strconv.Itoa(convoID) + "_pconv (from,read) VALUES ($1,$2) RETURNING messageid",uidFrom, true)
   var messageID int
   row.Scan(&messageID)
-  encryptMessageFile(strconv.Itoa(messageID) + ".txt", []byte(message))
+  encryptMessageFile(strconv.Itoa(convoID) + "/" + strconv.Itoa(messageID) + ".txt", []byte(message))
   return nil
 }
 func (store *dbStore) GetConversations(uid int) []Conversation {
@@ -433,7 +436,15 @@ func (store *dbStore) GetConversation(convoid int) []*Message {
   }
   return messages
 }
-
+func (store *dbStore) IsUserInConversation(convoid int, userid int) bool {
+  var exists bool
+  row := store.db.QueryRow("SELECT exists (SELECT * FROM private_conversations WHERE convoid=$1 AND (userone=$2 OR usertwo=$2))", convoid, userid)
+  err := row.Scan(&exists)
+  if err != nil {
+    return false
+  }
+  return exists
+}
 //ESSENTIALS:
 
 var store dbStore

@@ -121,6 +121,8 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live/user/followers/{uid}", userFollowersHandler)
 		r.HandleFunc("/live/user/following/{uid}", userFollowingHandler)
 		r.HandleFunc("/live/user/posts", userPostHandler)
+		r.HandleFunc("/live/messages", loadMessages)
+		r.HandleFunc("/live/messages/{convoid}", conversationHandler)
 		r.HandleFunc("/live/search",searchPageHandler)
 		r.HandleFunc("/live/user/{uid}", userProfileHandler)
 		r.HandleFunc("/live", liveIndexHandler)
@@ -141,9 +143,11 @@ func newRouter() *mux.Router {
 
 		//MESSAGES FUNCTIONS
 		r.HandleFunc("/messages/send/text", sendTextMessageHandler)
+		r.HandleFunc("/messages/create/private", createPrivateMessageHandler)
 
 		//JSON stuff
 		r.HandleFunc("/json/user/id", HandleJSONUserById)
+		r.HandleFunc("/json/messages/convo", getMessages)
 		//report
 		r.HandleFunc("/report", reportHandler)
 		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
@@ -151,6 +155,8 @@ func newRouter() *mux.Router {
 		//TEMPLATES stuff
 		r.HandleFunc("/templates/post", postTemplateHandler)
 		r.HandleFunc("/templates/result", resultTemplateHandler)
+		r.HandleFunc("/templates/tomsg", toMsgTemplateHandler)
+		r.HandleFunc("/templates/frommsg", fromMsgTemplateHandler)
     //ALL PAGE FUNCTIONS HERE
     r.HandleFunc("/", handler)
 
@@ -905,4 +911,102 @@ func loadMessages(w http.ResponseWriter, r *http.Request) {
 	tmpl, _ := template.ParseFiles(TEMPLATES + "/messages/index.html", TEMPLATES + "/messages/sidebar.html")
 
 	tmpl.Execute(w, pageData)
+}
+func createPrivateMessageHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Fprint(w, "Why are you here?")
+		return
+	}
+
+	_, err = decryptCookie(r, "username")
+	if err != nil {
+		fmt.Fprint(w, NotLoggedIn())
+		return
+	}
+
+	userid, _ := strconv.Atoi(r.Form.Get("userid"))
+	profileid, _ := strconv.Atoi(r.Form.Get("profileid"))
+	exists := store.GetConversationID(userid, profileid)
+	if exists == 0 {
+		err = store.CreateTwoWayConversation(userid, profileid)
+		if err != nil {
+			fmt.Fprint(w, MsgCreationErr())
+			return
+		}
+	}
+	fmt.Fprint(w, "Conversation already exists")
+}
+func toMsgTemplateHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(200)
+	file, err := os.Open(TEMPLATES + "/messages/toMsg.html")
+	if err != nil {
+		fmt.Fprint(w, "Error")
+		return
+	}
+	defer file.Close()
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		fmt.Fprint(w, "Error")
+		return
+	}
+	fmt.Fprint(w, string(data))
+}
+func fromMsgTemplateHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+type ConversationPage struct {
+	Username string
+	Conversations []Conversation
+	ConvoID int
+	Userid int
+
+}
+func conversationHandler(w http.ResponseWriter, r *http.Request) {
+	params := strings.Split(r.URL.Path, "/")
+	convoID, _ := strconv.Atoi(params[len(params) - 1])
+
+	//CHECK USER
+	name, err := decryptCookie(r, "username")
+	if err != nil {
+		http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
+		return
+	}
+	user := store.GetUserInfo(&User{username: name})
+	//CHECK IF USER IS IN THIS CONVERSATION
+	if !store.IsUserInConversation(convoID, user.id) {
+		http.Redirect(w, r, "/live/messages", http.StatusSeeOther)
+		return
+	}
+
+	tmpl, err := template.ParseFiles(TEMPLATES + "/messages/conversation.html", TEMPLATES + "/messages/sidebar.html")
+	if err != nil {
+		//TODO: Send with error code
+		http.Redirect(w, r, "/live/messages", http.StatusSeeOther)
+		return
+	}
+	conversations := store.GetConversations(user.id)
+	data := ConversationPage{Username: user.username, Conversations: conversations, ConvoID: convoID, Userid: user.id}
+
+	tmpl.Execute(w, data)
+}
+
+func getMessages(w http.ResponseWriter, r *http.Request) {
+	//Output Messages with convoid?
+	err := r.ParseForm()
+	if err != nil {
+		//TODO: Better Error Handling System
+		fmt.Fprint(w, "[ {} ]")
+		return
+	}
+
+	convoID, _ := strconv.Atoi(r.Form.Get("convo"))
+	conversation := store.GetConversation(convoID)
+
+	data, err := json.Marshal(conversation)
+	if err != nil {
+		fmt.Fprint(w, "No Messages")
+		return
+	}
+	fmt.Fprint(w, data)
 }

@@ -48,7 +48,7 @@
                   <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
                   <ul class='dropdown-menu'>
                     <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
-                    <li class='dropdown-item'><a href='#'>Messages</a></li>
+                    <li class='dropdown-item'><a href='/live/messages'>Messages</a></li>
                     <li class='dropdown-item'><a href='#'>Your Feed</a></li>
                     <div class='dropdown-divider'></div>
                     <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
@@ -86,8 +86,11 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-offset-2 col-xs-8">
+              <div class="col-xs-8">
                 <button id="followBtn" class="btn btn-block btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
+              </div>
+              <div class="col-xs-4">
+                <button id="msgBtn" class="btn btn-block btn-info w-100" onclick="msg({{.userid}},{{.profileid}})">MSG</button>
               </div>
             </div>
           </div>
@@ -153,6 +156,21 @@
              $("#followBtn").removeClass("btn-light");
            }
 
+         }
+       }
+       function msg(userid, profileid) {
+         $.ajax({
+           url: "/message/create/private",
+           data :{
+             "userid":userid,
+             "profileid":profileid,
+           },
+           type: "POST",
+           success: msgSuccess
+         });
+
+         function msgSuccess(data) {
+           //Get respose and go from there
          }
        }
     </script>

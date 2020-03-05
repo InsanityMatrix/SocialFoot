@@ -22,6 +22,7 @@
     </style>
     <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
     <script src="/assets/scripts/SocialFoot.js"></script>
+    <script src="/assets/scripts/messages.js"></script>
   </head>
   <body id='body'>
     <nav class="navbar navbar-transparent">
@@ -62,10 +63,11 @@
         {{template "sidebar" .Conversations}}
       </div>
       <!-- Make Blackish Background -->
-      <div class="col-md-10">
-        <center>
-          <h3 style="color:white">No Messages Here</h3>
-        </center>
+      <div class="col-md-10" id="textList">
+        <!-- List of texts that auto scrolls to bottom -->
+        
+
+        <!-- Make a texting footer that sticks to the bottom -->
       </div>
     </div>
   </body>

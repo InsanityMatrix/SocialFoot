@@ -344,3 +344,10 @@ h2.bg-secondary {
 .navbar-header a {
   float: left;
 }
+.ToMSG {
+  width: 50%;
+  color: black;
+  padding: 8px;
+  border-radius: 10px;
+  background-color: #007ad1;
+}
