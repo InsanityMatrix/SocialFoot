@@ -850,7 +850,8 @@ type ViewPostData struct {
 	ProfileName string
 	ProfileID int
 	Caption string
-	Type string
+	Image bool
+	Video bool
 	Posted string
 	Extension string
 	Postid int

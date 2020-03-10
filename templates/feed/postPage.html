@@ -73,10 +73,10 @@
           <div class='row'>
             <div class='col-xs-12'>
               <center>
-                {{ if .Type == "IMAGE" }}
+                {{ if .Image }}
                   <img class="postimg" src="/assets/uploads/imageposts/post{{.Postid}}{{.Extension}}">
                 {{end}}
-                {{ if .Type == "VIDEO"}}
+                {{ if .Video}}
                   <video class="postimg" controls loop>
                     <source src="/assets/uploads/videoposts/post{{.Postid}}{{.Extension}}" type="video/mp4">
                     Your browser doesn't support video
