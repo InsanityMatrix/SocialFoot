@@ -68,9 +68,11 @@
         {{end}}
       </div>
       <!-- Make Blackish Background -->
-      <div class="col-sm-10" id="textList">
+      <div class="col-sm-10">
         <!-- List of texts that auto scrolls to bottom -->
+        <div id="textList" class="row">
 
+        </div>
 
         <!-- Make a texting footer that sticks to the bottom -->
         <div class="row">
@@ -85,8 +87,9 @@
       </div>
     </div>
     <script>
+      var messageInt;
       $(document).ready(function() {
-        setTimeout(getMessages, 500,parseInt({{.Userid}}),parseInt({{.ConvoID}}));
+        messageInt = setInterval(getMessages, 500,parseInt({{.Userid}}),parseInt({{.ConvoID}}));
       });
     </script>
   </body>

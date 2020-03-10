@@ -27,11 +27,17 @@ function getMessages(receiver, convoid) {
   });
   function parseMessages(data) {
     //DATA should already be json
-    var response = "<center><h5>Conversation Created</h5></center>";
+    $("#textList").html("<center><h5>Conversation Created</h5></center>")
     let length = data.length;
     for(var i = 0; i < length; i++) {
-      if (data[i].mfrom == receiver) {
+      if (data[i].From == receiver) {
         //this person sent that message
+        let currentContent = $("#textList").html();
+        let data = {
+          "content":data[i].Content
+        };
+        let newMessage = executeHTMLTemplate(toMsgTemplate, data);
+        $("#textList").html(currentContent + newMessage);
       } else {
         //this person received that message
       }
