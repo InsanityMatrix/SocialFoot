@@ -70,5 +70,10 @@
         <!-- Make a texting footer that sticks to the bottom -->
       </div>
     </div>
+    <script>
+      $(document).ready(function() {
+        setTimeout(getMessages, 500,parseInt({{.Userid}}),parseInt({{.ConvoID}}));
+      });
+    </script>
   </body>
 </html>

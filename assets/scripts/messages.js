@@ -18,6 +18,23 @@ $(document).ready(function() {
   }
 });
 
-function getMessages(receiver, other) {
-
+function getMessages(receiver, convoid) {
+  $.ajax({
+    url: '/json/messages/convo',
+    method: 'POST',
+    data: { "convo": convoid },
+    success: parseMessages
+  });
+  function parseMessages(data) {
+    //DATA should already be json
+    var response = "<center><h5>Conversation Created</h5></center>";
+    let length = data.length;
+    for(var i = 0; i < length; i++) {
+      if (data[i].mfrom == receiver) {
+        //this person sent that message
+      } else {
+        //this person received that message
+      }
+    }
+  }
 }

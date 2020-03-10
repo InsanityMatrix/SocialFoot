@@ -1068,5 +1068,6 @@ func getMessages(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "No Messages")
 		return
 	}
+	w.Header().Set("Content-Type","application/json")
 	fmt.Fprint(w, data)
 }
