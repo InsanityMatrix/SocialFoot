@@ -993,8 +993,9 @@ func createPrivateMessageHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprint(w, MsgCreationErr())
 			return
 		}
+		fmt.Fprint(w, store.GetConversationID(userid, profileid)))
 	}
-	fmt.Fprint(w, "Conversation already exists")
+	fmt.Fprint(w, exists)
 }
 func toMsgTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)

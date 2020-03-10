@@ -160,7 +160,7 @@
        }
        function msg(userid, profileid) {
          $.ajax({
-           url: "/message/create/private",
+           url: "/messages/create/private",
            data :{
              "userid":userid,
              "profileid":profileid,
@@ -171,6 +171,8 @@
 
          function msgSuccess(data) {
            //Get respose and go from there
+           convoID = parseInt(data);
+           window.location = "/live/messages/" + convoID;
          }
        }
     </script>
