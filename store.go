@@ -425,7 +425,7 @@ func (store *dbStore) GetConversations(uid int) []Conversation {
   return conversations
 }
 func (store *dbStore) GetConversation(convoid int) []*Message {
-  rows, _ := store.db.Query("SELECT * FROM c + strconv.Itoa(convoid) + "_pconv")
+  rows, _ := store.db.Query("SELECT * FROM c" + strconv.Itoa(convoid) + "_pconv")
   defer rows.Close()
   messages := []*Message{}
   for rows.Next() {
