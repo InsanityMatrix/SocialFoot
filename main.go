@@ -1045,7 +1045,7 @@ func conversationHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/live/messages", http.StatusSeeOther)
 		return
 	}
-	tmpl, _ = template.New("sidebar").ParseFiles(TEMPLATES + "/messages/sidebar.html")
+
 	conversations := store.GetConversations(user.id)
 	convParticipant := store.GetConvoParticipant(convoID, user.id)
 	data := ConversationPage{Username: user.username, Conversations: conversations, ConvoID: convoID, Userid: user.id, Participant: convParticipant}
