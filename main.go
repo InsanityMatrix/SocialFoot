@@ -845,14 +845,63 @@ func userPostHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, response)
 	return
 }
+type ViewPostData struct {
+	Username string
+	ProfileName string
+	ProfileID int
+	Caption string
+	Type string
+	Posted string
+	Extension string
+	Postid int
+	Tags string
+}
 func viewPostHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
 	identifier := params[len(params) - 1]
 	params = strings.Split(identifier, ".")
 	postid, _ := strconv.Atoi(params[len(params) - 1])
+	profileid, _ := strconv.Atoi(params[len(params) - 2])
 	//TODO: Finish View Post Handler
-	fmt.Fprint(w, postid)
+	profileUser := store.getUserInfoById(profileid)
 
+	username , err := decryptCookie(r, "username")
+	if err != nil {
+		http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
+		return
+	}
+	thisUser := store.getUserInfo(username)
+	post := store.getPostById(postid)
+	if post == nil {
+		http.Redirect(w, r, "/live", http.StatusSeeOther)
+		return
+	}
+	tmpl, err := template.ParseFiles(TEMPLATES + "/feed/postPage.html")
+	if err != nil {
+		http.Redirect(w, r, "/live", http.StatusSeeOther)
+		return
+	}
+	tags := post.Tags
+	tagsRe := regexp.MustCompile("(#\\w+)")
+
+	TAGS := ""
+	matches := tagsRe.FindAllStringSubmatch(tags, -1)
+	for _, group := range matches {
+		TAGS += "<p class='postTag'>" + group[2] + "</p>"
+	}
+	data := ViewPostData{
+		Username: thisUser.username,
+		ProfileName: profileUser.username,
+		ProfileID: post.Userid,
+		Caption: post.Caption,
+		Type: post.Type,
+		Posted: post.Posted.Format("01/02/2006"),
+		Extension: post.Extension,
+		Postid: post.Postid,
+		Tags: TAGS,
+	}
+
+	tmpl.Execute(w, data)
 }
 
 //{MESSAGES}
