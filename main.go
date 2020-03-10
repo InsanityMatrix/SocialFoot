@@ -886,12 +886,21 @@ func viewPostHandler(w http.ResponseWriter, r *http.Request) {
 	for _, group := range matches {
 		TAGS += "<p class='postTag'>" + group[2] + "</p>"
 	}
+	Image := false
+	Video := false
+	if post.Type == "IMAGE" {
+		Image = true
+	}
+	if post.Type == "VIDEO" {
+		Video = true
+	}
 	data := ViewPostData{
 		Username: thisUser.username,
 		ProfileName: profileUser.username,
 		ProfileID: post.Userid,
 		Caption: post.Caption,
-		Type: post.Type,
+		Image: Image,
+		Video: Video,
 		Posted: post.Posted.Format("01/02/2006"),
 		Extension: post.Extension,
 		Postid: post.Postid,
