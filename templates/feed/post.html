@@ -5,11 +5,11 @@
     <p class='col-xs-6 postDate color-t'>{{.thisdate}}</p>
   </div>
   <div class='row'>
-    <div class='col-xs-12'>
+    <a href="/live/view/post/{{.userid}}.{{.postid}}" class='col-xs-12'>
       <center>
         {{.content}}
       </center>
-    </div>
+    </a>
   </div>
   <div class='row'>
     <div class='col-xs-10 col-xs-offset-1 postCaption color-t'> {{.caption}} </div>
