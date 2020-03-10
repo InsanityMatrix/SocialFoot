@@ -17,7 +17,10 @@ $(document).ready(function() {
     fromMsgTemplate = data;
   }
 });
-
+function chooseConversation(elm) {
+  let convoid = elm.firstElementChild.innerHTML;
+  window.location = "/live/messages/" + convoid;
+}
 function getMessages(receiver, convoid) {
   $.ajax({
     url: '/json/messages/convo',

@@ -1059,6 +1059,11 @@ func conversationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	conversations := store.GetConversations(user.id)
+	for i, convo := range conversations {
+		usr := store.GetUserInfoById(convo.ParticipantID)
+		convo.ParticipantName = usr.username
+		conversations[i] = convo
+	}
 	convParticipant := store.GetConvoParticipant(convoID, user.id)
 	data := ConversationPage{Username: user.username, Conversations: conversations, ConvoID: convoID, Userid: user.id, Participant: convParticipant}
 
