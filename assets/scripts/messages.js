@@ -33,10 +33,10 @@ function getMessages(receiver, convoid) {
       if (data[i].From == receiver) {
         //this person sent that message
         let currentContent = $("#textList").html();
-        let data = {
+        let mData = {
           "content":data[i].Content
         };
-        let newMessage = executeHTMLTemplate(toMsgTemplate, data);
+        let newMessage = executeHTMLTemplate(toMsgTemplate, mData);
         $("#textList").html(currentContent + newMessage);
       } else {
         //this person received that message
