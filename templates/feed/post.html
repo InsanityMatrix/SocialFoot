@@ -12,16 +12,16 @@
     </a>
   </div>
   <div class='row'>
-    <div class='col-xs-6 col-xs-offset-1 postCaption color-t'> {{.caption}} </div>
-    <div class='col-xs-4 dropdown'>
+    <div class='col-sm-6 col-sm-offset-1 col-xs-10 col-xs-offset-1 postCaption color-t'> {{.caption}}<br> </div>
+    <div class='col-sm-4 col-xs-8 col-xs-offset-2 dropdown'>
       <button class="btn btn-primary dropdown-toggle btn-block color-t" type="button" data-toggle="dropdown">Share
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
         <!-- iPhone -->
-        <li id="iphoneSMS"><a style="text-decoration: none;" href="sms:;body=Hehe! socialfoot.me/live/view/post/{{.userid}}.{{.postid}}">Text/SMS</a></li>
+        <li class="iphoneSMS"><a style="text-decoration: none;" href="sms:;body=Hehe! socialfoot.me/live/view/post/{{.userid}}.{{.postid}}">Text/SMS</a></li>
         <!-- Android -->
-        <li id="androidSMS"><a style="text-decoration: none;" href="sms:?body=Hehe! socialfoot.me/live/view/post/{{.userid}}.{{.postid}}">Text/SMS</a></li>
+        <li class="androidSMS"><a style="text-decoration: none;" href="sms:?body=Hehe! socialfoot.me/live/view/post/{{.userid}}.{{.postid}}">Text/SMS</a></li>
 
         <li id="copy"><a style="text-decoration: none;" onclick="copyTextToClipboard('socialfoot.me/live/view/post/{{.userid}}.{{.postid}}');">Copy</a></li>
         <script>
@@ -47,12 +47,12 @@
           $(document).ready({
              let device = getMobileOperatingSystem();
              if(device == "unknown") {
-               document.getElementById("androidSMS").remove();
-               document.getElementById("iphoneSMS").remove();
+               $(".androidSMS").remove();
+               $(".iphoneSMS").remove();
              } else if(device == "Android" || device == "Windows Phone") {
-               document.getElementById("iphoneSMS").remove();
+               $(".iphoneSMS").remove();
              } else {
-               document.getElementById("androidSMS").remove();
+               $(".androidSMS").remove();
              }
           });
         </script>
