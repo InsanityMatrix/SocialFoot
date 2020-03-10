@@ -370,7 +370,7 @@ func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) error {
 	}
 
   os.Mkdir("/root/go/src/github.com/InsanityMatrix/SocialFoot/messages/" + strconv.Itoa(convoID), 0755)
-	_, err = store.db.Query("CREATE TABLE " + strconv.Itoa(convoID) + "_pconv (messageid SERIAL,from int, read BOOLEAN, PRIMARY KEY(messageid));")
+	_, err = store.db.Query("CREATE TABLE c" + strconv.Itoa(convoID) + "_pconv (messageid SERIAL, mfrom int, read BOOLEAN, PRIMARY KEY(messageid));")
 
   return err
 }
@@ -391,7 +391,7 @@ func (store *dbStore) SendMessage(uidFrom int, uidTo int, message string) error 
   if convoID == 0 {
     return errors.New("Conversation doesn't exist, can't send message!")
   }
-  row := store.db.QueryRow("INSERT INTO " + strconv.Itoa(convoID) + "_pconv (from,read) VALUES ($1,$2) RETURNING messageid",uidFrom, true)
+  row := store.db.QueryRow("INSERT INTO c" + strconv.Itoa(convoID) + "_pconv (mfrom,read) VALUES ($1,$2) RETURNING messageid",uidFrom, true)
   var messageID int
   row.Scan(&messageID)
   encryptMessageFile(strconv.Itoa(convoID) + "/" + strconv.Itoa(messageID) + ".txt", []byte(message))
@@ -425,7 +425,7 @@ func (store *dbStore) GetConversations(uid int) []Conversation {
   return conversations
 }
 func (store *dbStore) GetConversation(convoid int) []*Message {
-  rows, _ := store.db.Query("SELECT * FROM " + strconv.Itoa(convoid) + "_pconv")
+  rows, _ := store.db.Query("SELECT * FROM c + strconv.Itoa(convoid) + "_pconv")
   defer rows.Close()
   messages := []*Message{}
   for rows.Next() {
