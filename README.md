@@ -7,6 +7,9 @@ Static Content in /assets/ (html/css/javascript)
     <li><h4>/live</h4> - Logged in homepage</li>
     <li><h4>/live/profile</h4> - Verify before editing profile settings</li>
     <li><h4>/live/profile/settings</h4> - Edit profile settings</li>
+    <li><h4>/live/view/post/{identifier}</h4> - View a specific page</li>
+    <li><h4>/live/messages</h4> - Messages Home Page</li>
+    <li><h4>/live/messages/{convo}</h4> - Message/Conversation</li>
 </ul>
 <h2>main.go</h2>
 <p>This file sets up the router and starts a database connection, handling the requests and some functions</p>
