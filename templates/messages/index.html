@@ -59,7 +59,12 @@
     <div class="container-fluid">
       <!-- Side bar -->
       <div class="col-md-2 bg-white">
-        {{template "sidebar" .Conversations}}
+        {{range .Conversations}}
+        <button class="btn-block bg-white color-t w-100 " onclick="chooseConversation(this)">
+          <p style="display:none;">{{.ConvoID}}</p>
+          <h5 class="color-t">{{.ParticipantName}}</h5>
+        </button>
+        {{end}}
       </div>
       <!-- Make Blackish Background -->
       <div class="col-md-10">
