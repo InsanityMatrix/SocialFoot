@@ -59,7 +59,7 @@
     </nav>
     <div class="container-fluid">
       <!-- Side bar -->
-      <div class="col-md-2 bg-white">
+      <div class="col-sm-2">
         {{range .Conversations}}
         <button class="btn-block bg-white color-t w-100 " onclick="chooseConversation(this)">
           <p style="display:none;">{{.ConvoID}}</p>
@@ -68,11 +68,20 @@
         {{end}}
       </div>
       <!-- Make Blackish Background -->
-      <div class="col-md-10" id="textList">
+      <div class="col-sm-10" id="textList">
         <!-- List of texts that auto scrolls to bottom -->
 
 
         <!-- Make a texting footer that sticks to the bottom -->
+        <div class="row">
+          <div class="col-xs-8">
+            <input type="text" name="messenger" class="form-control" placeholder="Send Message...">
+          </div>
+          <div class="col-xs-4">
+            <button type="button" class="btn btn-block w-100 btn-primary color-t" onclick="sendMessage({{.Userid}},{{.Participant}})">SEND</button>
+          </div>
+        </div>
+
       </div>
     </div>
     <script>

@@ -375,6 +375,19 @@ func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) error {
   return err
 }
 //returns 0 if error, convoID will never equal 0
+func (store *dbStore) GetConvoParticipant(convoID int, userid int) int {
+  row := store.db.QueryRow("SELECT usertwo FROM private_conversations WHERE convoID=$1 AND userone=$2",convoID, userid)
+  var user int
+  err := row.Scan(&user)
+  if err != nil {
+    row = store.db.QueryRow("SELECT userone FROM private_conversations WHERE convoID=$1 AND usertwo=$2",convoID, userid)
+    err = row.Scan(&user)
+    if err != nil {
+      return 0;
+    }
+  }
+  return user
+}
 func (store *dbStore) GetConversationID(user1 int, user2 int) int {
   row := store.db.QueryRow("SELECT convoID FROM private_conversations WHERE (userOne=$1 AND userTwo=$2) OR (userOne=$2 AND userTwo=$1)",user1, user2)
 

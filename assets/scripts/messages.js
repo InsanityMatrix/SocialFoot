@@ -38,3 +38,16 @@ function getMessages(receiver, convoid) {
     }
   }
 }
+
+function sendMessage(from, to) {
+  let message = $("input[name='messenger']").val();
+  $.ajax({
+    url: '',
+    method: 'POST',
+    data: {
+      uidFrom: from,
+      uidTo: to,
+      message: message
+    }
+  });
+}

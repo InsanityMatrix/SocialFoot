@@ -1020,7 +1020,7 @@ type ConversationPage struct {
 	Conversations []Conversation
 	ConvoID int
 	Userid int
-
+	Participant int
 }
 func conversationHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
@@ -1047,7 +1047,8 @@ func conversationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl, _ = template.New("sidebar").ParseFiles(TEMPLATES + "/messages/sidebar.html")
 	conversations := store.GetConversations(user.id)
-	data := ConversationPage{Username: user.username, Conversations: conversations, ConvoID: convoID, Userid: user.id}
+	convParticipant := store.GetConvoParticipant(convoID, user.id)
+	data := ConversationPage{Username: user.username, Conversations: conversations, ConvoID: convoID, Userid: user.id, Participant: convParticipant}
 
 	tmpl.Execute(w, data)
 }
@@ -1064,6 +1065,10 @@ func getMessages(w http.ResponseWriter, r *http.Request) {
 	convoID, _ := strconv.Atoi(r.Form.Get("convo"))
 	conversation := store.GetConversation(convoID)
 
+	for index, message := range conversation {
+		content := decryptMessageFile(strconv.Itoa(convoID) + "/" + strconv.Itoa(message.MessageID) + ".txt")
+		conversation[index].Content = string(content);
+	}
 	data, err := json.Marshal(conversation)
 	if err != nil {
 		fmt.Fprint(w, "No Messages")
