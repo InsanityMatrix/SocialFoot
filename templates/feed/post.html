@@ -44,7 +44,7 @@
 
               return "unknown";
           }
-          $(document).ready({
+          $(document).ready(function() {
              let device = getMobileOperatingSystem();
              if(device == "unknown") {
                $(".androidSMS").remove();
