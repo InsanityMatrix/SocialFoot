@@ -1039,12 +1039,13 @@ func conversationHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl, err := template.ParseFiles(TEMPLATES + "/messages/conversation.html", TEMPLATES + "/messages/sidebar.html")
+	tmpl, err := template.ParseFiles(TEMPLATES + "/messages/conversation.html")
 	if err != nil {
 		//TODO: Send with error code
 		http.Redirect(w, r, "/live/messages", http.StatusSeeOther)
 		return
 	}
+	tmpl, _ = template.New("sidebar").ParseFiles(TEMPLATES + "/messages/sidebar.html")
 	conversations := store.GetConversations(user.id)
 	data := ConversationPage{Username: user.username, Conversations: conversations, ConvoID: convoID, Userid: user.id}
 
