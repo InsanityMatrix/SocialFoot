@@ -42,7 +42,7 @@ function getMessages(receiver, convoid) {
 function sendMessage(from, to) {
   let message = $("input[name='messenger']").val();
   $.ajax({
-    url: '',
+    url: '/messages/send/text',
     method: 'POST',
     data: {
       uidFrom: from,
