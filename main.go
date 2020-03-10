@@ -863,15 +863,15 @@ func viewPostHandler(w http.ResponseWriter, r *http.Request) {
 	postid, _ := strconv.Atoi(params[len(params) - 1])
 	profileid, _ := strconv.Atoi(params[len(params) - 2])
 	//TODO: Finish View Post Handler
-	profileUser := store.getUserInfoById(profileid)
+	profileUser := store.GetUserInfoById(profileid)
 
 	username , err := decryptCookie(r, "username")
 	if err != nil {
 		http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
 		return
 	}
-	thisUser := store.getUserInfo(username)
-	post := store.getPostById(postid)
+	thisUser := store.GetUserInfo(&User{username: username})
+	post := store.GetPostById(postid)
 	if post == nil {
 		http.Redirect(w, r, "/live", http.StatusSeeOther)
 		return
