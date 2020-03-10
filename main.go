@@ -1013,7 +1013,19 @@ func toMsgTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(data))
 }
 func fromMsgTemplateHandler(w http.ResponseWriter, r *http.Request) {
-
+	w.WriteHeader(200)
+	file, err := os.Open(TEMPLATES + "/messages/fromMsg.html")
+	if err != nil {
+		fmt.Fprint(w, "Error")
+		return
+	}
+	defer file.Close()
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		fmt.Fprint(w, "Error")
+		return
+	}
+	fmt.Fprint(w, string(data))
 }
 type ConversationPage struct {
 	Username string

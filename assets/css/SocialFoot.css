@@ -345,9 +345,14 @@ h2.bg-secondary {
   float: left;
 }
 .ToMSG {
-  width: 50%;
   color: black;
-  padding: 8px;
+  padding: 4px;
   border-radius: 10px;
   background-color: #007ad1;
+}
+.fromMSG {
+  color: black;
+  padding: 4px;
+  border-radius: 10px;
+  background-color: #d4d4d4;
 }
