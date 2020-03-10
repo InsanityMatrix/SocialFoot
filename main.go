@@ -872,10 +872,6 @@ func viewPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	thisUser := store.GetUserInfo(&User{username: username})
 	post := store.GetPostById(postid)
-	if post == nil {
-		http.Redirect(w, r, "/live", http.StatusSeeOther)
-		return
-	}
 	tmpl, err := template.ParseFiles(TEMPLATES + "/feed/postPage.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusSeeOther)
