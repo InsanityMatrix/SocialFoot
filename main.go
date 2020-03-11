@@ -537,7 +537,8 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//Get Form Values
-	caption := strings.ReplaceAll(strings.ReplaceAll(r.Form.Get("caption"), "<", "&lt;"),">","&gt;")
+	caption := strings.Replace(strings.Replace(r.Form.Get("caption"),"<","&lt;",-1),">","&gt;",-1)
+	
 	tags := r.Form.Get("tags")
 
 	tagsRe := regexp.MustCompile("((#\\w+),?\\s?)")
