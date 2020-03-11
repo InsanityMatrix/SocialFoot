@@ -370,7 +370,7 @@ func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) error {
 	}
 
   os.Mkdir("/root/go/src/github.com/InsanityMatrix/SocialFoot/messages/" + strconv.Itoa(convoID), 0755)
-	_, err = store.db.Query("CREATE TABLE c" + strconv.Itoa(convoID) + "_pconv (messageid SERIAL, mfrom int DEFAULT false, read BOOLEAN, PRIMARY KEY(messageid));")
+	_, err = store.db.Query("CREATE TABLE c" + strconv.Itoa(convoID) + "_pconv (messageid SERIAL, mfrom int, read BOOLEAN DEFAULT false, PRIMARY KEY(messageid));")
 
   return err
 }
