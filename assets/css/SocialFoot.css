@@ -356,3 +356,4 @@ h2.bg-secondary {
   border-radius: 10px;
   background-color: #d4d4d4;
 }
+.fixed-row-bottom { position: fixed; bottom: 0;}
