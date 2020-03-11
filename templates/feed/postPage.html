@@ -77,7 +77,7 @@
                   <img class="postimg" src="/assets/uploads/imageposts/post{{.Postid}}{{.Extension}}">
                 {{end}}
                 {{ if .Video}}
-                  <video class="postimg" controls loop>
+                  <video class="postimg" preload='metadata' controls loop>
                     <source src="/assets/uploads/videoposts/post{{.Postid}}{{.Extension}}" type="video/mp4">
                     Your browser doesn't support video
                   </video>
@@ -92,7 +92,7 @@
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
-                <!-- iPhone -->
+                <!-- iPhone (iOS 8+) -->
                 <li class="iphoneSMS"><a style="text-decoration: none;" href="sms:&body=Hehe! http://socialfoot.me/live/view/post/{{.ProfileID}}.{{.Postid}}"><i class="fa fa-comments"></i>Text/SMS</a></li>
                 <!-- Android -->
                 <li class="androidSMS"><a style="text-decoration: none;" href="sms:?body=Hehe! http://socialfoot.me/live/view/post/{{.ProfileID}}.{{.Postid}}"><i class="fa fa-comments"></i>Text/SMS</a></li>
