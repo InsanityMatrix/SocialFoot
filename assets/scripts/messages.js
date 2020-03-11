@@ -74,4 +74,5 @@ function sendMessage(from, to) {
       message: message
     }
   });
+  $("input[name='messenger']").val("");
 }
