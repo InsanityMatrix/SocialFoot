@@ -43,6 +43,12 @@ function getMessages(receiver, convoid) {
         $("#textList").html(currentContent + newMessage);
       } else {
         //this person received that message
+        let currentContent = $("#textList").html();
+        let mData = {
+          "content":data[i].Content
+        };
+        let newMessage = executeHTMLTemplate(fromMsgTemplate, mData);
+        $("#textList").html(currentContent + newMessage);
       }
     }
   }
