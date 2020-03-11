@@ -8,6 +8,9 @@ function executeHTMLTemplate(template, data) {
   }
   return template;
 }
+function escapeUserString(data) {
+  return data.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 function fallbackCopyTextToClipboard(text) {
   var textArea = document.createElement("textarea");
   textArea.value = text;
