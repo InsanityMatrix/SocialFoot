@@ -59,16 +59,14 @@
     </nav>
     <div class="container-fluid">
       <!-- Side bar -->
-      <div class="col-sm-2">
-        {{range .Conversations}}
-        <button class="btn-block bg-white color-t w-100 " onclick="chooseConversation(this)">
-          <p style="display:none;">{{.ConvoID}}</p>
-          <h5 class="color-t">{{.ParticipantName}}</h5>
-        </button>
-        {{end}}
+      <div class="col-sm-2 col-xs-12">
+
+        <a class="btn-block btn-primary color-t w-100 " href="/live/messages">
+          <i class="fas fa-arrow-left"></i>Back
+        </a>
       </div>
       <!-- Make Blackish Background -->
-      <div class="col-sm-10">
+      <div class="col-sm-10 col-xs-12">
         <!-- List of texts that auto scrolls to bottom -->
         <div id="textList" class="row">
 

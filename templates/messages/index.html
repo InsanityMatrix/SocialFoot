@@ -59,19 +59,13 @@
     </nav>
     <div class="container-fluid">
       <!-- Side bar -->
-      <div class="col-sm-2">
+      <div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3">
         {{range .Conversations}}
         <button class="btn-block bg-white color-t w-100 " onclick="chooseConversation(this)">
           <p style="display:none;">{{.ConvoID}}</p>
-          <h5 class="color-t">{{.ParticipantName}}</h5>
+          <h5 style="text-align:left" class="color-t">{{.ParticipantName}}</h5>
         </button>
         {{end}}
-      </div>
-      <!-- Make Blackish Background -->
-      <div class="col-md-10">
-        <center>
-          <h3 style="color:white">No Messages Here</h3>
-        </center>
       </div>
     </div>
   </body>

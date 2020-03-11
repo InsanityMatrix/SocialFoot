@@ -30,13 +30,19 @@ function getMessages(receiver, convoid) {
   });
   function parseMessages(data) {
     //DATA should already be json
-    $("#textList").html("<center><h5>Conversation Created</h5></center>")
     let length = data.length;
+    let lastMessage = data[length - 1];
+    let cCont = $("#textList").html();
+    if(cCont.includes("m" + lastMessage.MessageID)) {
+      return;
+    }
+    $("#textList").html("<center><h5>Conversation Created</h5></center>")
     for(var i = 0; i < length; i++) {
       if (data[i].From == receiver) {
         //this person sent that message
         let currentContent = $("#textList").html();
         let mData = {
+          "mid": data[i].MessageID,
           "content":data[i].Content
         };
         let newMessage = executeHTMLTemplate(toMsgTemplate, mData);
@@ -45,12 +51,14 @@ function getMessages(receiver, convoid) {
         //this person received that message
         let currentContent = $("#textList").html();
         let mData = {
+          "mid": data[i].MessageID,
           "content":data[i].Content
         };
         let newMessage = executeHTMLTemplate(fromMsgTemplate, mData);
         $("#textList").html(currentContent + newMessage);
       }
     }
+    //Scroll to bottom
   }
 }
 
