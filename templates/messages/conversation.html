@@ -73,14 +73,14 @@
     <div class="container-fluid message-body">
       <!-- Side bar -->
       <!-- Make Blackish Background -->
-      <div class="col-sm-10 col-xs-12">
+      <div class="col-sm-12 col-xs-12">
         <!-- List of texts that auto scrolls to bottom -->
         <div id="textList" class="row">
 
         </div>
 
         <!-- Make a texting footer that sticks to the bottom -->
-        <div class="row">
+        <div class="row chatbar">
           <div class="col-xs-8">
             <input type="text" name="messenger" class="form-control" placeholder="Send Message...">
           </div>
@@ -91,11 +91,18 @@
 
       </div>
     </div>
+    <!-- Styling Script -->
+    <script>
+    $(document).ready(function() {
+      $(".message-body").css("padding-top", $(".message-navbar").height());
+    });
+    </script>
     <script>
       var messageInt;
       $(document).ready(function() {
         messageInt = setInterval(getMessages, 500,parseInt({{.Userid}}),parseInt({{.ConvoID}}));
       });
     </script>
+
   </body>
 </html>
