@@ -12,6 +12,7 @@
 }
 .texts {
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 .chatbar {
   position: absolute;
