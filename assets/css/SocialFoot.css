@@ -50,7 +50,10 @@ color: #0A38F5;
   background-color: transparent;
   color: black;
 }
-
+.navbar-feet {
+  background-image: url('/assets/images/Feet.png');
+  color: black;
+}
 body {
   background-color: #f1f1f1;
 }

@@ -919,7 +919,7 @@ func viewPostHandler(w http.ResponseWriter, r *http.Request) {
 	TAGS := ""
 	matches := tagsRe.FindAllStringSubmatch(tags, -1)
 	for _, group := range matches {
-		TAGS += "<p class='postTag'>" + group[2] + "</p>"
+		TAGS += "<p class='postTag'>" + group[0] + "</p>"
 	}
 	Image := false
 	Video := false

@@ -21,42 +21,55 @@
       }
     </style>
     <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
+    <link rel='stylesheet' href='/assets/css/Messages.css'>
     <script src="/assets/scripts/SocialFoot.js"></script>
     <script src="/assets/scripts/messages.js"></script>
   </head>
   <body id='body'>
-    <nav class="navbar navbar-transparent">
-      <div class='container-fluid'>
-        <button type="button" class="navbar-toggle col-md-1 col-xs-2" data-toggle="collapse" data-target="#utilities">
-            <img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
-        </button>
-          <div class='navbar-header'>
-              <a href='/live'>
-                <img src="/assets/images/SocialFootLogo.png" width="100px">
-              </a>
-          </div>
-          <div class="collapse navbar-collapse" id="utilities">
-            <ul class='nav navbar-nav'>
-              <li class='active'><a href='/live'>Home</a></li>
-              <li><a href='/live/search'>Search</a></li>
-              <li><a href='/report'>Report</a></li>
-            </ul>
-            <ul class='nav navbar-nav navbar-right'>
-              <li><a href='/live/post'>Post</a></li>
-              <li class='dropdown'>
-                <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.Username}}</a>
-                <ul class='dropdown-menu'>
-                  <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
-                  <li class='dropdown-item'><a href='/live/messages'>Messages</a></li>
-                  <li class='dropdown-item'><a href='/live/feed'>Your Feed</a></li>
-                  <div class='dropdown-divider'></div>
-                  <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+    <!-- Navbar on z-index 1 -->
+    <div class="message-navbar">
+      <nav class="navbar navbar-feet">
+        <div class='container-fluid'>
+          <button type="button" class="navbar-toggle col-md-1 col-xs-2" data-toggle="collapse" data-target="#utilities">
+              <img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
+          </button>
+            <div class='navbar-header'>
+                <a href='/live'>
+                  <img src="/assets/images/SocialFootLogo.png" width="100px">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="utilities">
+              <ul class='nav navbar-nav'>
+                <li class='active'><a href='/live'>Home</a></li>
+                <li><a href='/live/search'>Search</a></li>
+                <li><a href='/report'>Report</a></li>
+              </ul>
+              <ul class='nav navbar-nav navbar-right'>
+                <li><a href='/live/post'>Post</a></li>
+                <li class='dropdown'>
+                  <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.Username}}</a>
+                  <ul class='dropdown-menu'>
+                    <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
+                    <li class='dropdown-item'><a href='/live/messages'>Messages</a></li>
+                    <li class='dropdown-item'><a href='/live/feed'>Your Feed</a></li>
+                    <div class='dropdown-divider'></div>
+                    <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+        </div>
+      </nav>
+      <div class="container">
+        <div class="col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0">
+
+          <a class="btn-block btn-primary color-t w-100 " style="text-align:center;padding-top:5px;padding-bottom:5px;" href="/live/messages">
+            <i class="fa fa-arrow-left"></i> Back
+          </a>
+        </div>
       </div>
-    </nav>
+    </div>
+    <!-- normal z-inde -->
     <div class="container-fluid">
       <!-- Side bar -->
       <div class="col-sm-2 col-xs-12">
