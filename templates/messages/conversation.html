@@ -73,9 +73,9 @@
     <div class="container-fluid message-body">
       <!-- Side bar -->
       <!-- Make Blackish Background -->
-      <div class="col-sm-12 col-xs-12">
+      <div class="col-sm-12 col-xs-12 messaging">
         <!-- List of texts that auto scrolls to bottom -->
-        <div id="textList" class="row">
+        <div id="textList" class="row texts">
 
         </div>
 
@@ -95,6 +95,8 @@
     <script>
     $(document).ready(function() {
       $(".message-body").css("padding-top", $(".message-navbar").height());
+      $(".messaging").css("height", $(".message-body").height() - $(".message-navbar").height());
+      $(".texts").css("height",$(".messaging").height() - $(".chatbar").height());
     });
     </script>
     <script>
