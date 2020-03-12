@@ -886,7 +886,7 @@ type ViewPostData struct {
 	Posted string
 	Extension string
 	Postid int
-	Tags string
+	Tags template.
 }
 func viewPostHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
@@ -921,6 +921,8 @@ func viewPostHandler(w http.ResponseWriter, r *http.Request) {
 	for _, group := range matches {
 		TAGS += "<p class='postTag'>" + group[0] + "</p>"
 	}
+
+	tHTML := template.HTML(Tags)
 	Image := false
 	Video := false
 	if post.Type == "IMAGE" {
@@ -939,7 +941,7 @@ func viewPostHandler(w http.ResponseWriter, r *http.Request) {
 		Posted: post.Posted.Format("01/02/2006"),
 		Extension: post.Extension,
 		Postid: post.Postid,
-		Tags: TAGS,
+		Tags: tHTML,
 	}
 
 	tmpl.Execute(w, data)
