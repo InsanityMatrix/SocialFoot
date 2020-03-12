@@ -21,6 +21,7 @@ import (
 		"log"
     "net/http"
     "github.com/gorilla/mux"
+		"github.com/koyachi/go-nude"
 	 _ "github.com/lib/pq"
 )
 
@@ -538,7 +539,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	//Get Form Values
 	caption := strings.Replace(strings.Replace(r.Form.Get("caption"),"<","&lt;",-1),">","&gt;",-1)
-	
+
 	tags := r.Form.Get("tags")
 
 	tagsRe := regexp.MustCompile("((#\\w+),?\\s?)")
@@ -596,6 +597,35 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	//Display results
+	isNude, err := nude.IsNude("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
+	if err != nil {
+		tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
+		msg, err := decryptCookie(r, "username")
+		var username string
+		if err != nil {
+			username = store.GetUserInfoById(id).username
+		} else {
+			username = msg
+		}
+		status := "Your post has been created at http://www.socialfoot.me/live/view/post/" + userid + "." + idStr
+		tmpl.Execute(w, map[string]string{"username":username,"status":status})
+	}
+	if isNude {
+		store.DeleteUserPost(postid)
+		os.Remove("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
+		tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
+		msg, err := decryptCookie(r, "username")
+		var username string
+		if err != nil {
+			id, _ := strconv.Atoi(userid)
+			username = store.GetUserInfoById(id).username
+		} else {
+			username = msg
+		}
+		status := "Nudity was detected, if this was an error, please REPORT it."
+		tmpl.Execute(w, map[string]string{"username":username,"status":status})
+		return
+	}
 	tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
 	msg, err := decryptCookie(r, "username")
 	var username string
