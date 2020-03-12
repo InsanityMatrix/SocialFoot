@@ -8,3 +8,8 @@
   height: 100%;
   overflow-y: scroll;
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
