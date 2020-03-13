@@ -104,6 +104,29 @@
        $(document).ready(function(){
          loadFeed();
        });
+       document.body.onscroll = function () {
+         let videos = document.getElementsByTagName("video");
+
+         for(var i = 0; i < videos.length; i++) {
+           let video = videos[i];
+           let bounding = video.getBoundingClientRect();
+
+           if(bounding.top >= 0 &&
+             bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+             bounding.left >= 0 &&
+             bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+           ) {
+             //In the viewport
+             video.play();
+           } else {
+             //outside the viewport
+             if(!video.paused) {
+               video.pause();
+             }
+           }
+
+         }
+       };
      </script>
 
 
