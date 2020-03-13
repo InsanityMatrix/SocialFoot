@@ -290,6 +290,7 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live page with html templates
+	SetHeaders(w)
 	w.Header().Set("Content-Type", "text/html")
 	name, err := decryptCookie(r, "username")
 	if err != nil {
@@ -311,6 +312,7 @@ func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
 }
 func profileHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live Profile settings
+	SetHeaders(w)
 	w.Header().Set("Content-Type", "text/html")
 	name, err := decryptCookie(r, "username")
 	if err != nil {
@@ -326,6 +328,7 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, map[string]string{"username":name})
 }
 func postHandler(w http.ResponseWriter, r *http.Request) {
+	SetHeaders(w)
 	w.Header().Set("Content-Type","text/html")
 	name, err := decryptCookie(r, "username")
 	if err != nil {
@@ -362,6 +365,7 @@ func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	SetHeaders(w)
 	w.Header().Set("Content-Type", "text/html")
 	user := User{}
 	user.username = name
@@ -492,6 +496,8 @@ func signoutHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w,"Success")
 }
 func reportHandler(w http.ResponseWriter, r *http.Request) {
+	SetHeaders(w)
+	w.Header().Set("Content-Type","text/html")
 	tmpl, err := template.ParseFiles(TEMPLATES + "/bugReport.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
@@ -580,6 +586,8 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	if ft == "VIDEO" {
 		fInfo, _ := out.Stat()
 		if fInfo.Size() > 21000000 {
+			SetHeaders(w)
+			w.Header().Set("Content-Type","text/html")
 			store.DeleteUserPost(postid)
 			os.Remove("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/videoposts/post" + idStr + extension)
 			tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
@@ -607,6 +615,8 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			username = msg
 		}
+		SetHeaders(w)
+		w.Header().Set("Content-Type","text/html")
 		status := "Your post has been created at http://www.socialfoot.me/live/view/post/" + userid + "." + idStr
 		tmpl.Execute(w, map[string]string{"username":username,"status":status})
 	}
@@ -622,6 +632,8 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			username = msg
 		}
+		SetHeaders(w)
+		w.Header().Set("Content-Type","text/html")
 		status := "Nudity was detected, if this was an error, please REPORT it."
 		tmpl.Execute(w, map[string]string{"username":username,"status":status})
 		return
@@ -634,6 +646,8 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		username = msg
 	}
+	SetHeaders(w)
+	w.Header().Set("Content-Type","text/html")
 	status := "Your post has been created at http://www.socialfoot.me/live/view/post/" + userid + "." + idStr
 	tmpl.Execute(w, map[string]string{"username":username,"status":status})
 }
@@ -667,6 +681,8 @@ func bugReportHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func searchPageHandler(w http.ResponseWriter, r *http.Request) {
+	SetHeaders(w)
+	w.Header().Set("Content-Type","text/html")
 	msg, err := decryptCookie(r, "username")
 	if err != nil {
 		http.Redirect(w,r,"/assets/login.html",http.StatusSeeOther)
@@ -734,6 +750,7 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
 		return
 	}
+	SetHeaders(w)
 	w.Header().Set("Content-Type","text/html")
 	userViewing := store.GetUserInfoById(userid)
 	followersJSON := store.GetUserFollowers(userid)
@@ -943,7 +960,8 @@ func viewPostHandler(w http.ResponseWriter, r *http.Request) {
 		Postid: post.Postid,
 		Tags: tHTML,
 	}
-
+	SetHeaders(w)
+	w.Header().Set("Content-Type","text/html")
 	tmpl.Execute(w, data)
 }
 
@@ -972,6 +990,8 @@ func loadMessages(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w,r,"/assets/login.html",http.StatusSeeOther)
 			return
 		}
+		SetHeaders(w)
+		w.Header().Set("Content-Type","text/html")
 		account := store.GetUserInfo(&User{username: name})
 		conversations := store.GetConversations(account.id)
 		for i, convo := range conversations {
@@ -996,6 +1016,8 @@ func loadMessages(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w,r,"/assets/login.html",http.StatusSeeOther)
 		return
 	}
+	SetHeaders(w)
+	w.Header().Set("Content-Type","text/html")
 	account := store.GetUserInfo(&User{username: name})
 	conversations := store.GetConversations(account.id)
 
@@ -1099,7 +1121,8 @@ func conversationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	convParticipant := store.GetConvoParticipant(convoID, user.id)
 	data := ConversationPage{Username: user.username, Conversations: conversations, ConvoID: convoID, Userid: user.id, Participant: convParticipant}
-
+	SetHeaders(w)
+	w.Header().Set("Content-Type","text/html")
 	tmpl.Execute(w, data)
 }
 

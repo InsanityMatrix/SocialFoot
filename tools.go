@@ -5,6 +5,7 @@ import (
 	"net/smtp"
 	"golang.org/x/crypto/bcrypt"
 	"strings"
+	"net/http"
 )
 
 func hashAndSalt(pwd []byte) string {
@@ -77,4 +78,7 @@ func badReport(content string) bool {
 		}
 	}
 	return false
+}
+func SetHeaders(w http.ResponseWriter) {
+	w.Header().Set("X-Frame-Options", "DENY")
 }

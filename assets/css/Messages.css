@@ -1,6 +1,8 @@
 .messaging {
   overflow-y: scroll;
   height: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 html, body {
   margin: 0;
