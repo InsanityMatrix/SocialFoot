@@ -67,6 +67,11 @@
 					<h2 class='color-t'>Your Feed</h2>
 				</center>
         <div class="row">
+          <div class="col=md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
+            <button type="button" id="autoplay" class="btn btn-danger btn-block"> Enable Autoplay</button>
+          </div>
+        </div>
+        <div class="row">
           <div id="posts" class="net-fluid">
 
 
@@ -104,6 +109,20 @@
        $(document).ready(function(){
          loadFeed();
        });
+       var autoplay = false;
+       document.getElementById("autoplay").onClick(function() {
+         if(autoplay == false) {
+           autoplay = true;
+           document.getElementById("autoplay").classList.toggle("btn-success");
+           document.getElementById("autoplay").classList.toggle("btn-danger");
+           document.getElementById("autoplay").innerHTML = "Disable Autoplay";
+         } else {
+           autoplay = false;
+           document.getElementById("autoplay").classList.toggle("btn-success");
+           document.getElementById("autoplay").classList.toggle("btn-danger");
+           document.getElementById("autoplay").innerHTML = "Enable Autoplay";
+         }
+       });
        document.body.onscroll = function () {
          let videos = document.getElementsByTagName("video");
 
@@ -117,7 +136,9 @@
              bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
            ) {
              //In the viewport
-             video.play();
+             if(autoplay) {
+               video.play();
+             }
            } else {
              //outside the viewport
              if(!video.paused) {
