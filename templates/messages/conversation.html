@@ -94,7 +94,11 @@
       $(".messaging").css("padding-top",$(".navbar-fixed-top").height());
       $(".messaging").css("padding-bottom",$(".fixed-bottom").height() * 1.5);
 
-      window.scrollTo(0, document.querySelector(".messaging").scrollHeight);
+
+      setTimeout(function() {
+        let element = document.querySelector(".messaging");
+        element.scrollTop = element.scrollHeight;
+      }, 600);
     });
     </script>
     <script>
