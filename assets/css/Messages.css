@@ -1,23 +1,5 @@
-.message-navbar {
-  position: relative;
-  z-index: 20;
-}
-.message-body {
-  z-index: -20;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width:100%;
-  height: 100%;
-}
-.texts {
+.messaging {
   overflow-y: scroll;
-  overflow-x: hidden;
-}
-.chatbar {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
 }
 html, body {
   margin: 0;

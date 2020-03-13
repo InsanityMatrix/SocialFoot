@@ -26,8 +26,7 @@
     <script src="/assets/scripts/messages.js"></script>
   </head>
   <body id='body'>
-    <!-- Navbar on z-index 1 -->
-    <div class="message-navbar">
+    <div class="fixed-top">
       <nav class="navbar navbar-feet">
         <div class='container-fluid'>
           <button type="button" class="navbar-toggle col-md-1 col-xs-2" data-toggle="collapse" data-target="#utilities">
@@ -69,35 +68,31 @@
         </div>
       </div>
     </div>
-    <!-- normal z-inde -->
-    <div class="container-fluid message-body">
-      <!-- Side bar -->
-      <!-- Make Blackish Background -->
-      <div class="col-sm-12 col-xs-12 messaging">
-        <!-- List of texts that auto scrolls to bottom -->
-        <div class="texts">
-          <div id="textList" class="row">
+    <div class="col-sm-12 col-xs-12 messaging">
+      <!-- List of texts that auto scrolls to bottom -->
+      <div class="texts">
+        <div id="textList" class="row" style="margin-right:0;margin-left:0;">
 
-          </div>
         </div>
-        <!-- Make a texting footer that sticks to the bottom -->
-        <div class="row chatbar">
-          <div class="col-xs-8">
-            <input type="text" name="messenger" class="form-control" placeholder="Send Message...">
-          </div>
-          <div class="col-xs-4">
-            <button type="button" class="btn btn-block w-100 btn-primary color-t" onclick="sendMessage({{.Userid}},{{.Participant}})">SEND</button>
-          </div>
-        </div>
-
       </div>
     </div>
+      <!-- Make a texting footer that sticks to the bottom -->
+
+      <div class="row fixed-bottom chatbar">
+        <div class="col-xs-8">
+          <input type="text" name="messenger" class="form-control" placeholder="Send Message...">
+        </div>
+        <div class="col-xs-4">
+          <button type="button" class="btn btn-block w-100 btn-primary color-t" onclick="sendMessage({{.Userid}},{{.Participant}})">SEND</button>
+        </div>
+      </div>
+
     <!-- Styling Script -->
     <script>
     $(document).ready(function() {
-      $(".message-body").css("padding-top", $(".message-navbar").height());
-      $(".messaging").css("height", $(".message-body").height());
-      $(".texts").css("height",$(".messaging").height() - $(".chatbar").height());
+
+      $(".messaging").css("height",$("body").height() - $(".fixed-top").height() - $("fixed-bottom").height());
+
     });
     </script>
     <script>
