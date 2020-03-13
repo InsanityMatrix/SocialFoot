@@ -68,7 +68,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-12 col-xs-12 messaging">
+    <div class="col-xs-12 messaging">
       <!-- List of texts that auto scrolls to bottom -->
       <div class="texts">
         <div id="textList" class="row" style="margin-right:0;margin-left:0;">
@@ -91,8 +91,8 @@
     <script>
     $(document).ready(function() {
 
-      $(".messaging").css("height",$("body").height() - $(".navbar-fixed-top").height() - $("fixed-bottom").height());
-      $(".messaging").css("padding-bottom",$("fixed-bottom").height());
+      $(".messaging").css("padding-top",$(".navbar-fixed-top").height());
+      $(".messaging").css("padding-bottom",$(".fixed-bottom").height() * 1.5);
     });
     </script>
     <script>
