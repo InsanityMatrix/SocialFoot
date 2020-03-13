@@ -110,7 +110,7 @@
          loadFeed();
        });
        var autoplay = false;
-       document.getElementById("autoplay").onClick(function() {
+       document.getElementById("autoplay").onclick = function() {
          if(autoplay == false) {
            autoplay = true;
            document.getElementById("autoplay").classList.toggle("btn-success");
@@ -122,7 +122,7 @@
            document.getElementById("autoplay").classList.toggle("btn-danger");
            document.getElementById("autoplay").innerHTML = "Enable Autoplay";
          }
-       });
+       };
        document.body.onscroll = function () {
          let videos = document.getElementsByTagName("video");
 
