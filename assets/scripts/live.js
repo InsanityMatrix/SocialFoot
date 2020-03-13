@@ -92,12 +92,13 @@ function serveFeed(templ) {
 }
 
 function loadNextPosts() {
+  let data = allPosts;
   if (currPost < data.length) {
     let length = data.length;
     if(currPost + 10 <= data.length) {
       length = currPost + 10;
     }
-    let data = allPosts;
+
     for(var i = currPost; i < length; i++) {
       currPost++;
       var imageLink;
@@ -158,9 +159,9 @@ function loadNextPosts() {
 
   }
 
-  function putPostUsernames(data) {
-    var id = data[0].id;
-    $('p[id="' + id + '"]').html(data[0].username);
+  function putPostUsernames(dat) {
+    var id = dat[0].id;
+    $('p[id="' + id + '"]').html(dat[0].username);
   }
 
 }
