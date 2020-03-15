@@ -64,7 +64,7 @@ func badReport(content string) bool {
 	blackList := []string{
 		"gay","gei","gae","gey",
 	}
-	spam := []string{"1", "gay", "bad", "Hi", "Hello"}
+	spam := []string{"1", "gay", "bad", "Hi", "Hello", "Hey"}
 
 	for _, blacklisted := range blackList {
 	  blacklisted = " " + blacklisted + " "
