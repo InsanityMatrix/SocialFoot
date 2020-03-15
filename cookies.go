@@ -34,7 +34,6 @@ func setEncryptedCookie(w http.ResponseWriter, name string, data []byte) {
 		Name: name,
 		Value: hex.EncodeToString(ciphertext),
 		Path: "/",
-		HttpOnly: true,
 		Secure: true,
 		MaxAge: 86400,
 	}
