@@ -358,14 +358,14 @@ func (store *dbStore) GetPostsByTag(tag string) []*Post {
     return nil
   }
   defer rows.Close()
-  posts := []&Post{}
+  posts := []*Post{}
 
   for rows.Next() {
-    post := &Post{}
+    post := Post{}
     if err := rows.Scan(&post.Postid,&post.Userid,&post.Tags,&post.Caption,&post.Type,&post.Posted,&post.Extension,&post.Publicity,&post.Likes); err != nil {
       return nil
     }
-    posts = append(posts, post)
+    posts = append(posts, &post)
   }
   return posts
 }
