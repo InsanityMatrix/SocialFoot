@@ -342,7 +342,7 @@ func (store *dbStore) GetJSONUserByID(uid int) []string {
 }
 func (store *dbStore) GetJSONUsersByUsernames(username string) []string {
   newName := "%" + username + "%"
-  rows, err := store.db.Query("SELECT id,username,gender FROM users WHERE username LIKE $1", newName)
+  rows, err := store.db.Query("SELECT id,username,gender FROM users WHERE LOWER(username) LIKE LOWER($1)", newName)
   if err != nil {
     var error []string
     error[0] = "{\"status\":\"error\"}"
@@ -350,6 +350,24 @@ func (store *dbStore) GetJSONUsersByUsernames(username string) []string {
   }
   defer rows.Close()
   return jsonify.Jsonify(rows)
+}
+func (store *dbStore) GetPostsByTag(tag string) []*Post {
+  newTag := "%" + tag + "%"
+  rows, err := store.db.Query("SELECT * FROM posts WHERE LOWER(tags) LIKE LOWER($1)", newTag)
+  if err != nil {
+    return nil
+  }
+  defer rows.Close()
+  posts := []&Post{}
+
+  for rows.Next() {
+    post := &Post{}
+    if err := rows.Scan(&post.Postid,&post.Userid,&post.Tags,&post.Caption,&post.Type,&post.Posted,&post.Extension,&post.Publicity,&post.Likes); err != nil {
+      return nil
+    }
+    posts = append(posts, post)
+  }
+  return posts
 }
 //{MESSAGES}
 func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) error {

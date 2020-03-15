@@ -140,7 +140,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/user/isfollowing", isFollowingUserHandler)
 		r.HandleFunc("/user/post/imagepost", imagePostHandler).Methods("POST")
 		r.HandleFunc("/posts/public", getPublicPostsHandler)
-		r.HandleFunc("/search", searchUserHandler).Methods("POST")
+		r.HandleFunc("/search", searchHandler).Methods("POST")
 
 		//MESSAGES FUNCTIONS
 		r.HandleFunc("/messages/send/text", sendTextMessageHandler)
@@ -703,7 +703,7 @@ func HandleJSONUserById(w http.ResponseWriter, r *http.Request) {
 	userjson := store.GetJSONUserByID(id)
 	fmt.Fprint(w, userjson)
 }
-func searchUserHandler(w http.ResponseWriter, r *http.Request) {
+func searchHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		w.WriteHeader(404)
@@ -712,6 +712,9 @@ func searchUserHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type","application/json")
 	term := r.Form.Get("term")
 	response := store.GetJSONUsersByUsernames(term)
+	// TODO: Add posts to the search feature.
+	// posts := store.GetPostsByTag(term)
+
 	fmt.Fprint(w, response)
 }
 func userFollowingHandler(w http.ResponseWriter, r *http.Request) {
