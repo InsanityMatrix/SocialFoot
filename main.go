@@ -119,6 +119,14 @@ type ViewPostData struct {
 	Postid int
 	Tags template.HTML
 }
+type ConversationPage struct {
+	Username string
+	Conversations []Conversation
+	ConvoID int
+	Userid int
+	Participant int
+}
+
 var HOME string
 var TEMPLATES string
 //Global variables
@@ -709,114 +717,5 @@ func resultTemplateHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Error")
 		return
 	}
-	fmt.Fprint(w, string(data))
-}
-
-//{MESSAGES}
-func sendTextMessageHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		fmt.Fprint(w, err.Error())
-		return
-	}
-
-	uidFrom, _ := strconv.Atoi(r.Form.Get("uidFrom"))
-	uidTo, _ := strconv.Atoi(r.Form.Get("uidTo"))
-	message := r.Form.Get("message")
-	err = store.SendMessage(uidFrom, uidTo, message)
-	if err != nil {
-		fmt.Fprint(w, err.Error())
-		return
-	}
-	fmt.Fprint(w, "Success")
-}
-
-func createPrivateMessageHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		fmt.Fprint(w, "Why are you here?")
-		return
-	}
-
-	_, err = decryptCookie(r, "username")
-	if err != nil {
-		fmt.Fprint(w, NotLoggedIn())
-		return
-	}
-
-	userid, _ := strconv.Atoi(r.Form.Get("userid"))
-	profileid, _ := strconv.Atoi(r.Form.Get("profileid"))
-	exists := store.GetConversationID(userid, profileid)
-	if exists == 0 {
-		err = store.CreateTwoWayConversation(userid, profileid)
-		if err != nil {
-			fmt.Fprint(w, MsgCreationErr())
-			return
-		}
-		fmt.Fprint(w, store.GetConversationID(userid, profileid))
-	}
-	fmt.Fprint(w, exists)
-}
-func toMsgTemplateHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(200)
-	file, err := os.Open(TEMPLATES + "/messages/toMsg.html")
-	if err != nil {
-		fmt.Fprint(w, "Error")
-		return
-	}
-	defer file.Close()
-	data, err := ioutil.ReadAll(file)
-	if err != nil {
-		fmt.Fprint(w, "Error")
-		return
-	}
-	fmt.Fprint(w, string(data))
-}
-func fromMsgTemplateHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(200)
-	file, err := os.Open(TEMPLATES + "/messages/fromMsg.html")
-	if err != nil {
-		fmt.Fprint(w, "Error")
-		return
-	}
-	defer file.Close()
-	data, err := ioutil.ReadAll(file)
-	if err != nil {
-		fmt.Fprint(w, "Error")
-		return
-	}
-	fmt.Fprint(w, string(data))
-}
-type ConversationPage struct {
-	Username string
-	Conversations []Conversation
-	ConvoID int
-	Userid int
-	Participant int
-}
-
-
-func getMessages(w http.ResponseWriter, r *http.Request) {
-	//Output Messages with convoid?
-	err := r.ParseForm()
-	if err != nil {
-		//TODO: Better Error Handling System
-		fmt.Fprint(w, "[ {} ]")
-		return
-	}
-
-	convoID, _ := strconv.Atoi(r.Form.Get("convo"))
-	conversation := store.GetConversation(convoID)
-
-	for index, message := range conversation {
-		content := decryptMessageFile(strconv.Itoa(convoID) + "/" + strconv.Itoa(message.MessageID) + ".txt")
-		conversation[index].Content = string(content);
-	}
-	data, err := json.Marshal(conversation)
-	if err != nil {
-		fmt.Fprint(w, "No Messages")
-		return
-	}
-	w.Header().Set("Content-Type","application/json")
 	fmt.Fprint(w, string(data))
 }
