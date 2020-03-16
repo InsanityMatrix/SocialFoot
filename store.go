@@ -259,7 +259,26 @@ func (store *dbStore) SubmitBugReport(username string, content string) {
   }
 }
 
+func (store *dbStore) GetFollowing(userid int) ([]*User, error) {
+  rows, err := store.db.Query("SELECT userid FROM user" + strconv.Itoa(userid) + "_following")
+  if err != nil {
+    return nil,err
+  }
+  defer rows.Close()
 
+  users := []*User{}
+  for rows.Next() {
+    var uid int
+    err = rows.Scan(&uid)
+    if err != nil {
+      return nil, err
+    }
+    user := store.GetUserInfoById(uid)
+
+    users = append(users, user)
+  }
+  return users, nil
+}
 
 //JSON FUNCTIONS
 func (store *dbStore) GetUserFollowing(userid int) []string {
@@ -309,6 +328,19 @@ func (store *dbStore) GetPublicPosts() []string {
 	defer rows.Close()
 
   return jsonify.Jsonify(rows)
+}
+func (store *dbStore) GetPosts(userid int) []Post {
+  rows, _ := store.db.Query("SELECT * FROM posts WHERE userid=$1 ORDER BY postid DESC", userid)
+  defer rows.Close()
+
+  posts := []Post{}
+  for rows.Next() {
+    post := Post{}
+    _ = rows.Scan(&post.Postid, &post.Userid, &post.Tags, &post.Caption, &post.Type, &post.Posted, &post.Extension, &post.Publicity, &post.Likes)
+
+    posts = append(posts, post)
+  }
+  return posts
 }
 func (store *dbStore) GetUsersPosts(userid int) []string {
   rows, err := store.db.Query("SELECT * FROM posts WHERE userid=$1 ORDER BY postid DESC", userid)

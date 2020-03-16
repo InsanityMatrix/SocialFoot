@@ -171,6 +171,7 @@ func newRouter() *mux.Router {
 		//JSON stuff
 		r.HandleFunc("/json/user/id", HandleJSONUserById)
 		r.HandleFunc("/json/messages/convo", getMessages)
+		r.HandleFunc("/json/feed/custom", getCustomFeedPosts)
 		//report
 		r.HandleFunc("/report", reportHandler)
 		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
@@ -213,8 +214,8 @@ func main() {
 			panic(err)
 		}
 	//Set Connection Limit: https://www.alexedwards.net/blog/configuring-sqldb
-		db.SetMaxOpenConns(15)
-		db.SetMaxIdleConns(4)
+		db.SetMaxOpenConns(25)
+		db.SetMaxIdleConns(10)
 		db.SetConnMaxLifetime(time.Hour)
 		InitStore(dbStore{db: db})
 		http.ListenAndServe(port, router)

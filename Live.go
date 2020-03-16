@@ -4,6 +4,7 @@ import (
   "net/http"
   "html/template"
   "fmt"
+  "encoding/json"
   "strings"
   "regexp"
   "strconv"
@@ -28,8 +29,51 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 func customFeedHandler(w http.ResponseWriter, r *http.Request) {
   SetHeaders(w)
-  w.Header().Set("Content-Type", "text/plain")
-  fmt.Fprint(w, "Personalized Feed Coming Soon!")
+  w.Header().Set("Content-Type", "text/html")
+  username, err := decryptCookie(r, "username")
+  if err != nil {
+    http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
+    return
+  }
+  tmpl, _ := template.ParseFiles(TEMPLATES + "/feed/custom.html")
+  tmpl.Execute(w, map[string]string{"username": username})
+}
+func getCustomFeedPosts(w http.ResponseWriter, r *http.Request) {
+  SetHeaders(w)
+  w.Header().Set("Content-Type", "application/json")
+  username, err := decryptCookie(r, "username")
+  if err != nil {
+    http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
+    return
+  }
+  user := store.GetUserInfo(&User{username: username})
+  //Get all of the posts from users they follow
+  following, err := store.GetFollowing(user.id)
+  if err != nil {
+    //They are not following anybody.
+    fmt.Fprint(w, "[]")
+  }
+  //Get Feed from their following
+  feed := []Post{}
+  for _, usr := range following {
+    userfeed := store.GetPosts(usr.id)
+
+    feed = append(feed, userfeed...)
+  }
+  //SORT in Descending by PostID
+  for i := 0; i < len(feed); i++ {
+    //Really inefficient but we can come back to this later
+    thisPost := feed[i]
+    nextPost := feed[i + 1]
+    if thisPost.Postid < nextPost.Postid {
+      feed[i] = nextPost
+      feed[i + 1] = thisPost
+      i = 0
+    }
+  }
+  //Now we have all posts we need, and it is sorted in a nice order we output the JSON
+  postJSON, _ := json.Marshal(feed)
+  fmt.Fprint(w, postJSON)
 }
 func profileHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live Profile settings
