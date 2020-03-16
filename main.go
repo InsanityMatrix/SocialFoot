@@ -147,6 +147,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live/messages/{convoid}", conversationHandler)
 		r.HandleFunc("/live/search",searchPageHandler)
 		r.HandleFunc("/live/user/{uid}", userProfileHandler)
+		r.HandleFunc("/live/feed", customFeedHandler)
 		r.HandleFunc("/live", liveIndexHandler)
 
 
@@ -524,7 +525,7 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 			} else {
 				username = msg
 			}
-			status := "This file type is too large."
+			status := "This video is too large."
 			tmpl.Execute(w, map[string]string{"username":username,"status":status})
 			return
 		}

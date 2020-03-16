@@ -26,7 +26,11 @@ func liveIndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl.Execute(w, map[string]string{"username": name})
 }
-
+func customFeedHandler(w http.ResponseWriter, r *http.Request) {
+  SetHeaders(w)
+  w.Header().Set("Content-Type", "text/plain")
+  fmt.Fprint(w, "Personalized Feed Coming Soon!")
+}
 func profileHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live Profile settings
 	SetHeaders(w)
