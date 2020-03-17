@@ -11,7 +11,7 @@ function signOut() {
 function loadCustomFeed() {
   $.ajax({
     url: '/json/feed/custom',
-    success: serveCustomFeed;
+    success: serveCustomFeed
   });
 }
 function serveCustomFeed(data) {
