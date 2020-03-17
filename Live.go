@@ -73,7 +73,7 @@ func getCustomFeedPosts(w http.ResponseWriter, r *http.Request) {
   }
   //Now we have all posts we need, and it is sorted in a nice order we output the JSON
   postJSON, _ := json.Marshal(feed)
-  fmt.Fprint(w, postJSON)
+  fmt.Fprint(w, string(postJSON))
 }
 func profileHandler(w http.ResponseWriter, r *http.Request) {
 	//Handle Live Profile settings
