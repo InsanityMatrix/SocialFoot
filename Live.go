@@ -61,7 +61,7 @@ func getCustomFeedPosts(w http.ResponseWriter, r *http.Request) {
     feed = append(feed, userfeed...)
   }
   //SORT in Descending by PostID
-  for i := 0; i < len(feed); i++ {
+  for i := 0; i < len(feed) - 1; i++ {
     //Really inefficient but we can come back to this later
     thisPost := feed[i]
     nextPost := feed[i + 1]
