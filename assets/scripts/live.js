@@ -30,14 +30,14 @@ function serveCustomFeed(data) {
   $("#posts").html("");
   for(var i = 0; i < length; i++) {
     var imageLink;
-    if (data[i].type == "IMAGE") {
-      imageLink = "/assets/uploads/imageposts/post" + data[i].postid + data[i].extension;
+    if (data[i].Type == "IMAGE") {
+      imageLink = "/assets/uploads/imageposts/post" + data[i].Postid + data[i].Extension;
     } else {
-      imageLink = "/assets/uploads/videoposts/post" + data[i].postid + data[i].extension;
+      imageLink = "/assets/uploads/videoposts/post" + data[i].Postid + data[i].Extension;
     }
     var stuff = $("#posts").html();
     //Parse Date
-    var d = new Date(data[i].posted);
+    var d = new Date(data[i].Posted);
     var dd = d.getDate();
     var mm = d.getMonth() + 1;
     var yyyy = d.getFullYear();
@@ -53,23 +53,23 @@ function serveCustomFeed(data) {
     var m;
     tagstext = "";
     do {
-      m = tagpattern.exec(data[i].tags);
+      m = tagpattern.exec(data[i].Tags);
       if (m) {
         tagstext += "<p class='postTag'>" + m[1] + "</p>";
       }
     } while (m);
     var content = "<img class='postimg' src='" + imageLink + "'>";
-    if(data[i].type == "VIDEO") {
+    if(data[i].Type == "VIDEO") {
       content = "<video class='postimg' controls loop><source src='" + imageLink + "' type='video/mp4'>Your browser doesnt support video</video>";
     }
     var postData = {
-      "userid":data[i].userid,
+      "userid":data[i].Userid,
       "thisdate":thisdate,
       "content": content,
       "tags": tagstext,
-      "likes": data[i].likes,
-      "caption":data[i].caption,
-      "postid":data[i].postid
+      "likes": data[i].Likes,
+      "caption":data[i].Caption,
+      "postid":data[i].Postid
     };
     var parsedTemplate = executeHTMLTemplate(template, postData);
     $("#posts").html(stuff + parsedTemplate);
@@ -77,7 +77,7 @@ function serveCustomFeed(data) {
       url: "/json/user/id",
       method: "POST",
       data : {
-        "userid": data[i].userid
+        "userid": data[i].Userid
       },
       success: putPostUsernames
     });
