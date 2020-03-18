@@ -129,6 +129,7 @@ type ConversationPage struct {
 
 var HOME string
 var TEMPLATES string
+var GAMES string
 //Global variables
 func newRouter() *mux.Router {
     r := mux.NewRouter()
@@ -150,7 +151,8 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live/feed", customFeedHandler)
 		r.HandleFunc("/live", liveIndexHandler)
 
-
+		//Games
+		r.HandleFunc("/games/snake", snakeGameHandler)
 		//Settings FUNCTIONS
 		r.HandleFunc("/settings/user/publicity", changePublicityHandler)
 		r.HandleFunc("/settings/user/email", changeEmailHandler)
@@ -198,6 +200,7 @@ func main() {
     port := ":" + portEnv
 		HOME = filepath.Join(os.Getenv("HOME"), "/go/src/github.com/InsanityMatrix/SocialFoot")
 		TEMPLATES = "/root/go/src/github.com/InsanityMatrix/SocialFoot/templates"
+		GAMES = "/root/go/src/github.com/InsanityMatrix/SocialFoot/games"
 		url := os.Getenv("DATABASE_URL")
 		db, err := sql.Open("postgres", url)
 
