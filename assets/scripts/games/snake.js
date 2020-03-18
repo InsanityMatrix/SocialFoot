@@ -34,13 +34,13 @@ function loop() {
     restartGame();
   }
   if (snake.y < 0) {
-    snake.y = canvas.height - grid;
+    restartGame();
   } else if (snake.y > canvas.height) {
-    snake.y = 0;
+    restartGame();
   }
   snake.cells.unshift({x: snake.x, y: snake.y});
 
-  if (snake.cells.Length > snake.maxCells) {
+  if (snake.cells.length > snake.maxCells) {
     snake.cells.pop();
   }
 
