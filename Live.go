@@ -411,7 +411,7 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 		Following:store.GetFollowingAmount(userViewing.id),
 		Username: account.username,
 		ViewingUsername: userViewing.username,
-		Age: userViewing.age
+		Age: userViewing.age,
    }
 	// TODO: MAKE & Parse Template
 	tmpl, err := template.ParseFiles(TEMPLATES + "/user/profile.html")
