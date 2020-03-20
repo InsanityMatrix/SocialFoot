@@ -45,7 +45,7 @@
               <ul class='nav navbar-nav navbar-right'>
                 <li><a href='/live/post'>Post</a></li>
                 <li class='dropdown'>
-                  <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
+                  <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.Username}}</a>
                   <ul class='dropdown-menu'>
                     <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
                     <li class='dropdown-item'><a href='/live/messages'>Messages</a></li>
@@ -58,33 +58,34 @@
             </div>
         </div>
     </nav>
-    <p style="display:none" id="profileUserId">{{.profileid}}</p>
+    <p style="display:none" id="profileUserId">{{.Profileid}}</p>
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2 bg-white rounded-10">
           <div class="row">
-            <h2 class="color-t"> {{.viewingUsername}}'s Profile</h2>
+            <h2 class="color-t"> {{.ViewingUsername}}'s Profile</h2>
             <div class="row">
               <div class="col-md-5 col-xs-4 user-basic">
-                <h5 class="color-t">{{.gender}}, {{.age}}</h5>
+                <h5 class="color-t">{{.Gender}}, {{.Age}}</h5>
               </div>
               <div class="col-md-3 col-xs-8">
                 <div class="row">
                   <a class="col-xs-6" href="/live/user/followers/{{.profileid}}" style="text-decoration:none;" id="profileFollowers">
                     <center>
                       <p class="light-text">Followers</p>
-                      <p class="info-text">{{.followers}}</p>
+                      <p class="info-text">{{.Followers}}</p>
                     </center>
                   </a>
                   <a class="col-xs-6" href="/live/user/following/{{.profileid}}"  style="text-decoration:none;">
                     <center>
                       <p class="light-text">Following</p>
-                      <p class="info-text">{{.following}}</p>
+                      <p class="info-text">{{.Following}}</p>
                     </center>
                   </a>
                 </div>
               </div>
             </div>
+            {{if .DiffPerson}}
             <div class="row">
               <div class="col-xs-8">
                 <button id="followBtn" class="btn btn-block btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
@@ -93,6 +94,16 @@
                 <button id="msgBtn" class="btn btn-block btn-info w-100" onclick="msg({{.userid}},{{.profileid}})">MSG</button>
               </div>
             </div>
+            {{end}}
+            {{if .SamePerson}}
+            <div class="row">
+              <div class="col-xs-8 col-xs-offset-2">
+                <a class="btn btn-block w-100 btn-primary color-t" href="/live/profile">
+                  SETTINGS
+                </a>
+              </div>
+            </div>
+            {{end}}
           </div>
           <div class="row">
             <div class="col-md-offset-1 col-md-8">

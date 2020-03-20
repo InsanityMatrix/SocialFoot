@@ -152,6 +152,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/live", liveIndexHandler)
 
 		//Games
+		r.HandleFunc("/games/snake/scores", snakeScoresHandler)
 		r.HandleFunc("/games/snake", snakeGameHandler)
 		//Settings FUNCTIONS
 		r.HandleFunc("/settings/user/publicity", changePublicityHandler)

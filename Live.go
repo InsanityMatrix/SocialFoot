@@ -356,6 +356,21 @@ func conversationHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type","text/html")
 	tmpl.Execute(w, data)
 }
+type UserProfileData struct {
+  Userid int
+  Profileid int
+  SamePerson bool
+  DiffPerson bool
+  Location string
+  Bio string
+  Publicity string
+  Gender string
+  Followers int
+  Following int
+  Username string
+  ViewingUsername string
+  Age int
+}
 func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
 	userid, err := strconv.Atoi(params[len(params) - 1])
@@ -383,16 +398,21 @@ func userProfileHandler(w http.ResponseWriter, r *http.Request) {
 	if userViewing.gender {
 		gender = "Male"
 	}
-	pageData := map[string]string{"userid": strconv.Itoa(account.id), "profileid": strconv.Itoa(userViewing.id),
-		 "location": settings.location,
-		 "bio": settings.bio,
-		 "publicity":publicity,
-		 "gender": gender,
-		 "followers":strconv.Itoa(store.GetFollowersAmount(userViewing.id)),
-		 "following":strconv.Itoa(store.GetFollowingAmount(userViewing.id)),
-		 "username": account.username,
-		 "viewingUsername": userViewing.username,
-		 "age": strconv.Itoa(userViewing.age) }
+	pageData := UserProfileData{
+    Userid: account.id,
+    Profileid:userViewing.id,
+    SamePerson: account.id == userViewing.id,
+    DiffPerson: account.id != userViewing.id,
+		Location: settings.location,
+		Bio: settings.bio,
+	  Publicity:publicity,
+		Gender: gender,
+		Followers:store.GetFollowersAmount(userViewing.id),
+		Following:store.GetFollowingAmount(userViewing.id),
+		Username: account.username,
+		ViewingUsername: userViewing.username,
+		Age: userViewing.age
+   }
 	// TODO: MAKE & Parse Template
 	tmpl, err := template.ParseFiles(TEMPLATES + "/user/profile.html")
 	if err != nil {

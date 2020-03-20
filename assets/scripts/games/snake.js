@@ -1,6 +1,6 @@
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
-
+var paused = false;
 var grid = 16;
 var count = 0;
 
@@ -14,7 +14,23 @@ var apple = {
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
+function scorePage() {
+  context.font == "20px Comic Sans MS";
+  context.fillStyle = "black";
+  context.textAlign = "center";
+  context.fillText("Scores", canvas.width/2, 30);
 
+  $.ajax({
+    url: '/games/snake/scores',
+    success: populateScores
+  });
+
+  context.font = "15px Comic Sans MS";
+  context.fillText("(Press Space to Continue)", canvas.width/2, canvas.height - 10);
+}
+function populateScores() {
+  
+}
 function loop() {
   requestAnimationFrame(loop);
 
@@ -98,6 +114,7 @@ function restartGame() {
 
   apple.x = getRandomInt(0, 25) * grid;
   apple.y = getRandomInt(0, 25) * grid;
+  paused = true;
 }
 
 requestAnimationFrame(loop);

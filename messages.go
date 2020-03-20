@@ -136,6 +136,10 @@ func createPrivateMessageHandler(w http.ResponseWriter, r *http.Request) {
 
 	userid, _ := strconv.Atoi(r.Form.Get("userid"))
 	profileid, _ := strconv.Atoi(r.Form.Get("profileid"))
+  if userid == profileid {
+    fmt.Fprint(w, MsgCreationErr())
+    return
+  }
 	exists := store.GetConversationID(userid, profileid)
 	if exists == 0 {
 		err = store.CreateTwoWayConversation(userid, profileid)
