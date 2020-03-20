@@ -70,13 +70,13 @@
               </div>
               <div class="col-md-3 col-xs-8">
                 <div class="row">
-                  <a class="col-xs-6" href="/live/user/followers/{{.profileid}}" style="text-decoration:none;" id="profileFollowers">
+                  <a class="col-xs-6" href="/live/user/followers/{{.Profileid}}" style="text-decoration:none;" id="profileFollowers">
                     <center>
                       <p class="light-text">Followers</p>
                       <p class="info-text">{{.Followers}}</p>
                     </center>
                   </a>
-                  <a class="col-xs-6" href="/live/user/following/{{.profileid}}"  style="text-decoration:none;">
+                  <a class="col-xs-6" href="/live/user/following/{{.Profileid}}"  style="text-decoration:none;">
                     <center>
                       <p class="light-text">Following</p>
                       <p class="info-text">{{.Following}}</p>
@@ -88,10 +88,10 @@
             {{if .DiffPerson}}
             <div class="row">
               <div class="col-xs-8">
-                <button id="followBtn" class="btn btn-block btn-info w-100" onclick="follow({{.userid}},{{.profileid}})">Follow</button>
+                <button id="followBtn" class="btn btn-block btn-info w-100" onclick="follow({{.Userid}},{{.Profileid}})">Follow</button>
               </div>
               <div class="col-xs-4">
-                <button id="msgBtn" class="btn btn-block btn-info w-100" onclick="msg({{.userid}},{{.profileid}})">MSG</button>
+                <button id="msgBtn" class="btn btn-block btn-info w-100" onclick="msg({{.Userid}},{{.Profileid}})">MSG</button>
               </div>
             </div>
             {{end}}
@@ -133,16 +133,16 @@
        body.removeChild(body.childNodes[0]);
        $(document).ready(function() {
          $("#profileFollowers").click(function() {
-           var loc = parseInt({{.profileid}});
+           var loc = parseInt({{.Profileid}});
            window.locaton = "/live/user/followers/" + loc;
          });
        });
-       var username = "{{.viewingUsername}}";
+       var username = "{{.ViewingUsername}}";
        function followingAlert() {
          alert("You are now Following " + username);
        }
-       isFollowed(parseInt({{.userid}}), parseInt({{.profileid}}));
-       var followTimer = setInterval(isFollowed, 4000, parseInt({{.userid}}), parseInt({{.profileid}}));
+       isFollowed(parseInt({{.Userid}}), parseInt({{.Profileid}}));
+       var followTimer = setInterval(isFollowed, 4000, parseInt({{.Userid}}), parseInt({{.Profileid}}));
        function isFollowed(userid, profileid) {
          $.ajax({
            url: "/user/isfollowing",
