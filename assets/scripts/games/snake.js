@@ -96,7 +96,7 @@ function loop() {
   context.fillStyle = 'red';
   context.fillRect(apple.x, apple.y, grid-1, grid-1);
 
-  context.fillStyle = rgb(95,196,182);
+  context.fillStyle = "#5fc4b6";
   snake.cells.forEach(function(cell, index) {
     context.fillRect(cell.x, cell.y, grid-1, grid-1);
     if (cell.x === apple.x && cell.y === apple.y) {
