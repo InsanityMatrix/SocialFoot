@@ -29,13 +29,13 @@ function scorePage() {
   context.fillText("(Press Space to Continue)", canvas.width/2, canvas.height - 10);
 }
 function populateScores() {
-  
+
 }
 function loop() {
   requestAnimationFrame(loop);
 
   //Make game 15 fps
-  if (++count < 4) {
+  if (++count < 6) {
     return;
   }
 
