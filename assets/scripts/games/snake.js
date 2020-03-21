@@ -166,7 +166,8 @@ function restartGame() {
     data: {
       "userid": userid,
       "score": snake.maxCells
-    }
+    },
+    success: scorePage
   });
 
   snake.x = 160;
@@ -179,7 +180,6 @@ function restartGame() {
   apple.x = getRandomInt(0, 25) * grid;
   apple.y = getRandomInt(0, 25) * grid;
   paused = true;
-  scorePage();
 }
 
 requestAnimationFrame(loop);
