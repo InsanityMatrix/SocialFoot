@@ -5,7 +5,7 @@ var grid = 16;
 var count = 0;
 var userid = 0;
 var moves = 0;
-
+var lastScore = 0;
 var snake = {
   x: 160, y: 160, dx: grid, dy: 0,cells: [], maxCells: 4
 }
@@ -31,7 +31,9 @@ function scorePage() {
     success: populateScores
   });
 
+
   context.font = "15px Comic Sans MS";
+  context.fillText("Last Score: " + lastScore, canvas.width/2, canvas.height - 30);
   context.fillText("(Press Space to Continue)", canvas.width/2, canvas.height - 10);
 }
 function populateScores(data) {
@@ -160,6 +162,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 function restartGame() {
+  lastScore = snake.maxCells;
   $.ajax({
     url: '/games/snake/update',
     method: 'POST',
