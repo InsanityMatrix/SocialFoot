@@ -176,6 +176,32 @@ func (store *dbStore) GetUserInfoById(id int) *User {
   }
   return account
 }
+func (store *dbStore) GetTopSnakeScores() []SnakeScore {
+  rows, _ := store.db.Query("SELECT * FROM snake_scores ORDER BY score DESC LIMIT 10")
+  defer rows.Close()
+
+  scores := []SnakeScore{}
+  for rows.Next() {
+    score := SnakeScore{}
+
+    _ = rows.Scan(&score.Scoreid, &score.Userid, &score.Score)
+
+    scores = append(scores, score)
+  }
+  return scores
+}
+func (store *dbStore) UpdateSnakeScore(userid int, score int) {
+  row := store.db.QueryRow("SELECT * FROM snake_scores WHERE userid=$1", userid)
+  scoreInfo := SnakeScore{}
+  err := row.Scan(&scoreInfo.Scoreid, &scoreInfo.Userid, &scoreInfo.Score)
+  if err != nil {
+    _, _ = store.db.Query("INSERT INTO snake_scores(userid, score) VALUES ($1, $2)", userid, score)
+  }
+  if scoreInfo.Score < score {
+    _, _ = store.db.Query("UPDATE snake_scores SET score=$1 WHERE scoreid=$2",score, scoreInfo.Scoreid)
+  }
+
+}
 func (store *dbStore) GetUserSettings(user *User) *UserSettings {
   row := store.db.QueryRow("SELECT bio,location,publicity FROM user_settings WHERE userid=$1",user.id)
   settings := &UserSettings{}

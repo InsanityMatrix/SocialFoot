@@ -3,6 +3,7 @@ var context = canvas.getContext('2d');
 var paused = false;
 var grid = 16;
 var count = 0;
+var userid = 0;
 
 var snake = {
   x: 160, y: 160, dx: grid, dy: 0,cells: [], maxCells: 4
@@ -11,11 +12,14 @@ var apple = {
   x: 320, y: 320
 };
 
+function setUserID(uid) {
+  userid = uid;
+}
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 function scorePage() {
-  context.font == "20px Comic Sans MS";
+  context.font = "20px Comic Sans MS";
   context.fillStyle = "black";
   context.textAlign = "center";
   context.fillText("Scores", canvas.width/2, 30);
@@ -28,12 +32,33 @@ function scorePage() {
   context.font = "15px Comic Sans MS";
   context.fillText("(Press Space to Continue)", canvas.width/2, canvas.height - 10);
 }
-function populateScores() {
+function populateScores(data) {
+  context.font = "20px Comic Sans MS";
+  context.fillStyle = "black";
+  context.textAlign = "center";
 
+  context.fillText("1. " + data[0].Username, canvas.width/4 * 1.5, 60)
+  context.fillText("" + data[0].Score, canvas.width/4 * 3, 60)
+
+  context.fillText("2. " + data[1].Username, canvas.width/4 * 1.5, 90)
+  context.fillText("" + data[1].Score, canvas.width/4 * 3, 90)
+
+  context.fillText("3. " + data[2].Username, canvas.width/4 * 1.5, 120)
+  context.fillText("" + data[2].Score, canvas.width/4 * 3, 120)
+
+  context.fillText("4. " + data[3].Username, canvas.width/4 * 1.5, 150)
+  context.fillText("" + data[3].Score, canvas.width/4 * 3, 150)
+
+  context.fillText("5. " + data[4].Username, canvas.width/4 * 1.5, 180)
+  context.fillText("" + data[4].Score, canvas.width/4 * 3, 180)
 }
 function loop() {
   requestAnimationFrame(loop);
 
+  if(paused) {
+
+    return;
+  }
   //Make game 15 fps
   if (++count < 6) {
     return;
@@ -102,9 +127,25 @@ document.addEventListener('keydown', function(e) {
     snake.dy = grid;
     snake.dx = 0;
   }
+  else if (e.which === 32) {
+    if(paused) {
+      paused = false;
+    } else {
+      paused = true;
+    }
+  }
 });
 
 function restartGame() {
+  $.ajax({
+    url: '/games/snake/update',
+    method: 'POST',
+    data: {
+      "userid": userid,
+      "score": snake.maxCells
+    }
+  });
+
   snake.x = 160;
   snake.y = 160;
   snake.cells = [];
@@ -115,6 +156,7 @@ function restartGame() {
   apple.x = getRandomInt(0, 25) * grid;
   apple.y = getRandomInt(0, 25) * grid;
   paused = true;
+  scorePage();
 }
 
 requestAnimationFrame(loop);
