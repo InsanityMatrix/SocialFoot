@@ -113,6 +113,11 @@ function loop() {
       }
     }
   });
+
+  context.font = "20px Comic Sans MS";
+  context.fillStyle = "black";
+  context.textAlign = "center";
+  context.fillText(snake.maxCells, canvas.width/8 * 7, 25);
 }
 
 document.addEventListener('keydown', function(e) {
