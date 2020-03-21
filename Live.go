@@ -89,8 +89,9 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+  user := store.GetUserInfo(&User{username: name})
 
-	tmpl.Execute(w, map[string]string{"username":name})
+	tmpl.Execute(w, map[string]string{"username":name, "userid":strconv.Itoa(user.id)})
 }
 
 func profileSettingsHandler(w http.ResponseWriter, r *http.Request) {
