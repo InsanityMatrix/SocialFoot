@@ -96,7 +96,7 @@ function loop() {
   context.fillStyle = 'red';
   context.fillRect(apple.x, apple.y, grid-1, grid-1);
 
-  context.fillStyle = 'green';
+  context.fillStyle = rgb(95,196,182);
   snake.cells.forEach(function(cell, index) {
     context.fillRect(cell.x, cell.y, grid-1, grid-1);
     if (cell.x === apple.x && cell.y === apple.y) {
@@ -188,6 +188,56 @@ function restartGame() {
   apple.x = getRandomInt(0, 25) * grid;
   apple.y = getRandomInt(0, 25) * grid;
   paused = true;
+}
+
+function rgb(r,g, b) {
+  response = "#";
+  {
+    let r1 = r / 16;
+    let r2 = r % 16;
+    response += convert(r1);
+    response += convert(r2);
+  }
+  {
+    let g1 = g /16;
+    let g2 = g % 16;
+    response += convert(g1);
+    response += convert(g2);
+  }
+  {
+    let b1 = b /16;
+    let b2 = b % 16;
+    response += convert(b1);
+    response += convert(b2);
+  }
+  return response;
+}
+//Precondition num < 16
+function convert(num) {
+  var response;
+  switch(num) {
+    case 10:
+      response = "a";
+      break;
+    case 11:
+      response = "b";
+      break;
+    case 12:
+      response = "c";
+      break;
+    case 13:
+      response = "d";
+      break;
+    case 14:
+      response = "e";
+      break;
+    case 15:
+      response = "f";
+      break;
+    default:
+      response += num;
+  }
+  return response;
 }
 
 requestAnimationFrame(loop);
