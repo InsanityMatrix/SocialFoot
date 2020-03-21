@@ -19,6 +19,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 function scorePage() {
+  context.clearRect(0,0,canvas.width,canvas.height);
   context.font = "20px Comic Sans MS";
   context.fillStyle = "black";
   context.textAlign = "center";
@@ -71,13 +72,17 @@ function loop() {
 
   if (snake.x < 0) {
     restartGame();
+    return;
   } else if (snake.x > canvas.width) {
     restartGame();
+    return;
   }
   if (snake.y < 0) {
     restartGame();
+    return;
   } else if (snake.y > canvas.height) {
     restartGame();
+    return;
   }
   snake.cells.unshift({x: snake.x, y: snake.y});
 
@@ -101,6 +106,7 @@ function loop() {
       if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
         //Reset game - todo change this
         restartGame();
+        return;
       }
     }
   });
