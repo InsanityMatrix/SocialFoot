@@ -34,7 +34,8 @@ func snakeGameHandler (w http.ResponseWriter, r *http.Request) {
     return
   }
   tmpl, _ := template.ParseFiles(GAMES + "/snake.html")
-  tmpl.Execute(w, map[string]string{"username": name})
+  user := store.GetUserInfo(&User{username: name})
+  tmpl.Execute(w, map[string]string{"username": name, "userid":strconv.Itoa(user.id)})
 }
 type SnakeScoreList struct {
   Scoreid int
