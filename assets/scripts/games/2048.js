@@ -173,4 +173,4 @@ function loop() {
     return;
   }
 }
-requestAnimationFram(loop);
+requestAnimationFrame(loop);
