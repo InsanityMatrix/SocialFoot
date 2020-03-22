@@ -7,7 +7,7 @@ import (
   "encoding/json"
   "fmt"
 )
-type SnakeScore struct {
+type GameScore struct {
   Scoreid int
   Userid int
   Score int
@@ -37,7 +37,7 @@ func snakeGameHandler (w http.ResponseWriter, r *http.Request) {
   user := store.GetUserInfo(&User{username: name})
   tmpl.Execute(w, map[string]string{"username": name, "userid":strconv.Itoa(user.id)})
 }
-type SnakeScoreList struct {
+type ScoreList struct {
   Scoreid int
   Username string
   Score int
@@ -46,10 +46,10 @@ func snakeScoresHandler (w http.ResponseWriter, r *http.Request) {
   SetHeaders(w)
   w.Header().Set("Content-Type","application/json")
   scores := store.GetTopSnakeScores()
-  scoreData := []SnakeScoreList{}
+  scoreData := []ScoreList{}
   for _, score := range scores {
     user := store.GetUserInfoById(score.Userid)
-    listData := SnakeScoreList{Scoreid: score.Scoreid, Username: user.username, Score: score.Score}
+    listData := ScoreList{Scoreid: score.Scoreid, Username: user.username, Score: score.Score}
 
     scoreData = append(scoreData, listData)
   }
@@ -80,4 +80,29 @@ func Handler2048(w http.ResponseWriter, r *http.Request) {
   tmpl, _ := template.ParseFiles(GAMES + "/2048.html")
   user := store.GetUserInfo(&User{username: name})
   tmpl.Execute(w, map[string]string{"username": name, "userid":strconv.Itoa(user.id)})
+}
+func Handler2048Scores(w http.ResponseWriter, r *http.Request) {
+  SetHeaders(w)
+  w.Header().Set("Content-Type","application/json")
+  scores := store.GetTop2048Scores()
+  scoreData := []ScoreList{}
+  for _, score := range scores {
+    user := store.GetUserInfoById(score.Userid)
+    listData := ScoreList{Scoreid: score.Scoreid, Username: user.username, Score: score.Score}
+
+    scoreData = append(scoreData, listData)
+  }
+
+  data, _ := json.Marshal(scoreData)
+  fmt.Fprint(w, string(data))
+}
+func update2048Score (w http.ResponseWriter, r *http.Request) {
+  err := r.ParseForm()
+  if err != nil {
+    fmt.Fprint(w, "You shouldn't be here")
+  }
+  userid,_ := strconv.Atoi(r.Form.Get("userid"))
+  score,_ := strconv.Atoi(r.Form.Get("score"))
+
+  store.Update2048Score(userid, score)
 }

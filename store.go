@@ -176,13 +176,13 @@ func (store *dbStore) GetUserInfoById(id int) *User {
   }
   return account
 }
-func (store *dbStore) GetTopSnakeScores() []SnakeScore {
+func (store *dbStore) GetTopSnakeScores() []GameScore {
   rows, _ := store.db.Query("SELECT * FROM snake_scores ORDER BY score DESC LIMIT 10")
   defer rows.Close()
 
-  scores := []SnakeScore{}
+  scores := []GameScore{}
   for rows.Next() {
-    score := SnakeScore{}
+    score := GameScore{}
 
     _ = rows.Scan(&score.Scoreid, &score.Userid, &score.Score)
 
@@ -190,9 +190,35 @@ func (store *dbStore) GetTopSnakeScores() []SnakeScore {
   }
   return scores
 }
+func (store *dbStore) GetTop2048Scores() []GameScore {
+  rows, _ := store.db.Query("SELECT * FROM scores_2048 ORDER BY score DESC LIMIT 10")
+  defer rows.Close()
+
+  scores := []GameScore{}
+  for rows.Next() {
+    score := GameScore{}
+
+    _ = rows.Scan(&score.Scoreid, &score.Userid, &score.Score)
+
+    scores = append(scores, score)
+  }
+  return scores
+}
+func (store *dbStore) Update2048Score(userid int, score int) {
+  row := store.db.QueryRow("SELECT * FROM scores_2048 WHERE userid=$1", userid)
+  scoreInfo := GameScore{}
+  err := row.Scan(&scoreInfo.Scoreid, &scoreInfo.Userid, &scoreInfo.Score)
+  if err != nil {
+    _, _ = store.db.Query("INSERT INTO scores_2048(userid, score) VALUES ($1, $2)", userid, score)
+  }
+  if scoreInfo.Score < score {
+    _, _ = store.db.Query("UPDATE scores_2048 SET score=$1 WHERE scoreid=$2",score, scoreInfo.Scoreid)
+  }
+
+}
 func (store *dbStore) UpdateSnakeScore(userid int, score int) {
   row := store.db.QueryRow("SELECT * FROM snake_scores WHERE userid=$1", userid)
-  scoreInfo := SnakeScore{}
+  scoreInfo := GameScore{}
   err := row.Scan(&scoreInfo.Scoreid, &scoreInfo.Userid, &scoreInfo.Score)
   if err != nil {
     _, _ = store.db.Query("INSERT INTO snake_scores(userid, score) VALUES ($1, $2)", userid, score)

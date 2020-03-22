@@ -5,10 +5,13 @@ var score = 0;
 var gameState = 0;
 var borderSize = 20;
 var cellSize = 100;
+var userid = 0;
 // gameState
 // 0 = Playing
 // 1 = Lost
-
+function setUserID(uid) {
+  userid = uid;
+}
 function startGame() {
   gameboard = [
     [0,0,0,0],
@@ -35,6 +38,13 @@ function chooseEmptyCell() {
       return [rRow, rCol];
     }
     tries++;
+  }
+  for(var i = 0; i < 4; i++) {
+    for(var j = 0; j < 4; i++) {
+      if(gameboard[i][j] === 0) {
+        return [i, j];
+      }
+    }
   }
   return [-1, -1];
 }
@@ -241,6 +251,14 @@ function spawnNewCell() {
   cell = chooseEmptyCell();
   if (cell[0] === -1) {
     gameState = 1;
+    $.ajax({
+      url: '/games/2048/update',
+      method: 'POST',
+      data: {
+        "userid": userid,
+        "score": score
+      }
+    });
     return;
   }
   gameboard[cell[0]][cell[1]] = value;
