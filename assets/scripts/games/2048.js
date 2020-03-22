@@ -272,6 +272,7 @@ document.addEventListener('keydown', function(e) {
 function loop() {
   requestAnimationFrame(loop);
   //60 FPS 2048 Babyyy
+  $("#score").html(score);
   if(gameState === 0) {
     context.clearRect(0,0,canvas.width, canvas.height);
     //Borders = 20

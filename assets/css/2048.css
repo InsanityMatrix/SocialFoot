@@ -1,0 +1,15 @@
+.scoreboard {
+  background-color: #5fc4b6;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+}
+.score-header {
+  border-bottom: 1px solid white;
+  padding-bottom: 3px;
+  text-align: center;
+}
+#score {
+  text-align: center;
+  padding: 5px;
+}

@@ -20,6 +20,7 @@
       }
     </style>
     <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
+    <link rel='stylesheet' href='/assets/css/2048.css'>
     <script src="/assets/scripts/SocialFoot.js"></script>
 
     </head>
@@ -57,9 +58,22 @@
               </div>
           </div>
       </nav>
-      <center>
-      <canvas style="border: 1px solid black;" width="500" height="500" id="game"></canvas>
-    </center>
+      <div class="container">
+        <center>
+          <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2 scoreboard">
+              <div class="col-xs-8">
+                <h1>2048</h1>
+              </div>
+              <div class="col-xs-4">
+                <h5 class="score-header">Score</h5>
+                <h4 id="score"></h4>
+            </div>
+          </div>
+          <br>
+          <canvas style="border: 1px solid black;" width="500" height="500" id="game"></canvas>
+        </center>
+      </div>
           <script src="/assets/scripts/games/2048.js"></script>
 
           <script>
