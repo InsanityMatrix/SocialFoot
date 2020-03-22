@@ -388,6 +388,14 @@ function handleTouchMove(e) {
   touchX = null;
   touchY = null;
 }
-
+$(document).ready(function() {
+  if($(window).width() < 500) {
+    context.canvas.width = window.innerWidth;
+    context.canvas.height = context.canvas.width;
+  } else {
+    context.canvas.width = 500;
+    context.canvas.height = 500;
+  }
+});
 startGame();
 requestAnimationFrame(loop);
