@@ -67,3 +67,17 @@ func updateSnakeScore (w http.ResponseWriter, r *http.Request) {
 
   store.UpdateSnakeScore(userid, score)
 }
+
+//2048
+func Handler2048(w http.ResponseWriter, r *http.Request) {
+  SetHeaders(w)
+  w.Header().Set("Content-Type","text/html")
+  name, err := decryptCookie(r, "username")
+  if err != nil {
+    http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
+    return
+  }
+  tmpl, _ := template.ParseFiles(GAMES + "/2048.html")
+  user := store.GetUserInfo(&User{username: name})
+  tmpl.Execute(w, map[string]string{"username": name, "userid":strconv.Itoa(user.id)})
+}

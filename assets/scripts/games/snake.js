@@ -193,19 +193,19 @@ function restartGame() {
 function rgb(r,g, b) {
   response = "#";
   {
-    let r1 = r / 16;
+    let r1 = Math.floor(r / 16);
     let r2 = r % 16;
     response += convert(r1);
     response += convert(r2);
   }
   {
-    let g1 = g /16;
+    let g1 = Math.floor(g /16);
     let g2 = g % 16;
     response += convert(g1);
     response += convert(g2);
   }
   {
-    let b1 = b /16;
+    let b1 = Math.floor(b /16);
     let b2 = b % 16;
     response += convert(b1);
     response += convert(b2);
