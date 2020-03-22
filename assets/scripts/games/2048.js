@@ -153,7 +153,7 @@ document.addEventListener('keydown', function(e) {
 function loop() {
   requestAnimationFrame(loop);
   //60 FPS 2048 Babyyy
-  if(gameState = 0) {
+  if(gameState === 0) {
     context.clearRect(0,0,canvas.width, canvas.height);
     //Borders = 20
     context.fillStyle = "#6e4f31";
