@@ -44,6 +44,20 @@ function moveLeft() {
         gameboard[i][j] *= 2;
         gameboard[i][j + 1] = 0;
         score += gameboard[i][j];
+      } else if(gameboard[i][j + 1] == 0 &&
+                j + 2 < 4 &&
+                gameboard[i][j + 2] === gameboard[i][j]) {
+        gameboard[i][j] *= 2;
+        gameboard[i][j + 2] = 0;
+        score += gameboard[i][j];
+      } else if(gameboard[i][j + 1] == 0 &&
+                j + 2 < 4 &&
+                gameboard[i][j + 2] == 0 &&
+                j + 3 < 4 &&
+                gameboard[i][j + 3] === gameboard[i][j]) {
+        gameboard[i][j] *= 2;
+        gameboard[i][j + 3] = 0;
+        score += gameboard[i][j];
       }
     }
   }
@@ -64,6 +78,20 @@ function moveRight() {
       if(gameboard[i][j] === gameboard[i][j - 1]) {
         gameboard[i][j] *= 2;
         gameboard[i][j - 1] = 0;
+        score += gameboard[i][j];
+      }else if(gameboard[i][j - 1] == 0 &&
+                j - 2 >= 0 &&
+                gameboard[i][j - 2] === gameboard[i][j]) {
+        gameboard[i][j] *= 2;
+        gameboard[i][j - 2] = 0;
+        score += gameboard[i][j];
+      } else if(gameboard[i][j - 1] == 0 &&
+                j - 2 >= 0 &&
+                gameboard[i][j - 2] == 0 &&
+                j - 3 >= 0 &&
+                gameboard[i][j - 3] === gameboard[i][j]) {
+        gameboard[i][j] *= 2;
+        gameboard[i][j - 3] = 0;
         score += gameboard[i][j];
       }
     }
@@ -86,6 +114,20 @@ function moveUp() {
         gameboard[i][j] *= 2;
         gameboard[i+1][j] = 0;
         score += gameboard[i][j];
+      } else if(gameboard[i + 1][j] == 0 &&
+                i + 2 < 4 &&
+                gameboard[i + 2][j] === gameboard[i][j]) {
+        gameboard[i][j] *= 2;
+        gameboard[i + 2][j] = 0;
+        score += gameboard[i][j];
+      } else if(gameboard[i + 1][j] == 0 &&
+                i + 2 < 4 &&
+                gameboard[i + 2][j] == 0 &&
+                i + 3 < 4 &&
+                gameboard[i + 3][j] === gameboard[i][j]) {
+        gameboard[i][j] *= 2;
+        gameboard[i+ 3][j] = 0;
+        score += gameboard[i][j];
       }
     }
   }
@@ -105,6 +147,20 @@ function moveDown() {
       if(gameboard[i][j] === gameboard[i - 1][j]) {
         gameboard[i][j] *= 2;
         gameboard[i-1][j] = 0;
+        score += gameboard[i][j];
+      } else if(gameboard[i - 1][j] == 0 &&
+                i - 2 >= 0 &&
+                gameboard[i - 2][j] === gameboard[i][j]) {
+        gameboard[i][j] *= 2;
+        gameboard[i - 2][j] = 0;
+        score += gameboard[i][j];
+      } else if(gameboard[i - 1][j] == 0 &&
+                i - 2 >= 4 &&
+                gameboard[i - 2][j] == 0 &&
+                i - 3 >= 0 &&
+                gameboard[i - 3][j] === gameboard[i][j]) {
+        gameboard[i][j] *= 2;
+        gameboard[i-3][j] = 0;
         score += gameboard[i][j];
       }
     }
