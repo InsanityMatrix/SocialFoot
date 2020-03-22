@@ -262,7 +262,7 @@ function handleTouchStart(e) {
         paused = true;
       }
     }
-  }, 100);
+  }, 150);
 }
 function handleTouchMove(e) {
   if (! touchX || ! touchY) {
@@ -321,7 +321,7 @@ function handleTouchMove(e) {
 
 $(document).ready(function() {
   if($(window).width() < 700) {
-    context.canvas.width = window.innerWidth - 20;
+    context.canvas.width = Math.floor(window.innerWidth/16) ;
   } else {
     context.canvas.width = 700;
   }
