@@ -133,19 +133,19 @@ function spawnNewCell() {
 }
 document.addEventListener('keydown', function(e) {
   //LEFT
-  if(e.which == 37) {
+  if(e.which === 37) {
     moveLeft();
   }
   //RIGHT
-  if(e.which == 39) {
+  if(e.which === 39) {
     moveRight();
   }
   //UP
-  if(e.which == 38) {
+  if(e.which === 38) {
     moveUp();
   }
   //DOWN
-  if(e.which == 40) {
+  if(e.which === 40) {
     moveDown();
   }
 });
@@ -159,18 +159,19 @@ function loop() {
     context.fillStyle = "#6e4f31";
     //Vertical lines
     context.fillRect(0,0,20,canvas.height);
-    context.fillRect(120,0,140,canvas.height);
-    context.fillRect(240, 0, 260, canvas.height);
-    context.fillRect(360,0,380,canvas.height);
-    context.fillRect(480,0,500,canvas.height);
+    context.fillRect(120,0,20,canvas.height);
+    context.fillRect(240, 0, 20, canvas.height);
+    context.fillRect(360,0,20,canvas.height);
+    context.fillRect(480,0,20,canvas.height);
     //Horizontal Lines
     context.fillRect(0,0,canvas.width, 20);
-    context.fillRect(0,120,canvas.width, 140);
-    context.fillRect(0,240,canvas.width, 260);
-    context.fillRect(0,360,canvas.width, 380);
-    context.fillRect(0,480,canvas.width,500);
+    context.fillRect(0,120,canvas.width, 20);
+    context.fillRect(0,240,canvas.width, 20);
+    context.fillRect(0,360,canvas.width, 20);
+    context.fillRect(0,480,canvas.width,20);
 
     return;
   }
 }
+startGame();
 requestAnimationFrame(loop);
