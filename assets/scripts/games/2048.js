@@ -336,5 +336,50 @@ function drawGrid(x,y, value) {
     context.fillText(value, x + 50, y + 50);
   }
 }
+//Add touches for phones
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+var touchX = null;
+var touchY = null;
+function getTouches(e) {
+  return e.touches || e.originalEvent.touches;
+}
+function handleTouchStart(e) {
+  const firstTouch = getTouches(e)[0];
+  touchX = firstTouch.clientX;
+  touchY = firstTouch.clientY;
+}
+function handleTouchMove(e) {
+  if (! touchX || ! touchY) {
+    return;
+  }
+
+  let xUp = e.touches[0].clientX;
+  let yUp = e.touches[0].clientY;
+
+  let xDiff = touchX - xUp;
+  let yDiff = touchY - yUp;
+
+  if(Math.abs(xDiff) > Math.abs(yDiff)) {
+    if (xDiff > 0) {
+      //Right to Left swipe
+      moveLeft();
+    } else {
+      //Left to Right Swipe
+      moveRight();
+    }
+  } else {
+    if ( yDiff > 0) {
+      //Bottom to Top
+      moveUp();
+    } else {
+      //Top to Bottom
+      moveDown();
+    }
+  }
+  touchX = null;
+  touchY = null;
+}
+
 startGame();
 requestAnimationFrame(loop);
