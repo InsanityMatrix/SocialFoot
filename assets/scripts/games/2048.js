@@ -63,11 +63,25 @@ function moveLeft() {
     }
   }
   for(var i = 0; i < 4; i++) {
-    for(var j = 3; j > 0; j--) {
-      if(gameboard[i][j - 1] === 0 && gameboard[i][j] != 0) {
+    for(var j = 0; j < 3; j--) {
+      if(gameboard[i][j + 1] != 0 && gameboard[i][j] === 0) {
         //Shift this cell left
-        gameboard[i][j - 1] = gameboard[i][j];
-        gameboard[i][j] = 0;
+        gameboard[i][j] = gameboard[i][j + 1];
+        gameboard[i][j + 1] = 0;
+      } else if(gameboard[i][j+1] === 0 &&
+                j + 2 <= 3 &&
+                gameboard[i][j+2] != 0 &&
+                gameboard[i][j] === 0) {
+        gameboard[i][j] = gameboard[i][j+2];
+        gameboard[i][j+2] = 0;
+      } else if(gameboard[i][j+1] === 0 &&
+                j + 2 <= 3 &&
+                gameboard[i][j+2] === 0 &&
+                j + 3 <= 3 &&
+                gameboard[i][j+3] != 0 &&
+                gameboard[i][j] === 0) {
+        gameboard[i][j] = gameboard[i][j+3];
+        gameboard[i][j+3] = 0;
       }
     }
   }
@@ -98,11 +112,25 @@ function moveRight() {
     }
   }
   for(var i = 0; i < 4; i++) {
-    for(var j = 0; j < 3; j++) {
-      if(gameboard[i][j + 1] === 0 && gameboard[i][j] != 0) {
+    for(var j = 3; j > 0; j--) {
+      if(gameboard[i][j - 1] != 0 && gameboard[i][j] === 0) {
         //Shift this cell right
-        gameboard[i][j + 1] = gameboard[i][j];
-        gameboard[i][j] = 0;
+        gameboard[i][j] = gameboard[i][j-1];
+        gameboard[i][j-1] = 0;
+      } else if(gameboard[i][j-1] === 0 &&
+                j - 2 >= 0 &&
+                gameboard[i][j-2] != 0 &&
+                gameboard[i][j] === 0) {
+        gameboard[i][j] = gameboard[i][j-2];
+        gameboard[i][j-2] = 0;
+      } else if(gameboard[i][j-1] === 0 &&
+                j - 2 >= 0 &&
+                gameboard[i][j-2] === 0 &&
+                j - 3 >= 0 &&
+                gameboard[i][j-3] != 0 &&
+                gameboard[i][j] === 0) {
+        gameboard[i][j] = gameboard[i][j-3];
+        gameboard[i][j-3] = 0;
       }
     }
   }
@@ -133,10 +161,24 @@ function moveUp() {
     }
   }
   for(var j = 0; j < 4; j++) {
-    for(var i = 3; i > 0; i--) {
-      if(gameboard[i-1][j] === 0 & gameboard[i][j] != 0) {
-        gameboard[i-1][j] = gameboard[i][j];
-        gameboard[i][j] = 0;
+    for(var i = 0; i < 3; i++) {
+      if(gameboard[i+1][j] != 0 && gameboard[i][j] === 0) {
+        gameboard[i][j] = gameboard[i+1][j];
+        gameboard[i+1][j] = 0;
+      } else if(gameboard[i+1][j] === 0 &&
+                i + 2 <= 3 &&
+                gameboard[i+2][j] != 0 &&
+                gameboard[i][j] === 0) {
+        gameboard[i][j] = gameboard[i+2][j];
+        gameboard[i+2][j] = 0;
+      } else if(gameboard[i+1][j] === 0 &&
+                i + 2 <= 3 &&
+                gameboard[i+2][j] === 0 &&
+                i + 3 <= 3 &&
+                gameboard[i+3][j] != 0 &&
+                gameboard[i][j] === 0) {
+        gameboard[i][j] = gameboard[i+3][j];
+        gameboard[i+3][j] = 0;
       }
     }
   }
@@ -167,10 +209,24 @@ function moveDown() {
     }
   }
   for(var j = 0; j < 4; j++) {
-    for(var i = 0; i < 3; i++) {
-      if(gameboard[i+1][j] === 0 & gameboard[i][j] != 0) {
-        gameboard[i+1][j] = gameboard[i][j];
-        gameboard[i][j] = 0;
+    for(var i = 3; i > 0; i--) {
+      if(gameboard[i-1][j] != 0 && gameboard[i][j] === 0) {
+        gameboard[i][j] = gameboard[i-1][j];
+        gameboard[i-1][j] = 0;
+      } else if(gameboard[i-1][j] === 0 &&
+                i - 2 >= 0 &&
+                gameboard[i-2][j] != 0 &&
+                gameboard[i][j] === 0) {
+        gameboard[i][j] = gameboard[i-2][j];
+        gameboard[i-2][j] = 0;
+      } else if(gameboard[i-1][j] === 0 &&
+                i - 2 >= 0 &&
+                gameboard[i-2][j] === 0 &&
+                i - 3 >= 0 &&
+                gameboard[i-3][j] != 0 &&
+                gameboard[i][j] === 0) {
+        gameboard[i][j] = gameboard[i-3][j];
+        gameboard[i-3][j] = 0;
       }
     }
   }
