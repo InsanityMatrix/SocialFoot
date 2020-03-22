@@ -3,7 +3,8 @@ var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
 var score = 0;
 var gameState = 0;
-
+var borderSize = 20;
+var cellSize = 100;
 // gameState
 // 0 = Playing
 // 1 = Lost
@@ -278,36 +279,36 @@ function loop() {
     //Borders = 20
     context.fillStyle = "#b58251";
     //Vertical lines
-    context.fillRect(0,0,20,canvas.height);
-    context.fillRect(120,0,20,canvas.height);
-    context.fillRect(240, 0, 20, canvas.height);
-    context.fillRect(360,0,20,canvas.height);
-    context.fillRect(480,0,20,canvas.height);
+    context.fillRect(0,0,borderSize,canvas.height);
+    context.fillRect((cellSize) + (borderSize),0,borderSize,canvas.height);
+    context.fillRect((cellSize * 2) + (borderSize * 2), 0, borderSize, canvas.height);
+    context.fillRect((cellSize * 3) + (borderSize * 3),0,borderSize,canvas.height);
+    context.fillRect((cellSize * 4) + (borderSize * 4),0,borderSize,canvas.height);
     //Horizontal Lines
-    context.fillRect(0,0,canvas.width, 20);
-    context.fillRect(0,120,canvas.width, 20);
-    context.fillRect(0,240,canvas.width, 20);
-    context.fillRect(0,360,canvas.width, 20);
-    context.fillRect(0,480,canvas.width,20);
+    context.fillRect(0,0,canvas.width, borderSize);
+    context.fillRect(0,(cellSize) + (borderSize),canvas.width, borderSize);
+    context.fillRect(0,(cellSize * 2) + (borderSize * 2),canvas.width, borderSize);
+    context.fillRect(0,(cellSize * 3) + (borderSize * 3),canvas.width, borderSize);
+    context.fillRect(0,(cellSize * 4) + (borderSize * 4),canvas.width,borderSize);
 
 
     //Draw Game Grid
-    drawGrid(20,20, gameboard[0][0]);
-    drawGrid(140,20, gameboard[0][1]);
-    drawGrid(260,20, gameboard[0][2]);
-    drawGrid(380,20, gameboard[0][3]);
-    drawGrid(20,140, gameboard[1][0]);
-    drawGrid(140,140, gameboard[1][1]);
-    drawGrid(260,140, gameboard[1][2]);
-    drawGrid(380,140, gameboard[1][3]);
-    drawGrid(20,260, gameboard[2][0]);
-    drawGrid(140,260, gameboard[2][1]);
-    drawGrid(260,260, gameboard[2][2]);
-    drawGrid(380,260, gameboard[2][3]);
-    drawGrid(20,380, gameboard[3][0]);
-    drawGrid(140,380, gameboard[3][1]);
-    drawGrid(260,380, gameboard[3][2]);
-    drawGrid(380,380, gameboard[3][3]);
+    drawGrid(borderSize,borderSize, gameboard[0][0]);
+    drawGrid((cellSize) + (borderSize * 2),borderSize, gameboard[0][1]);
+    drawGrid((cellSize * 2) + (borderSize * 3),borderSize, gameboard[0][2]);
+    drawGrid((cellSize * 3) + (borderSize * 4),borderSize, gameboard[0][3]);
+    drawGrid(borderSize,(cellSize) + (borderSize * 2), gameboard[1][0]);
+    drawGrid((cellSize) + (borderSize * 2),(cellSize) + (borderSize * 2), gameboard[1][1]);
+    drawGrid((cellSize * 2) + (borderSize * 3),(cellSize) + (borderSize * 2), gameboard[1][2]);
+    drawGrid((cellSize * 3) + (borderSize * 4),(cellSize) + (borderSize * 2), gameboard[1][3]);
+    drawGrid(borderSize,(cellSize * 2) + (borderSize * 3), gameboard[2][0]);
+    drawGrid((cellSize) + (borderSize * 2),(cellSize * 2) + (borderSize * 3), gameboard[2][1]);
+    drawGrid((cellSize * 2) + (borderSize * 3),(cellSize * 2) + (borderSize * 3), gameboard[2][2]);
+    drawGrid((cellSize * 3) + (borderSize * 4),(cellSize * 2) + (borderSize * 3), gameboard[2][3]);
+    drawGrid(borderSize,(cellSize * 3) + (borderSize * 4), gameboard[3][0]);
+    drawGrid((cellSize) + (borderSize * 2),(cellSize * 3) + (borderSize * 4), gameboard[3][1]);
+    drawGrid((cellSize * 2) + (borderSize * 3),(cellSize * 3) + (borderSize * 4), gameboard[3][2]);
+    drawGrid((cellSize * 3) + (borderSize * 4),(cellSize * 3) + (borderSize * 4), gameboard[3][3]);
     return;
   }
   //Lost
@@ -321,19 +322,19 @@ function loop() {
 }
 function drawGrid(x,y, value) {
   context.fillStyle = "#b5b5b5";
-  if(value > 64) {
+  if(value >= 64) {
     context.fillStyle = "#ff8a8a";
-  } else if(value > 8) {
+  } else if(value >= 8) {
     context.fillStyle = "#ffd48a";
   } else if (value > 0) {
     context.fillStyle = "#fff38a";
   }
-  context.fillRect(x,y,100,100);
+  context.fillRect(x,y,cellSize,cellSize);
   if(value != 0) {
     context.font = "30px Comic Sans MS";
     context.fillStyle = "black";
     context.textAlign = "center";
-    context.fillText(value, x + 50, y + 50);
+    context.fillText(value, x + (cellSize/2), y + (cellSize/2));
   }
 }
 //Add touches for phones
@@ -396,6 +397,8 @@ $(document).ready(function() {
     context.canvas.width = 500;
     context.canvas.height = 500;
   }
+  borderSize = context.canvas.width / 25;
+  cellSize = context.canvas.width / 5;
 });
 startGame();
 requestAnimationFrame(loop);
