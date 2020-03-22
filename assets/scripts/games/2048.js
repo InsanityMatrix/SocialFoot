@@ -317,7 +317,7 @@ function loop() {
   context.textAlign = "center";
   context.fillText("Your Score: " + score, canvas.width/2, 30);
   context.font = "15px Comic Sans MS";
-  context.fillText("(Press Space to Continue)", canvas.width/2, canvas.height - 10);
+  context.fillText("(Press Space or Tap to Continue)", canvas.width/2, canvas.height - 10);
 }
 function drawGrid(x,y, value) {
   context.fillStyle = "#b5b5b5";
@@ -348,6 +348,14 @@ function handleTouchStart(e) {
   const firstTouch = getTouches(e)[0];
   touchX = firstTouch.clientX;
   touchY = firstTouch.clientY;
+
+  setTimeout(function() {
+    if(touchX != null  && touchY != null) {
+      if(gameState === 1) {
+        startGame()
+      }
+    }
+  }, 150);
 }
 function handleTouchMove(e) {
   if (! touchX || ! touchY) {
