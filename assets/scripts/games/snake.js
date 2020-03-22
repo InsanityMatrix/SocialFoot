@@ -253,6 +253,16 @@ function handleTouchStart(e) {
   const firstTouch = getTouches(e)[0];
   touchX = firstTouch.clientX;
   touchY = firstTouch.clientY;
+
+  setTimeout(function() {
+    if(!touchX || !touchY) {
+      if(paused) {
+        paused = false;
+      } else {
+        paused = true;
+      }
+    }
+  }, 100);
 }
 function handleTouchMove(e) {
   if (! touchX || ! touchY) {
@@ -264,13 +274,7 @@ function handleTouchMove(e) {
 
   let xDiff = touchX - xUp;
   let yDiff = touchY - yUp;
-  if(Math.abs(xDiff) < 15 && Math.abs(yDiff) < 15) {
-    if(paused) {
-      paused = false;
-    } else {
-      paused = true;
-    }
-  } else if(Math.abs(xDiff) > Math.abs(yDiff)) {
+  if(Math.abs(xDiff) > Math.abs(yDiff)) {
     if(snake.dx === 0) {
       if (xDiff > 0) {
         //Right to Left swipe
