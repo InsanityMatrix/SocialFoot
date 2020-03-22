@@ -34,7 +34,7 @@ function scorePage() {
 
   context.font = "15px Comic Sans MS";
   context.fillText("Last Score: " + lastScore, canvas.width/2, canvas.height - 30);
-  context.fillText("(Press Space to Continue)", canvas.width/2, canvas.height - 10);
+  context.fillText("(Press Space or Tap to Continue)", canvas.width/2, canvas.height - 10);
 }
 function populateScores(data) {
   context.font = "20px Comic Sans MS";
@@ -264,8 +264,13 @@ function handleTouchMove(e) {
 
   let xDiff = touchX - xUp;
   let yDiff = touchY - yUp;
-
-  if(Math.abs(xDiff) > Math.abs(yDiff)) {
+  if(Math.abs(xDiff) < 15 && Math.abs(yDiff) < 15) {
+    if(paused) {
+      paused = false;
+    } else {
+      paused = true;
+    }
+  } else if(Math.abs(xDiff) > Math.abs(yDiff)) {
     if(snake.dx === 0) {
       if (xDiff > 0) {
         //Right to Left swipe
