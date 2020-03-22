@@ -259,13 +259,6 @@ function loop() {
   context.fillStyle = "black";
   context.textAlign = "center";
   context.fillText("Your Score: " + score, canvas.width/2, 30);
-
-  $.ajax({
-    url: '/games/snake/scores',
-    success: populateScores
-  });
-
-
   context.font = "15px Comic Sans MS";
   context.fillText("(Press Space to Continue)", canvas.width/2, canvas.height - 10);
 }
