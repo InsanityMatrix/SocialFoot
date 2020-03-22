@@ -309,3 +309,9 @@ function handleTouchMove(e) {
   touchX = null;
   touchY = null;
 }
+
+$(document).ready(function() {
+  if($(window).width() < 700) {
+    canvas.width = $(window).width - 20;
+  }
+});
