@@ -1,8 +1,10 @@
 .scoreboard {
   background-color: #5fc4b6;
   padding: 10px;
+  border-radius: 100 px;
   color: white;
   font-weight: bold;
+  margin-bottom: 15px;
 }
 .score-header {
   border-bottom: 1px solid white;

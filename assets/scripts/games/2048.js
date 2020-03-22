@@ -276,7 +276,7 @@ function loop() {
   if(gameState === 0) {
     context.clearRect(0,0,canvas.width, canvas.height);
     //Borders = 20
-    context.fillStyle = "#6e4f31";
+    context.fillStyle = "#b58251";
     //Vertical lines
     context.fillRect(0,0,20,canvas.height);
     context.fillRect(120,0,20,canvas.height);
