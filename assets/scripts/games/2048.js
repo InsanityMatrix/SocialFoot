@@ -1,5 +1,4 @@
 var gameboard;
-var grid;
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
 var score = 0;
@@ -19,7 +18,9 @@ function startGame() {
   let cell = chooseEmptyCell();
   gameboard[cell[0]][cell[1]] = 2;
   cell = chooseEmptyCell();
+  score = 0;
   gameboard[cell[0]][cell[1]] = 2;
+  gameState = 0;
 }
 
 function chooseEmptyCell() {
@@ -182,7 +183,7 @@ function spawnNewCell() {
   }
   cell = chooseEmptyCell();
   if (cell[0] === -1) {
-    gameSate = 1;
+    gameState = 1;
     return;
   }
   gameboard[cell[0]][cell[1]] = value;
@@ -203,6 +204,12 @@ document.addEventListener('keydown', function(e) {
   //DOWN
   if(e.which === 40) {
     moveDown();
+  }
+
+  if(e.which === 32) {
+    if(gameState === 1) {
+      startGame()
+    }
   }
 });
 //Precondition width and height = 500
@@ -246,6 +253,21 @@ function loop() {
     drawGrid(380,380, gameboard[3][3]);
     return;
   }
+  //Lost
+  context.clearRect(0,0,canvas.width, canvas.height);
+  context.font = "20px Comic Sans MS";
+  context.fillStyle = "black";
+  context.textAlign = "center";
+  context.fillText("Your Score: " + score, canvas.width/2, 30);
+
+  $.ajax({
+    url: '/games/snake/scores',
+    success: populateScores
+  });
+
+
+  context.font = "15px Comic Sans MS";
+  context.fillText("(Press Space to Continue)", canvas.width/2, canvas.height - 10);
 }
 function drawGrid(x,y, value) {
   context.fillStyle = "#b5b5b5";
