@@ -312,6 +312,6 @@ function handleTouchMove(e) {
 
 $(document).ready(function() {
   if($(window).width() < 700) {
-    context.canvas.width = $(window).width - 20;
+    context.canvas.width = window.innerWidth - 20;
   }
 });
