@@ -101,9 +101,9 @@ function loop() {
     context.fillRect(cell.x, cell.y, grid-1, grid-1);
     if (cell.x === apple.x && cell.y === apple.y) {
       snake.maxCells++;
-
-      apple.x = getRandomInt(0, 25) * grid;
-      apple.y = getRandomInt(0, 25) * grid;
+      let range = canvas.width / grid;
+      apple.x = getRandomInt(0, range) * grid;
+      apple.y = getRandomInt(0, range) * grid;
     }
     for (var i = index + 1; i < snake.cells.length; i++) {
       if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
