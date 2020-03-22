@@ -340,6 +340,7 @@ function loop() {
     return;
   }
   //Lost
+  let data = leaderboard;
   context.clearRect(0,0,canvas.width, canvas.height);
   context.fillStyle = "#b58251";
   context.fillRect(0,0,canvas.width, 40);
