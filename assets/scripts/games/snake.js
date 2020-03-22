@@ -313,5 +313,7 @@ function handleTouchMove(e) {
 $(document).ready(function() {
   if($(window).width() < 700) {
     context.canvas.width = window.innerWidth - 20;
+  } else {
+    context.canvas.width = 700;
   }
 });
