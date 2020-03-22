@@ -170,7 +170,42 @@ function loop() {
     context.fillRect(0,360,canvas.width, 20);
     context.fillRect(0,480,canvas.width,20);
 
+
+    //Draw Game Grid
+    drawGrid(20,20, gameboard[0][0]);
+    drawGrid(140,20, gameboard[0][1]);
+    drawGrid(260,20, gameboard[0][2]);
+    drawGrid(380,20, gameboard[0][3]);
+    drawGrid(20,140, gameboard[1][0]);
+    drawGrid(140,140, gameboard[1][1]);
+    drawGrid(260,140, gameboard[1][2]);
+    drawGrid(380,140, gameboard[1][3]);
+    drawGrid(20,260, gameboard[2][0]);
+    drawGrid(140,260, gameboard[2][1]);
+    drawGrid(260,260, gameboard[2][2]);
+    drawGrid(380,260, gameboard[2][3]);
+    drawGrid(20,380, gameboard[3][0]);
+    drawGrid(140,380, gameboard[3][1]);
+    drawGrid(260,380, gameboard[3][2]);
+    drawGrid(380,380, gameboard[3][3]);
     return;
+  }
+}
+function drawGrid(x,y, value) {
+  context.fillStyle = "#b5b5b5";
+  if(value > 64) {
+    context.fillStyle = "#ff8a8a";
+  } else if(value > 8) {
+    context.fillStyle = "#ffd48a";
+  } else if (value > 0) {
+    context.fillStyle = "#fff38a";
+  }
+  context.fillRect(x,y,100,100);
+  if(value != 0) {
+    context.font = "30px Comic Sans MS";
+    context.fillStyle = "black";
+    context.textAlign = "center";
+    context.fillText(value, x + 50, y + 50);
   }
 }
 startGame();
