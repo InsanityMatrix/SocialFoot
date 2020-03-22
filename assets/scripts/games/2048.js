@@ -63,7 +63,7 @@ function moveLeft() {
     }
   }
   for(var i = 0; i < 4; i++) {
-    for(var j = 0; j < 3; j--) {
+    for(var j = 0; j < 3; j++) {
       if(gameboard[i][j + 1] != 0 && gameboard[i][j] === 0) {
         //Shift this cell left
         gameboard[i][j] = gameboard[i][j + 1];
