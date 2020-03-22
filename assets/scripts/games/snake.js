@@ -241,3 +241,71 @@ function convert(num) {
 }
 
 requestAnimationFrame(loop);
+//Add touches for phones
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+var touchX = null;
+var touchY = null;
+function getTouches(e) {
+  return e.touches || e.originalEvent.touches;
+}
+function handleTouchStart(e) {
+  const firstTouch = getTouches(e)[0];
+  touchX = firstTouch.clientX;
+  touchY = firstTouch.clientY;
+}
+function handleTouchMove(e) {
+  if (! touchX || ! touchY) {
+    return;
+  }
+
+  let xUp = e.touches[0].clientX;
+  let yUp = e.touches[0].clientY;
+
+  let xDiff = touchX - xUp;
+  let yDiff = touchY - yUp;
+
+  if(Math.abs(xDiff) > Math.abs(yDiff)) {
+    if(snake.dx === 0) {
+      if (xDiff > 0) {
+        //Right to Left swipe
+        if(moves > 0) {
+          return;
+        }
+        snake.dx = -grid;
+        snake.dy = 0;
+        moves++;
+      } else {
+        //Left to Right Swipe
+        if(moves > 0) {
+          return;
+        }
+        snake.dx = grid;
+        snake.dy = 0;
+        moves++;
+      }
+    }
+  } else {
+    if(snake.dy === 0) {
+      if ( yDiff > 0) {
+        //Bottom to Top
+        if(moves > 0) {
+          return;
+        }
+        snake.dy = -grid;
+        snake.dx = 0;
+        moves++;
+      } else {
+        //Top to Bottom
+        if(moves > 0) {
+          return;
+        }
+        snake.dy = grid;
+        snake.dx = 0;
+        moves++;
+      }
+    }
+  }
+  touchX = null;
+  touchY = null;
+}
