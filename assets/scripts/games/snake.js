@@ -255,7 +255,7 @@ function handleTouchStart(e) {
   touchY = firstTouch.clientY;
 
   setTimeout(function() {
-    if(!touchX || !touchY) {
+    if(touchX != null  && touchY != null) {
       if(paused) {
         paused = false;
       } else {
