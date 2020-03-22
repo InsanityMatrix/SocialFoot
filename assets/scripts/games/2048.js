@@ -6,11 +6,20 @@ var gameState = 0;
 var borderSize = 20;
 var cellSize = 100;
 var userid = 0;
+var leaderboard = null;
 // gameState
 // 0 = Playing
 // 1 = Lost
 function setUserID(uid) {
   userid = uid;
+}
+function populateScores() {
+  $.ajax({
+    url: '/games/2048/scores',
+    success: function(data) {
+      leaderboard = data;
+    }
+  });
 }
 function startGame() {
   gameboard = [
@@ -257,7 +266,8 @@ function spawnNewCell() {
       data: {
         "userid": userid,
         "score": score
-      }
+      },
+      success: populateScores
     });
     return;
   }
@@ -331,10 +341,29 @@ function loop() {
   }
   //Lost
   context.clearRect(0,0,canvas.width, canvas.height);
+  context.fillStyle = "#b58251";
+  context.fillRect(0,0,canvas.width, 40);
   context.font = "20px Comic Sans MS";
-  context.fillStyle = "black";
   context.textAlign = "center";
+  context.fillStyle = "white";
   context.fillText("Your Score: " + score, canvas.width/2, 30);
+  context.fillStyle = "#5fc4b6";
+  context.fillRect(0,40,canvas.width, 130);
+  context.fillStyle = "black";
+  context.fillText("1. " + data[0].Username, canvas.width/4 * 1.5, 60);
+  context.fillText("" + data[0].Score, canvas.width/4 * 3, 60)
+
+  context.fillText("2. " + data[1].Username, canvas.width/4 * 1.5, 90)
+  context.fillText("" + data[1].Score, canvas.width/4 * 3, 90)
+
+  context.fillText("3. " + data[2].Username, canvas.width/4 * 1.5, 120)
+  context.fillText("" + data[2].Score, canvas.width/4 * 3, 120)
+
+  context.fillText("4. " + data[3].Username, canvas.width/4 * 1.5, 150)
+  context.fillText("" + data[3].Score, canvas.width/4 * 3, 150)
+
+  context.fillText("5. " + data[4].Username, canvas.width/4 * 1.5, 180)
+  context.fillText("" + data[4].Score, canvas.width/4 * 3, 180)
   context.font = "15px Comic Sans MS";
   context.fillText("(Press Space or Tap to Continue)", canvas.width/2, canvas.height - 10);
 }
