@@ -321,7 +321,7 @@ function handleTouchMove(e) {
 
 $(document).ready(function() {
   if($(window).width() < 700) {
-    context.canvas.width = Math.floor(window.innerWidth/16) ;
+    context.canvas.width = Math.floor(window.innerWidth/16) * 16;
   } else {
     context.canvas.width = 700;
   }
