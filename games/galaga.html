@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Games - Snake</title>
+		<meta charset='utf-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+    <meta name='mobile-web-app-capable' content='yes'>
+		<!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    	<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
+    <style>
+      html,body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <link rel='stylesheet' href='/assets/css/SocialFoot.css'>
+    <script src="/assets/scripts/SocialFoot.js"></script>
+
+    </head>
+    <body style="overscroll-behavior-y: contain;">
+      <nav class='navbar navbar-transparent'>
+          <div class='container-fluid'>
+            <button type="button" class="navbar-toggle col-md-1 col-xs-2" data-toggle="collapse" data-target="#utilities">
+                <img src="/assets/images/menuBars.png" alt="Menu Bars" width="100%">
+            </button>
+              <div class='navbar-header'>
+                  <a href='/live'>
+                    <img src="/assets/images/SocialFootLogo.png" width="100px">
+                  </a>
+              </div>
+              <div class="collapse navbar-collapse" id="utilities">
+                <ul class='nav navbar-nav'>
+                  <li><a href='/live'>Home</a></li>
+                  <li class='active'><a href="/games">Games</a></li>
+                  <li><a href='/live/search'>Search</a></li>
+                  <li><a href='/report'>Report</a></li>
+                </ul>
+                <ul class='nav navbar-nav navbar-right'>
+                  <li><a href='/live/post'>Post</a></li>
+                  <li class='dropdown'>
+                    <a class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-user'></span> {{.username}}</a>
+                    <ul class='dropdown-menu'>
+                      <li class='dropdown-item'><a href='/live/profile'>Settings</a></li>
+                      <li class='dropdown-item'><a href='/live/messages'>Messages</a></li>
+                      <li class='dropdown-item'><a href='/live/feed'>Your Feed</a></li>
+                      <div class='dropdown-divider'></div>
+                      <li class='dropdown-item'><a onclick="signOut()">Sign out</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+          </div>
+      </nav>
+      <center>
+      <canvas style="border: 1px solid black;" width="500" height="500" id="game"></canvas>
+    </center>
+          <script src="/assets/scripts/games/Galaga/Rocket.js"></script>
+          <script src="/assets/scripts/games/Galaga/Game.js"></script>
+
+    </body>
+  </html>
