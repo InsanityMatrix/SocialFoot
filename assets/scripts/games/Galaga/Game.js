@@ -24,7 +24,7 @@ document.addEventListener('keydown', function(e) {
     } else if(e.which === 39) {
       moved++;
       ship.moveRight();
-    } else if(e.which === 30) {
+    } else if(e.which === 40) {
       moved++;
       ship.moveDown();
     }
@@ -34,6 +34,7 @@ $(document).ready(function(){
   fpsInterval = 1000 / fps;
   then = Date.now();
   startTime = then;
+  startGame();
   animate();
 });
 function animate() {
@@ -46,6 +47,9 @@ function animate() {
     //Dont draw
     return;
   }
+  context.clearRect(0,0,canvas.width,canvas.height);
+  context.fillStyle = "black";
+  context.fillRect(0,0, canvas.width, canvas.height);
   context.drawImage(shipImage, 0,0, 900, 900, ship.x, ship.y, 50, 50);
   moved = 0;
 
