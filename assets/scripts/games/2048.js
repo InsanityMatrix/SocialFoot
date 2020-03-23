@@ -353,18 +353,22 @@ function loop() {
   context.fillStyle = "black";
   context.fillText("1. " + data[0].Username, canvas.width/4 * 1.5, 60);
   context.fillText("" + data[0].Score, canvas.width/4 * 3, 60)
-
-  context.fillText("2. " + data[1].Username, canvas.width/4 * 1.5, 90)
-  context.fillText("" + data[1].Score, canvas.width/4 * 3, 90)
-
-  context.fillText("3. " + data[2].Username, canvas.width/4 * 1.5, 120)
-  context.fillText("" + data[2].Score, canvas.width/4 * 3, 120)
-
-  context.fillText("4. " + data[3].Username, canvas.width/4 * 1.5, 150)
-  context.fillText("" + data[3].Score, canvas.width/4 * 3, 150)
-
-  context.fillText("5. " + data[4].Username, canvas.width/4 * 1.5, 180)
-  context.fillText("" + data[4].Score, canvas.width/4 * 3, 180)
+  if(data[1] != undefined) {
+    context.fillText("2. " + data[1].Username, canvas.width/4 * 1.5, 90)
+    context.fillText("" + data[1].Score, canvas.width/4 * 3, 90)
+    if(data[2] != undefined) {
+      context.fillText("3. " + data[2].Username, canvas.width/4 * 1.5, 120)
+      context.fillText("" + data[2].Score, canvas.width/4 * 3, 120)
+      if(data[3] != undefined) {
+        context.fillText("4. " + data[3].Username, canvas.width/4 * 1.5, 150)
+        context.fillText("" + data[3].Score, canvas.width/4 * 3, 150)
+        if(data[4] != undefined) {
+          context.fillText("5. " + data[4].Username, canvas.width/4 * 1.5, 180)
+          context.fillText("" + data[4].Score, canvas.width/4 * 3, 180)
+        }
+      }
+    }
+  }
   context.font = "15px Comic Sans MS";
   context.fillText("(Press Space or Tap to Continue)", canvas.width/2, canvas.height - 10);
 }
