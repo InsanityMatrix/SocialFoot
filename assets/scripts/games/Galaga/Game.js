@@ -135,7 +135,6 @@ function animate() {
       bullets[i].move();
     }
   }
-
 }
 function newWave(num) {
   if(num === 1) {
