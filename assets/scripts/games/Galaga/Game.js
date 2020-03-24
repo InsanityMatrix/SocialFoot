@@ -49,6 +49,9 @@ document.addEventListener('keydown', function(e) {
   if(e.which === 70) {
     if(gameState === 2 || gameState === 1) {
       gameState = 0;
+    } else if (gameState === 3){
+      startGame();
+      gameState = 0;
     } else {
       gameState = 1;
     }
@@ -123,9 +126,6 @@ function animate() {
   context.clearRect(0,0,canvas.width,canvas.height);
   context.fillStyle = "black";
   context.fillRect(0,0, canvas.width, canvas.height);
-  //Draw ship
-  context.drawImage(shipImage, 0,0, 900, 900, ship.x, ship.y, 50, 50);
-  moved = 0;
 
   if(gameState === 2) {
     context.font = "35px Comic Sans MS";
@@ -139,11 +139,26 @@ function animate() {
     context.textAlign = "center";
     context.fillText("Press F to unpause", canvas.width / 2, 50);
     return;
+  } else if(gameState === 3) {
+    context.font = "35px Comic Sans MS";
+    context.fillStyle = "white";
+    context.textAlign = "center";
+    context.fillText("You Lost!", canvas.width / 2, 50);
+    context.fillText("Wave: " + round, canvas.width / 2, 90);
+    context.fillText("(Press F to play again)", canvas.width /2, canvas.height -10);
   }
+
+  //Draw ship
+  context.drawImage(shipImage, 0,0, 900, 900, ship.x, ship.y, 50, 50);
+  moved = 0;
   //Draw Enemies
   for(var i = 0; i < enemies.length; i++) {
     let enemy = enemies[i];
     if(!enemy.dead) {
+      if(enemy.y >= canvas.height - 5) {
+        gameState = 3;
+        return;
+      }
       if(enemy.level === 1) {
         context.drawImage(enemyL1, 0, 0, 305, 240, enemy.x, enemy.y, 20, 20);
       }
@@ -195,6 +210,19 @@ function animate() {
          }
       }
     }
+  }
+  for(var i = 0; i < enemies.length; i++) {
+    let enemy = enemies[i];
+    if(!enemy.dead) {
+      if(enemy.y - ship.y >= 0 &&
+         enemy.y - ship.y < 50 &&
+         enemy.x - ship.x >= 0 &&
+         enemy.x - shipx < 59) {
+           gameState = 3;
+           return;
+      }
+    }
+  }
     //Check if all enemies are dead if so new wave
     for (var i = 0; i < enemies.length; i++) {
       if(!enemies[i].dead) {
@@ -206,7 +234,7 @@ function animate() {
         setTimeout(newWave, 500, ++round);
       }
     }
-  }
+
 
   //Move all bullets
   for(var i = 0; i < bullets.length; i++) {
