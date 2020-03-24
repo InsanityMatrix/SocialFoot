@@ -5,6 +5,7 @@ var fps, fpsInterval, startTime, now, then, elapsed;
 fps = 60;
 var gameState;
 var moved = 0;
+var round;
 var ship, enemies, bullets;
 bullets = [];
 var shipImage = new Image();
@@ -18,7 +19,8 @@ function startGame() {
   let shipX = canvas.width / 2 - 25;
   ship = new Rocket(shipX, shipY);
   gameState = 2;
-  newWave(1);
+  round = 1;
+  newWave(round);
 }
 
 document.addEventListener('keydown', function(e) {
@@ -153,6 +155,16 @@ function animate() {
          }
       }
     }
+    //Check if all enemies are dead if so new wave
+    for (var i = 0; i < enemies.length; i++) {
+      if(!enemies[i].dead) {
+        break;
+      }
+      if(i === enemies.length - 1) {
+        // All enemies are dead;
+        setTimeout(newWave, 500, ++round);
+      }
+    }
   }
 
   //Move all bullets
@@ -168,7 +180,7 @@ function newWave(num) {
   if(num === 1) {
     let newEnemies = [];
     for(var i = 0; i < 20; i++) {
-      let e = new Enemy(1, i,canvas.width);
+      let e = new Enemy(1, i,canvas.width, num);
       newEnemies[i] = e;
     }
     enemies = newEnemies;
