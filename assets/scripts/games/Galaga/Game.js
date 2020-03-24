@@ -83,8 +83,8 @@ function animate() {
   //Calculate elapsed time
   now = Date.now();
   elapsed = now - then;
-  if(count++ === 4) {
-    count = 0;
+  if(fireTimer++ === 4) {
+    fireTimer = 0;
     fire = 0;
   }
 
