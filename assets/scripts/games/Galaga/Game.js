@@ -184,5 +184,12 @@ function newWave(num) {
       newEnemies[i] = e;
     }
     enemies = newEnemies;
+  } else {
+    let newEnemies = [];
+    for(var i = 0; i < 25; i++) {
+      let e = new Enemy(1, i,canvas.width, num);
+      newEnemies[i] = e;
+    }
+    enemies = newEnemies;
   }
 }
