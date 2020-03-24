@@ -224,7 +224,7 @@ function animate() {
       if(enemy.y - ship.y >= 0 &&
          enemy.y - ship.y < 50 &&
          enemy.x - ship.x >= 0 &&
-         enemy.x - shipx < 59) {
+         enemy.x - ship.x < 50) {
            gameState = 3;
            return;
       }
