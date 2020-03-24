@@ -104,7 +104,6 @@ function animate() {
     if(!enemy.dead) {
       if(enemy.level === 1) {
         context.drawImage(enemyL1, 0, 0, 305, 240, enemy.x, enemy.y, 20, 20);
-        enemies[i].x += enemies[i].dx;
       }
     }
   }
@@ -132,9 +131,36 @@ function animate() {
         bullets.splice(i,i);
       }
     } else {
-      context.drawImage(bulletIMG, 0, 0, 407,512, bullets[i].x - 3, bullets[i].y,6,6);
-      bullets[i].move();
+      context.drawImage(bulletIMG, 0, 0, 407,512, bullets[i].x - 4, bullets[i].y,8,12);
     }
+  }
+  //Check if enemies killed
+  for(var enemyIndex = 0; enemyIndex < enemies.length; enemyIndex++) {
+    for(var bulletIndex = 0; bulletIndex < bullets.length; bulletIndex++) {
+      let e = enemies[enemyIndex];
+      let bullet = bullets[bulletIndex];
+
+      if(bullet.x - e.x >=0 &&
+         bullet.x - e.x <= 25 &&
+         bullet.y - e.y <= 25 &&
+         bullet.y - e.y >= 0) {
+         enemies[enemyIndex].hit();
+         if(bulletIndex === 0) {
+           bullets.splice(0,1);
+         } else {
+           bullets.splice(bulletIndex, bulletIndex);
+         }
+      }
+    }
+  }
+
+  //Move all bullets
+  for(var i = 0; i < bullets.length; i++) {
+    bullets[i].move();
+  }
+  //Move all enemies
+  for(var i = 0; i < enemies.length; i++) {
+    enemies[i].x += enemies[i].dx;
   }
 }
 function newWave(num) {
