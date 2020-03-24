@@ -116,7 +116,7 @@ function animate() {
 }
 function newWave(num) {
   if(num === 1) {
-    var newEnemies;
+    let newEnemies = [];
     for(var i = 0; i < 20; i++) {
       let e = new Enemy(1, i,canvas.width);
       newEnemies[i] = e;
