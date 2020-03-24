@@ -6,6 +6,8 @@ fps = 60;
 var gameState;
 var moved = 0;
 var round;
+var fire = 0;
+var fireTimer = 0;
 var ship, enemies, bullets;
 bullets = [];
 var shipImage = new Image();
@@ -19,6 +21,9 @@ function startGame() {
   let shipX = canvas.width / 2 - 25;
   ship = new Rocket(shipX, shipY);
   gameState = 2;
+  fire = 0;
+  fireTimer = 0;
+
   round = 1;
   newWave(round);
 }
@@ -58,8 +63,11 @@ document.addEventListener('keydown', function(e) {
       gameState = 1;
     }
   } else if(e.which === 32) {
-    bullets[bullets.length] = ship.shoot();
-    bullets[bullets.length - 1].move();
+    if(fire === 0) {
+      bullets[bullets.length] = ship.shoot();
+      bullets[bullets.length - 1].move();
+      fire++;
+    }
   }
 
 });
@@ -75,11 +83,16 @@ function animate() {
   //Calculate elapsed time
   now = Date.now();
   elapsed = now - then;
+  if(count++ === 4) {
+    count = 0;
+    fire = 0;
+  }
 
   if (elapsed < fpsInterval) {
     //Dont draw
     return;
   }
+
   context.clearRect(0,0,canvas.width,canvas.height);
   context.fillStyle = "black";
   context.fillRect(0,0, canvas.width, canvas.height);
