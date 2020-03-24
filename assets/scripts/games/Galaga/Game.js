@@ -6,6 +6,13 @@ fps = 60;
 var gameState;
 var moved = 0;
 var round;
+var keysPressed = {
+  forward: false,
+  left: false,
+  right: false,
+  backward: false,
+  shoot: false
+}
 var fire = 0;
 var fireTimer = 0;
 var ship, enemies, bullets;
@@ -29,33 +36,16 @@ function startGame() {
 }
 
 document.addEventListener('keydown', function(e) {
-  if(moved === 0) {
     if(e.which === 37) {
-      if(ship.x <= 0) {
-        return;
-      }
-      moved++;
-      ship.moveLeft();
+      keysPressed.left = true;
     } else if(e.which === 38) {
-      if(ship.y <= 0) {
-        return;
-      }
-      moved++;
-      ship.moveUp();
+      keysPressed.forward = true;
     } else if(e.which === 39) {
-      if(ship.x + 50 >= canvas.width) {
-        return;
-      }
-      moved++;
-      ship.moveRight();
+      keysPressed.right = true;
     } else if(e.which === 40) {
-      if(ship.y + 50 >= canvas.height) {
-        return;
-      }
-      moved++;
-      ship.moveDown();
+      keysPressed.backward = true;
     }
-  }
+
   if(e.which === 70) {
     if(gameState === 2 || gameState === 1) {
       gameState = 0;
@@ -63,11 +53,23 @@ document.addEventListener('keydown', function(e) {
       gameState = 1;
     }
   } else if(e.which === 32) {
-    if(fire === 0) {
-      bullets[bullets.length] = ship.shoot();
-      bullets[bullets.length - 1].move();
-      fire++;
+    keysPressed.shoot = true;
+  }
+
+});
+document.addEventListener('keyup', function(e) {
+    if(e.which === 37) {
+      keysPressed.left = false;
+    } else if(e.which === 38) {
+      keysPressed.forward = false;
+    } else if(e.which === 39) {
+      keysPressed.right = false;
+    } else if(e.which === 40) {
+      keysPressed.backward = false;
     }
+
+   if(e.which === 32) {
+    keysPressed.shoot = false;
   }
 
 });
@@ -83,16 +85,41 @@ function animate() {
   //Calculate elapsed time
   now = Date.now();
   elapsed = now - then;
-  if(fireTimer++ === 4) {
-    fireTimer = 0;
-    fire = 0;
-  }
+
 
   if (elapsed < fpsInterval) {
     //Dont draw
     return;
   }
-
+  if(fireTimer++ === 4) {
+    fireTimer = 0;
+    fire = 0;
+  }
+  if(keysPressed.forward) {
+    if(ship.y > 0) {
+      ship.moveUp();
+    }
+  } else if(keysPressed.backward) {
+    if(!(ship.y + 50 >= canvas.height)) {
+      ship.moveDown();
+    }
+  }
+  if(keysPressed.left) {
+    if(ship.x > 0) {
+      ship.moveLeft();
+    }
+  } else if(keysPressed.right) {
+    if(!(ship.x + 50 >= canvas.width)) {
+      ship.moveRight();
+    }
+  }
+  if(keysPressed.shoot) {
+    if(fire === 0) {
+      bullets[bullets.length] = ship.shoot();
+      bullets[bullets.length - 1].move();
+      fire++;
+    }
+  }
   context.clearRect(0,0,canvas.width,canvas.height);
   context.fillStyle = "black";
   context.fillRect(0,0, canvas.width, canvas.height);
