@@ -6,10 +6,13 @@ fps = 60;
 var gameState;
 var moved = 0;
 var ship, enemies, bullets;
+bullets = [];
 var shipImage = new Image();
 shipImage.src = "/assets/images/games/galaga/ship.png";
 var enemyL1 = new Image();
-enemyL1.src = "/assets/images/games/galaga/lvl1Enemy.png"
+enemyL1.src = "/assets/images/games/galaga/lvl1Enemy.png";
+var bulletIMG = new Image();
+bulletIMG.src = "/assets/images/games/galaga/bullet.png";
 function startGame() {
   let shipY = canvas.height - 75;
   let shipX = canvas.width / 2 - 25;
@@ -52,7 +55,10 @@ document.addEventListener('keydown', function(e) {
     } else {
       gameState = 1;
     }
+  } else if(e.which === 32) {
+    bullets[bullets.length] = ship.shoot().move();
   }
+
 });
 $(document).ready(function(){
   fpsInterval = 1000 / fps;
@@ -74,8 +80,10 @@ function animate() {
   context.clearRect(0,0,canvas.width,canvas.height);
   context.fillStyle = "black";
   context.fillRect(0,0, canvas.width, canvas.height);
+  //Draw ship
   context.drawImage(shipImage, 0,0, 900, 900, ship.x, ship.y, 50, 50);
   moved = 0;
+
   if(gameState === 2) {
     context.font = "35px Comic Sans MS";
     context.fillStyle = "white";
@@ -89,7 +97,7 @@ function animate() {
     context.fillText("Press F to unpause", canvas.width / 2, 50);
     return;
   }
-
+  //Draw Enemies
   for(var i = 0; i < enemies.length; i++) {
     let enemy = enemies[i];
     if(!enemy.dead) {
@@ -114,7 +122,19 @@ function animate() {
       }
     }
   }
-
+  //Draw Bullets
+  for(var i = 0; i < bullets.length; i++) {
+    if(bullets[i].y <= 0) {
+      if(i === 0) {
+        bullets.splice(0,1);
+      } else {
+        bullets.splice(i,i);
+      }
+    } else {
+      context.drawImage(bulletIMG, 0, 0, 407,512, bullets[i].x - 3, bullets[i].y,6,6);
+      bullets[i].move();
+    }
+  }
 
 }
 function newWave(num) {

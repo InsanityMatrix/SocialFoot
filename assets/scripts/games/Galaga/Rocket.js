@@ -18,5 +18,9 @@ class Rocket {
   moveDown() {
     this.y = this.y + 5;
   }
+  shoot() {
+    let blt = new Bullet(ship.x + 25, ship.y);
+    return blt;
+  }
 
 }

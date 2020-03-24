@@ -11,4 +11,10 @@ class Enemy {
   switchDirections() {
     this.dx *= -1;
   }
+  hit() {
+    this.hp -= 10;
+    if(this.hp <= 0) {
+      this.dead = true;
+    }
+  }
 }
