@@ -143,7 +143,8 @@ function animate() {
       if(bullet.x - e.x >=0 &&
          bullet.x - e.x <= 25 &&
          bullet.y - e.y <= 25 &&
-         bullet.y - e.y >= 0) {
+         bullet.y - e.y >= 0 &&
+         !e.dead) {
          enemies[enemyIndex].hit();
          if(bulletIndex === 0) {
            bullets.splice(0,1);
