@@ -45,7 +45,8 @@ document.addEventListener('keydown', function(e) {
       moved++;
       ship.moveDown();
     }
-  } else if(e.which === 70) {
+  }
+  if(e.which === 70) {
     if(gameState === 2 || gameState === 1) {
       gameState = 0;
     } else {
@@ -101,12 +102,14 @@ function animate() {
   if(enemies[4].dx > 0) {
     if(Math.abs(canvas.width - (enemies[4].x + 25))  <= 5) {
       for(var i = 0; i < enemies.length; i++) {
+        enemies.y += 25;
         enemies[i].switchDirections();
       }
     }
   } else {
     if(enemies[0].x <= 5) {
       for(var i = 0; i < enemies.length; i++) {
+        enemies.y += 25;
         enemies[i].switchDirections();
       }
     }
