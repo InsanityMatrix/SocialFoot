@@ -56,7 +56,8 @@ document.addEventListener('keydown', function(e) {
       gameState = 1;
     }
   } else if(e.which === 32) {
-    bullets[bullets.length] = ship.shoot().move();
+    bullets[bullets.length] = ship.shoot();
+    bullets[bullets.length - 1].move();
   }
 
 });
