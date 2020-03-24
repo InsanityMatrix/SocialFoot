@@ -37,12 +37,16 @@ function startGame() {
 
 document.addEventListener('keydown', function(e) {
     if(e.which === 37) {
+      e.preventDefault();
       keysPressed.left = true;
     } else if(e.which === 38) {
+      e.preventDefault();
       keysPressed.forward = true;
     } else if(e.which === 39) {
+      e.preventDefault();
       keysPressed.right = true;
     } else if(e.which === 40) {
+      e.preventDefault();
       keysPressed.backward = true;
     }
 
@@ -56,7 +60,9 @@ document.addEventListener('keydown', function(e) {
       gameState = 1;
     }
   } else if(e.which === 32) {
+    e.preventDefault();
     keysPressed.shoot = true;
+
   }
 
 });
@@ -146,6 +152,7 @@ function animate() {
     context.fillText("You Lost!", canvas.width / 2, 50);
     context.fillText("Wave: " + round, canvas.width / 2, 90);
     context.fillText("(Press F to play again)", canvas.width /2, canvas.height -10);
+    return;
   }
 
   //Draw ship
