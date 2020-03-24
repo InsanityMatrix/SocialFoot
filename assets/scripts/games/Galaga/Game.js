@@ -162,6 +162,7 @@ function animate() {
       }
       if(i === enemies.length - 1) {
         // All enemies are dead;
+        enemies = [];
         setTimeout(newWave, 500, ++round);
       }
     }
