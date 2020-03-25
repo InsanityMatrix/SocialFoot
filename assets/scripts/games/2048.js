@@ -374,7 +374,7 @@ function loop() {
 }
 function drawGrid(x,y, value) {
   context.fillStyle = "#eaebef";
-  let fontColor = "black";\
+  let fontColor = "black";
   if(value >= 1028) {
     fontColor = "white";
     context.fillStyle = "#e68a00";
