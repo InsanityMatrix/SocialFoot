@@ -77,7 +77,7 @@ html,body {
 	                  </select>
 	              </div>
 	          </div>
-	              <input style="margin-top:10px" type="submit" class="col-xs-4 col-xs-offset-4 btn block btn btn-primary color-t margin-b-10" value="Sign Up">
+	              <input id="registerSubmit" style="margin-top:10px" type="submit" class="col-xs-4 col-xs-offset-4 btn block btn btn-primary color-t margin-b-10" value="Sign Up">
 					</form>
 				</div>
 			</div>
@@ -85,6 +85,21 @@ html,body {
 	<script>
 		var body = document.getElementById("body");
 		body.removeChild(body.childNodes[0]);
+
+		document.addEventListener('keydown', function(e) {
+			let ageElement = document.getElementById('age');
+			let usernameElement = document.getElementById('username');
+			let passwordElement = document.getElementById('password');
+			if(ageElement.value  == null || ageElement.value === "") || parseInt(ageElement.value) == null || parseInt(ageElement.value) === 0) {
+				document.getElementById("registerSubmit").disabled = true;
+			} else if(usernameElement.value == null  || usernameElement.value === "") {
+				document.getElementById("registerSubmit").disabled = true;
+			} else if(passwordElement.value == null || passwordElement.value === "" || passwordElement.value === "1234") {
+				document.getElementById("registerSubmit").disabled = true;
+			} else {
+				document.getElementById("registerSubmit").disabled = false;
+			}
+		});
 	</script>
 
 

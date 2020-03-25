@@ -305,7 +305,7 @@ function loop() {
   if(gameState === 0) {
     context.clearRect(0,0,canvas.width, canvas.height);
     //Borders = 20
-    context.fillStyle = "#b58251";
+    context.fillStyle = "#c5c8d3";
     //Vertical lines
     context.fillRect(0,0,borderSize,canvas.height);
     context.fillRect((cellSize) + (borderSize),0,borderSize,canvas.height);
@@ -373,18 +373,27 @@ function loop() {
   context.fillText("(Press Space or Tap to Continue)", canvas.width/2, canvas.height - 10);
 }
 function drawGrid(x,y, value) {
-  context.fillStyle = "#b5b5b5";
-  if(value >= 64) {
-    context.fillStyle = "#ff8a8a";
+  context.fillStyle = "#eaebef";
+  let fontColor = "black";\
+  if(value >= 1028) {
+    fontColor = "white";
+    context.fillStyle = "#e68a00";
+  } else if(value >= 256) {
+    fontColor = "white";
+    context.fillStyle = "#ff4d4d";
+  } else if(value >= 64) {
+    fontColor = "white";
+    context.fillStyle = "#ff8080";
   } else if(value >= 8) {
-    context.fillStyle = "#ffd48a";
+    context.fillStyle = "#ff9900";
+    fontColor = "white";
   } else if (value > 0) {
-    context.fillStyle = "#fff38a";
+    context.fillStyle = "#ffcc80";
   }
   context.fillRect(x,y,cellSize,cellSize);
   if(value != 0) {
     context.font = "30px Comic Sans MS";
-    context.fillStyle = "black";
+    context.fillStyle = fontColor;
     context.textAlign = "center";
     context.fillText(value, x + (cellSize/2), y + (cellSize/2));
   }
