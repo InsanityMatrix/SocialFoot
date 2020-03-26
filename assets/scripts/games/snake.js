@@ -2,6 +2,7 @@ var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
 var paused = false;
 var grid = 16;
+var stars = [];
 var count = 0;
 var userid = 0;
 var moves = 0;

@@ -3,6 +3,7 @@ var context = canvas.getContext('2d');
 var frameCount = 0;
 var fps, fpsInterval, startTime, now, then, elapsed;
 fps = 60;
+var stars = [];
 var gameState;
 var moved = 0;
 var round;
@@ -30,7 +31,11 @@ function startGame() {
   gameState = 2;
   fire = 0;
   fireTimer = 0;
-
+  for(var i = 0; i < 75; i++) {
+    let xVal = Math.floor(Math.random() * canvas.width);
+    let yVal = Math.floor(Math.random() * canvas.height);
+    stars[i] = new Star(xVal,yVal,canvas.height);
+  }
   round = 1;
   newWave(round);
 }
@@ -132,6 +137,11 @@ function animate() {
   context.clearRect(0,0,canvas.width,canvas.height);
   context.fillStyle = "black";
   context.fillRect(0,0, canvas.width, canvas.height);
+  context.fillStyle = "white";
+  for(var i = 0; i < stars.length; i++) {
+    context.fillRect(stars[i].x, stars[i].y, 2,2);
+    stars[i].move();
+  }
 
   if(gameState === 2) {
     context.font = "35px Comic Sans MS";
