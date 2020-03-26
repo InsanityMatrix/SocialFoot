@@ -70,6 +70,8 @@ function loop() {
   moves = 0;
   count = 0;
   context.clearRect(0,0,canvas.width,canvas.height);
+  context.fillStyle = "black";
+  context.fillRect(0,0, canvas.width, canvas.height);
   snake.x += snake.dx;
   snake.y += snake.dy;
 
@@ -83,7 +85,7 @@ function loop() {
   if (snake.y < 0) {
     restartGame();
     return;
-  } else if (snake.y > canvas.height) {
+  } else if (snake.y + 16 > canvas.height) {
     restartGame();
     return;
   }
