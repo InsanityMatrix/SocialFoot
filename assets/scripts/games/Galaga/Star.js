@@ -5,6 +5,6 @@ class Star {
     this.height = height;
   }
   move() {
-    this.y = this.height % (this.y + 10);
+    this.y = (this.y + 10) % this.height;
   }
 }
