@@ -119,7 +119,10 @@ function loop() {
   context.textAlign = "center";
   context.fillText(snake.maxCells, canvas.width/8 * 7, 25);
 }
-
+document.touchmove = function(e)
+{
+    e.preventDefault();
+};
 document.addEventListener('keydown', function(e) {
   // left arrow key
   if (e.which === 37 && snake.dx === 0) {

@@ -398,6 +398,11 @@ function drawGrid(x,y, value) {
     context.fillText(value, x + (cellSize/2), y + (cellSize/2));
   }
 }
+//Prevent page scrolling
+document.touchmove = function(e)
+{
+    e.preventDefault();
+};
 //Add touches for phones
 document.addEventListener('touchstart', handleTouchStart, false);
 document.addEventListener('touchmove', handleTouchMove, false);

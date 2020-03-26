@@ -18,3 +18,8 @@
 canvas {
   border-radius: 5px;
 }
+body {
+  -moz-overscroll-behavior-y: contain;
+  -webkit-overscroll-behavior-y: contain;
+  overscroll-behavior-y: contain;
+}
