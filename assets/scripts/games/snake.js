@@ -22,7 +22,7 @@ function getRandomInt(min, max) {
 function scorePage() {
   context.clearRect(0,0,canvas.width,canvas.height);
   context.font = "20px Comic Sans MS";
-  context.fillStyle = "white";
+  context.fillStyle = "black";
   context.textAlign = "center";
   context.fillText("Scores", canvas.width/2, 30);
 
@@ -38,7 +38,7 @@ function scorePage() {
 }
 function populateScores(data) {
   context.font = "20px Comic Sans MS";
-  context.fillStyle = "white";
+  context.fillStyle = "black";
   context.textAlign = "center";
 
   context.fillText("1. " + data[0].Username, canvas.width/4 * 1.5, 60)
@@ -117,7 +117,7 @@ function loop() {
   });
 
   context.font = "20px Comic Sans MS";
-  context.fillStyle = "black";
+  context.fillStyle = "white";
   context.textAlign = "center";
   context.fillText(snake.maxCells, canvas.width/8 * 7, 25);
 }
