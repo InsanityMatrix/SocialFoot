@@ -476,6 +476,29 @@ func (store *dbStore) CreateTwoWayConversation(user1 int, user2 int) error {
 
   return err
 }
+/*
+func (store *dbStore) CreateGroupConversation(users []int) error {
+  dt := time.Now()
+  if len(users) > 2 {
+    list := "" + strconv.Itoa(users[0])
+    for index, uid := range users {
+      if(index > 0) {
+        list += "," + strconv.Itoa(uid)
+      }
+    }
+    row := store.db.QueryRow("INSERT INTO group_conversations(members, size, created) VALUES ($1, $2, $3) RETURNING convoID;",list, len(users), dt)
+    var convoID int
+    if err := row.Scan(&convoID); err != nil {
+      return err
+    }
+
+    os.Mkdir("/root/go/src/github.com/InsanityMatrix/SocialFoot/messages/gc" + strconv.Itoa(convoID), 0755)
+    _, err = store.db.Query("CREATE TABLE gc" + strconv.Itoa(convoID) + "_conv (messageid SERIAL, mfrom INT, dsent DATE, tsent TIME, PRIMARY KEY(messageid));")
+
+    return err
+  }
+}
+*/
 //returns 0 if error, convoID will never equal 0
 func (store *dbStore) GetConvoParticipant(convoID int, userid int) int {
   row := store.db.QueryRow("SELECT usertwo FROM private_conversations WHERE convoID=$1 AND userone=$2",convoID, userid)
@@ -490,6 +513,24 @@ func (store *dbStore) GetConvoParticipant(convoID int, userid int) int {
   }
   return user
 }
+/*
+func (store *dbStore) GetConvoParticipants(convoID int)  []User {
+  row := store.db.QueryRow("SELECT members FROM group_conversations WHERE convoID=$1", convoID)
+  var members string
+  err := row.Scan(&members)
+  if err != nil {
+    fmt.Println(err.Error())
+  }
+  list := strings.split(members,",")
+  participants := []User{}
+  for _, member := range list {
+    uid := strconv.Atoi(member)
+    participant := store.GetUserInfoById(uid)
+
+    participants = append(participants, participant)
+  }
+}
+*/
 func (store *dbStore) GetConversationID(user1 int, user2 int) int {
   row := store.db.QueryRow("SELECT convoID FROM private_conversations WHERE (userOne=$1 AND userTwo=$2) OR (userOne=$2 AND userTwo=$1)",user1, user2)
 

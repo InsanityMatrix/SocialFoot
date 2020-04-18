@@ -322,6 +322,29 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func apiLoginUser(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Fprint(w, "false")
+		return
+	}
+	user := User{}
+	user.username = r.Form.Get("username")
+	user.password = r.Form.Get("password")
+	bytePass := []byte(user.password)
+	account, err := store.LoginUser(&user)
+	if err != nil {
+		fmt.Fprint(w, "false")
+		return
+	}
+	if(comparePasswords(account.password, bytePass)) {
+		fmt.Fprint(w,"true")
+	} else {
+		fmt.Fprint(w,"false")
+	}
+
+}
+
 func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type","application/json")
 	pubposts := store.GetPublicPosts()
