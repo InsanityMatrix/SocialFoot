@@ -33,6 +33,13 @@ type User struct {
     password string `json:"password"`
     email string `json:"email"`
 }
+type ApiUser struct {
+	UserID int
+	Username string
+	Email string
+	Age int
+	Gender bool
+}
 type Post struct {
 	Postid int
 	Userid int
@@ -339,7 +346,15 @@ func apiLoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if(comparePasswords(account.password, bytePass)) {
-		fmt.Fprint(w,"true")
+		info := ApiUser{}
+		info.UserID = account.id
+		info.Username = account.username
+		info.Email = account.email
+		info.Age = account.age
+		info.Gender = account.gender
+
+		jsonInfo, _ := json.Marshal(info)
+		fmt.Fprint(w,string(jsonInfo))
 	} else {
 		fmt.Fprint(w,"false")
 	}
