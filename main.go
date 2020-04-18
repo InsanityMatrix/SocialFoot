@@ -185,6 +185,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/report", reportHandler)
 		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
 
+		r.HandleFunc("/api/login", apiLoginUser)
 		//TEMPLATES stuff
 		r.HandleFunc("/templates/post", postTemplateHandler)
 		r.HandleFunc("/templates/result", resultTemplateHandler)
