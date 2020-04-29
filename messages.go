@@ -168,3 +168,19 @@ func sendTextMessageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprint(w, "Success")
 }
+func getConversationsHandler(w http.ResponseWriter, r *http.Request) {
+  err := r.ParseForm()
+  if err != nil {
+    fmt.Fprint(w, err.Error())
+    return
+  }
+  	accID, _ := strconv.Atoi(r.Form.Get("uid"))
+  	conversations := store.GetConversations(accID)
+    for convo, index := range conversations {
+      account := store.GetUserInfoById(convo.ParticipantID)
+      convo.ParticipantName = account.username
+      conversations[index] = convo
+    }
+    jsonInfo, _ := json.Marshal(conversations)
+    fmt.Fprint(w,string(jsonInfo))
+}

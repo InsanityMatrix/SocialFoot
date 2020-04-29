@@ -193,6 +193,7 @@ func newRouter() *mux.Router {
 		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
 
 		r.HandleFunc("/api/login", apiLoginUser)
+		r.HandleFunc("/api/conversations", getConversationsHandler)
 		//TEMPLATES stuff
 		r.HandleFunc("/templates/post", postTemplateHandler)
 		r.HandleFunc("/templates/result", resultTemplateHandler)
@@ -237,7 +238,7 @@ func main() {
 		db.SetConnMaxLifetime(time.Hour)
 		InitStore(dbStore{db: db})
 		http.ListenAndServe(port, router)
-		cmd := exec.Command("(sleep 5; $HOME/go/src/github.com/InsanityMatrix/SocialFoot/SocialFoot &) &")
+		cmd := exec.Command("(sleep 5; $HOME/go/src/github.com/InsanityMatrix/SocialFoot/./SocialFoot &) &")
 		_ = cmd.Run()
 		return
 }
