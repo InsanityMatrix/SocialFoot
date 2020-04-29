@@ -176,7 +176,7 @@ func getConversationsHandler(w http.ResponseWriter, r *http.Request) {
   }
   	accID, _ := strconv.Atoi(r.Form.Get("uid"))
   	conversations := store.GetConversations(accID)
-    for convo, index := range conversations {
+    for index, convo := range conversations {
       account := store.GetUserInfoById(convo.ParticipantID)
       convo.ParticipantName = account.username
       conversations[index] = convo
