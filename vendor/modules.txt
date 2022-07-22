@@ -1,0 +1,18 @@
+# github.com/bdwilliams/go-jsonify v0.0.0-20141020182238-48749139e742
+## explicit
+github.com/bdwilliams/go-jsonify/jsonify
+# github.com/gorilla/mux v1.7.4
+## explicit; go 1.12
+github.com/gorilla/mux
+# github.com/koyachi/go-nude v0.0.1
+## explicit
+github.com/koyachi/go-nude
+# github.com/lib/pq v1.3.1-0.20200116171513-9eb3fc897d6f
+## explicit
+github.com/lib/pq
+github.com/lib/pq/oid
+github.com/lib/pq/scram
+# golang.org/x/crypto v0.0.0-20200206161412-a0c6ece9d31a
+## explicit; go 1.11
+golang.org/x/crypto/bcrypt
+golang.org/x/crypto/blowfish

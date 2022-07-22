@@ -6,54 +6,54 @@ package main
 
 import (
 	"database/sql"
-	"os"
-	"os/exec"
-	"strings"
-	"path/filepath"
-	"io"
-	"strconv"
-	"html/template"
-	"fmt"
-	"io/ioutil"
-	"regexp"
 	"encoding/json"
+	"fmt"
+	"html/template"
+	"io"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
+	"regexp"
+	"strconv"
+	"strings"
 	"time"
-		"log"
-    "net/http"
-    "github.com/gorilla/mux"
-		"github.com/koyachi/go-nude"
-	 _ "github.com/lib/pq"
+
+	"github.com/gorilla/mux"
+	"github.com/koyachi/go-nude"
+	_ "github.com/lib/pq"
 )
 
 type User struct {
-		id int `json:"id"`
-    username string `json:"username"`
-    gender bool `json:"gender"`
-    age int `json:"age"`
-    password string `json:"password"`
-    email string `json:"email"`
+	id       int    `json:"id"`
+	username string `json:"username"`
+	gender   bool   `json:"gender"`
+	age      int    `json:"age"`
+	password string `json:"password"`
+	email    string `json:"email"`
 }
 type ApiUser struct {
-	UserID int
+	UserID   int
 	Username string
-	Email string
-	Age int
-	Gender bool
+	Email    string
+	Age      int
+	Gender   bool
 }
 type Post struct {
-	Postid int
-	Userid int
-	Tags string
-	Caption string
-	Type string
-	Posted time.Time
+	Postid    int
+	Userid    int
+	Tags      string
+	Caption   string
+	Type      string
+	Posted    time.Time
 	Extension string
 	Publicity bool
-	Likes int
+	Likes     int
 }
 type Follower struct {
-	Relid int `json:"relid"`
-	Userid int `json:"userid"`
+	Relid    int    `json:"relid"`
+	Userid   int    `json:"userid"`
 	Followed string `json:"followed"`
 }
 type FollowerResult struct {
@@ -61,251 +61,248 @@ type FollowerResult struct {
 	FFollowed string
 }
 type FollowersPageData struct {
-	Activity string
-	Userid int
-	Username string
+	Activity  string
+	Userid    int
+	Username  string
 	Followers []FollowerResult
 }
 type UserSettings struct {
-	id int
-	bio string
-	website string
-	location string
+	id        int
+	bio       string
+	website   string
+	location  string
 	publicity bool
 }
 
 type UserInfo struct {
-	 id int
-	 username string
-	 gender bool
-	 age int
-	 email string
-	 bio string
-	 website string
-	 location string
-	 publicity bool
+	id        int
+	username  string
+	gender    bool
+	age       int
+	email     string
+	bio       string
+	website   string
+	location  string
+	publicity bool
 }
 
 type LiveImagePost struct {
-	User string
+	User      string
 	imageLink string
 }
 
 type FeedData struct {
 	username string
-	Feed []LiveImagePost
+	Feed     []LiveImagePost
 }
 type Message struct {
 	MessageID int
-	Content string
-	From int
-	Read bool
+	Content   string
+	From      int
+	Read      bool
 }
 type Conversation struct {
-	ConvoID int
-	ParticipantID int
+	ConvoID         int
+	ParticipantID   int
 	ParticipantName string
-	Created time.Time
+	Created         time.Time
 }
 type MessagePage struct {
-	Username string
+	Username      string
 	Conversations []Conversation
-	Messages []Message
-	Home bool
+	Messages      []Message
+	Home          bool
 }
 
 type ViewPostData struct {
-	Username string
+	Username    string
 	ProfileName string
-	ProfileID int
-	Caption string
-	Image bool
-	Video bool
-	Posted string
-	Extension string
-	Postid int
-	Tags template.HTML
+	ProfileID   int
+	Caption     string
+	Image       bool
+	Video       bool
+	Posted      string
+	Extension   string
+	Postid      int
+	Tags        template.HTML
 }
 type ConversationPage struct {
-	Username string
+	Username      string
 	Conversations []Conversation
-	ConvoID int
-	Userid int
-	Participant int
+	ConvoID       int
+	Userid        int
+	Participant   int
 }
 
 var HOME string
 var TEMPLATES string
 var GAMES string
+
 //Global variables
 func newRouter() *mux.Router {
-    r := mux.NewRouter()
-		r.HandleFunc("/favicon.ico", faviconHandler)
-    r.HandleFunc("/user", createUserHandler).Methods("POST")
-		r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
-		r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
-		r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
-		r.HandleFunc("/live/profile", profileHandler)
-		r.HandleFunc("/live/view/post/{postid}", viewPostHandler)
-		r.HandleFunc("/live/post", postHandler)
-		r.HandleFunc("/live/user/followers/{uid}", userFollowersHandler)
-		r.HandleFunc("/live/user/following/{uid}", userFollowingHandler)
-		r.HandleFunc("/live/user/posts", userPostHandler)
-		r.HandleFunc("/live/messages", loadMessages)
-		r.HandleFunc("/live/messages/{convoid}", conversationHandler)
-		r.HandleFunc("/live/search",searchPageHandler)
-		r.HandleFunc("/live/user/{uid}", userProfileHandler)
-		r.HandleFunc("/live/feed", customFeedHandler)
-		r.HandleFunc("/live", liveIndexHandler)
+	r := mux.NewRouter()
+	r.HandleFunc("/favicon.ico", faviconHandler)
+	r.HandleFunc("/user", createUserHandler).Methods("POST")
+	r.HandleFunc("/forms/login", loginUserHandler).Methods("POST")
+	r.HandleFunc("/forms/signup", createUserHandler).Methods("POST")
+	r.HandleFunc("/live/profile/settings", profileSettingsHandler).Methods("POST")
+	r.HandleFunc("/live/profile", profileHandler)
+	r.HandleFunc("/live/view/post/{postid}", viewPostHandler)
+	r.HandleFunc("/live/post", postHandler)
+	r.HandleFunc("/live/user/followers/{uid}", userFollowersHandler)
+	r.HandleFunc("/live/user/following/{uid}", userFollowingHandler)
+	r.HandleFunc("/live/user/posts", userPostHandler)
+	r.HandleFunc("/live/messages", loadMessages)
+	r.HandleFunc("/live/messages/{convoid}", conversationHandler)
+	r.HandleFunc("/live/search", searchPageHandler)
+	r.HandleFunc("/live/user/{uid}", userProfileHandler)
+	r.HandleFunc("/live/feed", customFeedHandler)
+	r.HandleFunc("/live", liveIndexHandler)
 
-		//Games
-		r.HandleFunc("/games/snake/update", updateSnakeScore)
-		r.HandleFunc("/games/snake/scores", snakeScoresHandler)
-		r.HandleFunc("/games/snake", snakeGameHandler)
-		r.HandleFunc("/games/2048/scores", Handler2048Scores)
-		r.HandleFunc("/games/2048/update",update2048Score)
-		r.HandleFunc("/games/2048", Handler2048)
-		r.HandleFunc("/games/galaga",GalagaHandler)
-		r.HandleFunc("/games", GameHandler)
-		//Settings FUNCTIONS
-		r.HandleFunc("/settings/user/publicity", changePublicityHandler)
-		r.HandleFunc("/settings/user/email", changeEmailHandler)
-		r.HandleFunc("/settings/user/location", changeLocationHandler)
-		r.HandleFunc("/settings/user/bio", changeBioHandler)
-		r.HandleFunc("/settings/user/delete", deleteUserHandler)
-		r.HandleFunc("/settings/user/signout", signoutHandler)
-		r.HandleFunc("/user/follow", followUserHandler)
-		r.HandleFunc("/user/isfollowing", isFollowingUserHandler)
-		r.HandleFunc("/user/post/imagepost", imagePostHandler).Methods("POST")
-		r.HandleFunc("/posts/public", getPublicPostsHandler)
-		r.HandleFunc("/search", searchHandler).Methods("POST")
+	//Games
+	r.HandleFunc("/games/snake/update", updateSnakeScore)
+	r.HandleFunc("/games/snake/scores", snakeScoresHandler)
+	r.HandleFunc("/games/snake", snakeGameHandler)
+	r.HandleFunc("/games/2048/scores", Handler2048Scores)
+	r.HandleFunc("/games/2048/update", update2048Score)
+	r.HandleFunc("/games/2048", Handler2048)
+	r.HandleFunc("/games/galaga", GalagaHandler)
+	r.HandleFunc("/games", GameHandler)
+	//Settings FUNCTIONS
+	r.HandleFunc("/settings/user/publicity", changePublicityHandler)
+	r.HandleFunc("/settings/user/email", changeEmailHandler)
+	r.HandleFunc("/settings/user/location", changeLocationHandler)
+	r.HandleFunc("/settings/user/bio", changeBioHandler)
+	r.HandleFunc("/settings/user/delete", deleteUserHandler)
+	r.HandleFunc("/settings/user/signout", signoutHandler)
+	r.HandleFunc("/user/follow", followUserHandler)
+	r.HandleFunc("/user/isfollowing", isFollowingUserHandler)
+	r.HandleFunc("/user/post/imagepost", imagePostHandler).Methods("POST")
+	r.HandleFunc("/posts/public", getPublicPostsHandler)
+	r.HandleFunc("/search", searchHandler).Methods("POST")
 
-		//MESSAGES FUNCTIONS
-		r.HandleFunc("/messages/send/text", sendTextMessageHandler)
-		r.HandleFunc("/messages/create/private", createPrivateMessageHandler)
+	//MESSAGES FUNCTIONS
+	r.HandleFunc("/messages/send/text", sendTextMessageHandler)
+	r.HandleFunc("/messages/create/private", createPrivateMessageHandler)
 
-		//JSON stuff
-		r.HandleFunc("/json/user/id", HandleJSONUserById)
-		r.HandleFunc("/json/messages/convo", getMessages)
-		r.HandleFunc("/json/feed/custom", getCustomFeedPosts)
-		//report
-		r.HandleFunc("/report", reportHandler)
-		r.HandleFunc("/report/submit/bugreport", bugReportHandler)
+	//JSON stuff
+	r.HandleFunc("/json/user/id", HandleJSONUserById)
+	r.HandleFunc("/json/messages/convo", getMessages)
+	r.HandleFunc("/json/feed/custom", getCustomFeedPosts)
+	//report
+	r.HandleFunc("/report", reportHandler)
+	r.HandleFunc("/report/submit/bugreport", bugReportHandler)
 
-		r.HandleFunc("/api/login", apiLoginUser)
-		r.HandleFunc("/api/conversations", getConversationsHandler)
-		//TEMPLATES stuff
-		r.HandleFunc("/templates/post", postTemplateHandler)
-		r.HandleFunc("/templates/result", resultTemplateHandler)
-		r.HandleFunc("/templates/tomsg", toMsgTemplateHandler)
-		r.HandleFunc("/templates/frommsg", fromMsgTemplateHandler)
-    //ALL PAGE FUNCTIONS HERE
-    r.HandleFunc("/", handler)
+	r.HandleFunc("/api/login", apiLoginUser)
+	r.HandleFunc("/api/conversations", getConversationsHandler)
+	//TEMPLATES stuff
+	r.HandleFunc("/templates/post", postTemplateHandler)
+	r.HandleFunc("/templates/result", resultTemplateHandler)
+	r.HandleFunc("/templates/tomsg", toMsgTemplateHandler)
+	r.HandleFunc("/templates/frommsg", fromMsgTemplateHandler)
+	//ALL PAGE FUNCTIONS HERE
+	r.HandleFunc("/", handler)
 
-    //Declare static file directory
-    staticFileDirectory := http.Dir("./assets/")
+	//Declare static file directory
+	staticFileDirectory := http.Dir("./assets/")
 
-    staticFileHandler := http.StripPrefix("/assets/", http.FileServer(staticFileDirectory))
+	staticFileHandler := http.StripPrefix("/assets/", http.FileServer(staticFileDirectory))
 
-    r.PathPrefix("/assets/").Handler(staticFileHandler).Methods("GET")
-    return r
+	r.PathPrefix("/assets/").Handler(staticFileHandler).Methods("GET")
+	return r
 }
 func main() {
-    router := newRouter()
-    portEnv := os.Getenv("PORT")
-    port := ":" + portEnv
-		HOME = filepath.Join(os.Getenv("HOME"), "/go/src/github.com/InsanityMatrix/SocialFoot")
-		TEMPLATES = "/root/go/src/github.com/InsanityMatrix/SocialFoot/templates"
-		GAMES = "/root/go/src/github.com/InsanityMatrix/SocialFoot/games"
-		url := os.Getenv("DATABASE_URL")
-		db, err := sql.Open("postgres", url)
+	router := newRouter()
+	portEnv := "80"
+	port := ":" + portEnv
+	TEMPLATES = "templates"
+	GAMES = "games"
+	url := os.Getenv("DATABASE_URL")
+	db, err := sql.Open("postgres", url)
 
-		if err != nil {
-			log.Fatalf("Connection error: %s", err.Error())
-			panic(err)
-		}
-		defer db.Close()
+	if err != nil {
+		log.Fatalf("Connection error: %s", err.Error())
+		panic(err)
+	}
+	defer db.Close()
 
-		err = db.Ping()
+	err = db.Ping()
 
-		if err != nil {
-			log.Fatalf("Ping error: %s", err.Error())
-			panic(err)
-		}
+	if err != nil {
+		log.Fatalf("Ping error: %s", err.Error())
+		panic(err)
+	}
 	//Set Connection Limit: https://www.alexedwards.net/blog/configuring-sqldb
-		db.SetMaxOpenConns(25)
-		db.SetMaxIdleConns(10)
-		db.SetConnMaxLifetime(time.Hour)
-		InitStore(dbStore{db: db})
-		http.ListenAndServe(port, router)
-		cmd := exec.Command("(sleep 5; $HOME/go/src/github.com/InsanityMatrix/SocialFoot/./SocialFoot &) &")
-		_ = cmd.Run()
-		return
+	db.SetMaxOpenConns(25)
+	db.SetMaxIdleConns(10)
+	db.SetConnMaxLifetime(time.Hour)
+	InitStore(dbStore{db: db})
+	http.ListenAndServe(port, router)
+	return
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	_, err := r.Cookie("username")
 	if err != nil {
-		http.Redirect(w,r,"/assets/",http.StatusSeeOther)
+		http.Redirect(w, r, "/assets/", http.StatusSeeOther)
 		return
 	}
-	http.Redirect(w,r,"/live",http.StatusSeeOther)
+	http.Redirect(w, r, "/live", http.StatusSeeOther)
 }
 
-
 func createUserHandler(w http.ResponseWriter, r *http.Request) {
-    user := User{}
+	user := User{}
 
-    //Send all data as HTML form Data so parse form
-    err := r.ParseForm()
-    if err != nil {
-        fmt.Println(fmt.Errorf("Error: %v", err))
-        w.WriteHeader(http.StatusInternalServerError)
-        return
-    }
-    //Get the information about the user from user info
-    user.username = r.Form.Get("username")
-    user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
-    user.age, _ = strconv.Atoi(r.Form.Get("age"))
-    user.password = r.Form.Get("password")
-		cpassword := r.Form.Get("cpassword")
-    user.email = r.Form.Get("email")
+	//Send all data as HTML form Data so parse form
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error: %v", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	//Get the information about the user from user info
+	user.username = r.Form.Get("username")
+	user.gender, _ = strconv.ParseBool(r.Form.Get("gender"))
+	user.age, _ = strconv.Atoi(r.Form.Get("age"))
+	user.password = r.Form.Get("password")
+	cpassword := r.Form.Get("cpassword")
+	user.email = r.Form.Get("email")
 
-		//Email validation
-		re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+	//Email validation
+	re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
-		if !re.MatchString(user.email) {
-			fmt.Fprint(w, "This email is not valid.")
-			return
-		}
+	if !re.MatchString(user.email) {
+		fmt.Fprint(w, "This email is not valid.")
+		return
+	}
 
-		if(user.password != cpassword) {
+	if user.password != cpassword {
+		http.Redirect(w, r, "/assets/signup.html", http.StatusSeeOther)
+		return
+	}
+	user.password = hashAndSalt([]byte(user.password))
+	//Append existing list of users with a new entry
+	err = store.CreateUser(&user)
+	if err != nil {
+		if err.Error() == "User Exists" {
 			http.Redirect(w, r, "/assets/signup.html", http.StatusSeeOther)
 			return
 		}
-		user.password = hashAndSalt([]byte(user.password))
-    //Append existing list of users with a new entry
-    err = store.CreateUser(&user)
-		if err != nil {
-			if err.Error() == "User Exists" {
-				http.Redirect(w, r, "/assets/signup.html", http.StatusSeeOther)
-				return
-			}
-			log.Println(err)
-			fmt.Println(err)
-			return
-		}
-  //Set Cookie with username
-		setEncryptedCookie(w, "username", []byte(user.username))
-		//Wait for like 1 second
-    http.Redirect(w, r, "/live", http.StatusSeeOther)
+		log.Println(err)
+		fmt.Println(err)
+		return
+	}
+	//Set Cookie with username
+	setEncryptedCookie(w, "username", []byte(user.username))
+	//Wait for like 1 second
+	http.Redirect(w, r, "/live", http.StatusSeeOther)
 }
 func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	user := User{}
 
 	err := r.ParseForm()
 	if err != nil {
-		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
+		http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
 		return
 	}
 
@@ -315,17 +312,17 @@ func loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	account, err := store.LoginUser(&user)
 	if err != nil {
 		//Username may not have been right
-		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
+		http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
 		return
 	}
 	if comparePasswords(account.password, bytePass) {
 		//Logged In
-		setEncryptedCookie(w,"username", []byte(account.username))
+		setEncryptedCookie(w, "username", []byte(account.username))
 
 		http.Redirect(w, r, "/live", http.StatusSeeOther)
 		return
 	} else {
-		http.Redirect(w,r,"/assets/login.html", http.StatusSeeOther)
+		http.Redirect(w, r, "/assets/login.html", http.StatusSeeOther)
 		return
 	}
 
@@ -346,7 +343,7 @@ func apiLoginUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "false")
 		return
 	}
-	if(comparePasswords(account.password, bytePass)) {
+	if comparePasswords(account.password, bytePass) {
 		info := ApiUser{}
 		info.UserID = account.id
 		info.Username = account.username
@@ -355,21 +352,18 @@ func apiLoginUser(w http.ResponseWriter, r *http.Request) {
 		info.Gender = account.gender
 
 		jsonInfo, _ := json.Marshal(info)
-		fmt.Fprint(w,string(jsonInfo))
+		fmt.Fprint(w, string(jsonInfo))
 	} else {
-		fmt.Fprint(w,"false")
+		fmt.Fprint(w, "false")
 	}
 
 }
 
 func getPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type","application/json")
+	w.Header().Set("Content-Type", "application/json")
 	pubposts := store.GetPublicPosts()
-  fmt.Fprint(w, pubposts)
+	fmt.Fprint(w, pubposts)
 }
-
-
-
 
 //SETTINGS FUNCTIONS
 func changePublicityHandler(w http.ResponseWriter, r *http.Request) {
@@ -454,27 +448,27 @@ func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	c, err := r.Cookie("username")
-    if err != nil {
-        panic(err.Error())
-    }
-  c.Value = ""
-  c.MaxAge = -1
-	fmt.Fprint(w,"Success")
+	if err != nil {
+		panic(err.Error())
+	}
+	c.Value = ""
+	c.MaxAge = -1
+	fmt.Fprint(w, "Success")
 }
 func signoutHandler(w http.ResponseWriter, r *http.Request) {
 	c := &http.Cookie{
-		Name:    "username",
-		Value: "",
-		Path: "/",
-		MaxAge: -1,
-		HttpOnly:true,
+		Name:     "username",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   -1,
+		HttpOnly: true,
 	}
 	http.SetCookie(w, c)
-	fmt.Fprint(w,"Success")
+	fmt.Fprint(w, "Success")
 }
 func reportHandler(w http.ResponseWriter, r *http.Request) {
 	SetHeaders(w)
-	w.Header().Set("Content-Type","text/html")
+	w.Header().Set("Content-Type", "text/html")
 	tmpl, err := template.ParseFiles(TEMPLATES + "/bugReport.html")
 	if err != nil {
 		http.Redirect(w, r, "/live", http.StatusInternalServerError)
@@ -484,7 +478,7 @@ func reportHandler(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		username = msg
 	}
-	tmpl.Execute(w, map[string]string{"username":username})
+	tmpl.Execute(w, map[string]string{"username": username})
 }
 
 func imagePostHandler(w http.ResponseWriter, r *http.Request) {
@@ -517,11 +511,11 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 			username = msg
 		}
 		status := "This file type is not supported. Try again with a different file type."
-		tmpl.Execute(w, map[string]string{"username":username,"status":status})
+		tmpl.Execute(w, map[string]string{"username": username, "status": status})
 		return
 	}
 	//Get Form Values
-	caption := strings.Replace(strings.Replace(r.Form.Get("caption"),"<","&lt;",-1),">","&gt;",-1)
+	caption := strings.Replace(strings.Replace(r.Form.Get("caption"), "<", "&lt;", -1), ">", "&gt;", -1)
 
 	tags := r.Form.Get("tags")
 
@@ -534,17 +528,15 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	publicityText := r.Form.Get("type")
 
-
 	//Set publicity
 	publicity := true
 	if publicityText == "Private" {
 		publicity = false
 	}
 
-
 	//Actually post image
 	id, _ := strconv.Atoi(userid)
-	postid := store.PostUserImage(publicity, caption, tags, id,extension, ft)
+	postid := store.PostUserImage(publicity, caption, tags, id, extension, ft)
 	if postid == 0 {
 		//ERROR case
 		fmt.Fprint(w, "Could not return post id or insert row")
@@ -552,9 +544,9 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 	idStr := strconv.Itoa(postid)
 	var out *os.File
 	if ft == "IMAGE" {
-		out, _  = os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
+		out, _ = os.Create("assets/uploads/imageposts/post" + idStr + extension)
 	} else {
-		out, _  = os.Create("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/videoposts/post" + idStr + extension)
+		out, _ = os.Create("assets/uploads/videoposts/post" + idStr + extension)
 	}
 
 	defer out.Close()
@@ -564,9 +556,9 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		fInfo, _ := out.Stat()
 		if fInfo.Size() > 21000000 {
 			SetHeaders(w)
-			w.Header().Set("Content-Type","text/html")
+			w.Header().Set("Content-Type", "text/html")
 			store.DeleteUserPost(postid)
-			os.Remove("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/videoposts/post" + idStr + extension)
+			os.Remove("assets/uploads/videoposts/post" + idStr + extension)
 			tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
 			msg, err := decryptCookie(r, "username")
 			var username string
@@ -577,12 +569,12 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 				username = msg
 			}
 			status := "This video is too large."
-			tmpl.Execute(w, map[string]string{"username":username,"status":status})
+			tmpl.Execute(w, map[string]string{"username": username, "status": status})
 			return
 		}
 	}
 	//Display results
-	isNude, err := nude.IsNude("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
+	isNude, err := nude.IsNude("assets/uploads/imageposts/post" + idStr + extension)
 	if err != nil {
 		tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
 		msg, err := decryptCookie(r, "username")
@@ -593,13 +585,13 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 			username = msg
 		}
 		SetHeaders(w)
-		w.Header().Set("Content-Type","text/html")
+		w.Header().Set("Content-Type", "text/html")
 		status := "Your post has been created at http://www.socialfoot.me/live/view/post/" + userid + "." + idStr
-		tmpl.Execute(w, map[string]string{"username":username,"status":status})
+		tmpl.Execute(w, map[string]string{"username": username, "status": status})
 	}
 	if isNude {
 		store.DeleteUserPost(postid)
-		os.Remove("/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/uploads/imageposts/post" + idStr + extension)
+		os.Remove("assets/uploads/imageposts/post" + idStr + extension)
 		tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
 		msg, err := decryptCookie(r, "username")
 		var username string
@@ -610,9 +602,9 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 			username = msg
 		}
 		SetHeaders(w)
-		w.Header().Set("Content-Type","text/html")
+		w.Header().Set("Content-Type", "text/html")
 		status := "Nudity was detected, if this was an error, please REPORT it."
-		tmpl.Execute(w, map[string]string{"username":username,"status":status})
+		tmpl.Execute(w, map[string]string{"username": username, "status": status})
 		return
 	}
 	tmpl, err := template.ParseFiles(TEMPLATES + "/uploadSuccess.html")
@@ -624,13 +616,13 @@ func imagePostHandler(w http.ResponseWriter, r *http.Request) {
 		username = msg
 	}
 	SetHeaders(w)
-	w.Header().Set("Content-Type","text/html")
+	w.Header().Set("Content-Type", "text/html")
 	status := "Your post has been created at http://www.socialfoot.me/live/view/post/" + userid + "." + idStr
-	tmpl.Execute(w, map[string]string{"username":username,"status":status})
+	tmpl.Execute(w, map[string]string{"username": username, "status": status})
 }
 
 func HandleJSONUserById(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type","application/json")
+	w.Header().Set("Content-Type", "application/json")
 	_ = r.ParseForm()
 	id, _ := strconv.Atoi(r.Form.Get("userid"))
 	userjson := store.GetJSONUserByID(id)
@@ -642,7 +634,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(404)
 		return
 	}
-	w.Header().Set("Content-Type","application/json")
+	w.Header().Set("Content-Type", "application/json")
 	term := r.Form.Get("term")
 	response := store.GetJSONUsersByUsernames(term)
 	// TODO: Add posts to the search feature.
@@ -652,12 +644,12 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 }
 func userFollowingHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
-	userid, err := strconv.Atoi(params[len(params) - 1])
+	userid, err := strconv.Atoi(params[len(params)-1])
 	if err != nil {
 		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
 		return
 	}
-	w.Header().Set("Content-Type","text/html")
+	w.Header().Set("Content-Type", "text/html")
 	userViewing := store.GetUserInfoById(userid)
 	followersJSON := store.GetUserFollowing(userid)
 	followersSTR := "["
@@ -667,7 +659,7 @@ func userFollowingHandler(w http.ResponseWriter, r *http.Request) {
 	followersSTR += "]"
 
 	var result []Follower
-	json.Unmarshal([]byte(followersSTR),&result)
+	json.Unmarshal([]byte(followersSTR), &result)
 	var fResult []FollowerResult
 	for _, fData := range result {
 		fUser := store.GetUserInfoById(fData.Userid)
@@ -681,13 +673,13 @@ func userFollowingHandler(w http.ResponseWriter, r *http.Request) {
 }
 func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 	params := strings.Split(r.URL.Path, "/")
-	userid, err := strconv.Atoi(params[len(params) - 1])
+	userid, err := strconv.Atoi(params[len(params)-1])
 	if err != nil {
 		http.Redirect(w, r, "/live/search", http.StatusSeeOther)
 		return
 	}
 	SetHeaders(w)
-	w.Header().Set("Content-Type","text/html")
+	w.Header().Set("Content-Type", "text/html")
 	userViewing := store.GetUserInfoById(userid)
 	followersJSON := store.GetUserFollowers(userid)
 	followersSTR := "["
@@ -697,7 +689,7 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 	followersSTR += "]"
 
 	var result []Follower
-	json.Unmarshal([]byte(followersSTR),&result)
+	json.Unmarshal([]byte(followersSTR), &result)
 	var fResult []FollowerResult
 	for _, fData := range result {
 		fUser := store.GetUserInfoById(fData.Userid)
@@ -711,19 +703,19 @@ func userFollowersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func faviconHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "/root/go/src/github.com/InsanityMatrix/SocialFoot/assets/images/favicon.ico")
+	http.ServeFile(w, r, "assets/images/favicon.ico")
 }
 func followUserHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		fmt.Fprint(w,err.Error())
+		fmt.Fprint(w, err.Error())
 		return
 	}
 	userid, _ := strconv.Atoi(r.Form.Get("userid"))
 	profileid, _ := strconv.Atoi(r.Form.Get("profileid"))
 	err = store.followUser(userid, profileid)
 	if err != nil {
-		fmt.Fprint(w,err.Error())
+		fmt.Fprint(w, err.Error())
 		return
 	}
 	fmt.Fprint(w, "Successfully followed this user!")
@@ -731,7 +723,7 @@ func followUserHandler(w http.ResponseWriter, r *http.Request) {
 func isFollowingUserHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		fmt.Fprint(w,err.Error())
+		fmt.Fprint(w, err.Error())
 		return
 	}
 	userid, _ := strconv.Atoi(r.Form.Get("userid"))
